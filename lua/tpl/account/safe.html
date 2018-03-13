@@ -1,0 +1,807 @@
+<!DOCTYPE HTML>
+<html ng-app="app" ng-controller="Ctrl" class="ng-scope">
+<head>
+    {(tpl/common/include.html)}
+    <title>{{param[lang..'_title']}}</title>
+    <link rel="stylesheet" href="{+resources+}/dist/css/nance/depositWithdrawal.css">
+    <style>
+        .usercenter-subnav {
+            display: none;
+        }
+        .usercenter-subnav.cur {
+            display: block;
+        }
+
+        .inviteBanner a {
+            display: inline-block;
+            width: 100%;
+            min-width: 1200px;
+            height: 90px;
+            background: url(https://resource.binance.com/resources/img/activity/invite_rk_en.jpg) no-repeat center;
+        }
+
+        .inviteBanner a.inviteBanner_cn {
+            background: url(https://resource.binance.com/resources/img/activity/invite_rk_cn.jpg) no-repeat center;
+        }
+    </style>
+</head>
+<body style="" class="ng-scope">
+
+<div class="ng-scope">
+    {(tpl/common/header.html)}
+</div>
+<div class="wrap">
+    <div class="inviteBanner ng-scope" ng-if="inviteStarted">
+        <!-- ngIf: cur_lang=='cn' --><a href="/invite.html" ng-if="cur_lang=='cn'" class="inviteBanner_cn ng-scope">
+    </a>
+    </div>
+    <div class="container">
+        <style>
+            .basicInfo {
+                padding: 30px 0 40px;
+                position: relative;
+                line-height: 100%;
+                margin: 15px 0;
+            }
+            .basicInfo .warn {
+                padding-left: 8px;
+                width: 100%;
+                box-sizing: border-box;
+                height: 28px;
+                line-height: 28px;
+                background: #fdf7ec;
+                font-size: 12px;
+                color: #f00;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+            }
+            .basicInfo .warn .iconfont {
+                font-size: 14px;
+                vertical-align: middle;
+            }
+
+            .basicInfo .left {
+                width: 140px;
+                text-align: center;
+            }
+
+            .basicInfo .right {
+                width: 984px;
+            }
+
+            .basicInfo .left .usertx {
+                margin-bottom: 12px;
+            }
+
+            .basicInfo .withdrawLimit {
+                font-size: 12px;
+                color: #333;
+            }
+
+            .basicInfo .right .account {
+                font-size: 18px;
+                height:16px;
+                color: #666;
+                font-weight: bold;
+                margin: 10px 0;
+            }
+
+            .basicInfo .right .loginInfo {
+                font-size: 12px;
+                color: #999;
+            }
+
+            .basicInfo .right .mobile {
+                margin-top: 15px;
+                padding-top: 15px;
+                border-top: 1px dashed #d3d3d3;
+                font-size: 14px;
+                color: #333;
+            }
+
+            .basicInfo .right .mobile a {
+                font-size: 14px;
+                text-decoration: underline;
+                color: #ff4b33;
+            }
+
+            .basicInfo .right .fee {
+                font-size: 14px;
+                color: #333;
+                margin-top: 9px;
+            }
+
+            .basicInfo .right .fee i {
+                color: #999;
+            }
+
+            .switch {
+                display: inline-block;
+                vertical-align: middle;
+                cursor: pointer;
+            }
+
+            .switch input {
+                display: none;
+            }
+
+            .switch span {
+                display: inline-block;
+                padding: 0 6px;
+                width: 40px;
+                height: 22px;
+                line-height: 24px;
+                border-radius: 11px;
+                background: #d4d4d4;
+                position: relative;
+                color: #fff;
+                font-size: 12px;
+                text-align: right;
+            }
+
+            .switch span:after {
+                content: "OFF";
+                line-height: 22px;
+            }
+
+            .switch span i {
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+                border-radius: 100%;
+                background: #fff;
+                position: absolute;
+                left: 1px;
+                top: 2px;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+                -webkit-transition: all 0.3s ease-in-out;
+                -moz-transition: all 0.3s ease-in-out;
+                -ms-transition: all 0.3s ease-in-out;
+                -o-transition: all 0.3s ease-in-out;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .switch input:checked + span {
+                background: #5cbe53;
+                text-align: left;
+            }
+
+            .switch input:checked + span:after {
+                content: " "
+            }
+
+            .switch input:checked + span:before {
+                content: "ON";
+            }
+
+            .switch input:checked + span i {
+                left: 33px;
+            }
+
+            .loginHistory {
+                border: 1px solid #d4d4d4;
+            }
+
+            .SecurityCenter > .f-fl, .SecurityCenter > .f-fr {
+                width: 586px;
+            }
+
+            .SecurityCenter > .f-fl .panel:last-of-type, .SecurityCenter > .f-fr .panel:last-of-type {
+                margin-bottom: 0;
+            }
+
+            .SecurityCenter .imgicon {
+                display: inline-block;
+                width: 38px;
+                height: 38px;
+                vertical-align: middle;
+                background: url("https://resource.binance.com/resources/img/icons.png") no-repeat center;
+            }
+
+            .SecurityCenter .img-email {
+                background-position: 0 0;
+            }
+
+            .SecurityCenter .img-mobile {
+                background-position: 0 -45px;
+            }
+
+            .SecurityCenter .img-password {
+                background-position: 0 -97px;
+            }
+
+            .SecurityCenter .img-api {
+                background-position: 0 -193px;
+            }
+
+            .SecurityCenter .img-google {
+                background-position: 0 -144px;
+            }
+
+            .SecurityCenter .item {
+                padding: 0 130px 0 54px;
+                position: relative;
+            }
+
+            .SecurityCenter .item + .item {
+                padding-top: 56px;
+                padding-bottom: 14px;
+                margin-top: 50px;
+                border-top: 1px solid #d4d4d4;
+            }
+
+            .SecurityCenter .item .imgicon {
+                position: absolute;
+                left: 8px;
+                top: 0;
+            }
+
+            .SecurityCenter .item .imgicon.img-api {
+                top: 12px;
+            }
+
+            .SecurityCenter .item .btn {
+                padding: 0;
+                width: 98px;
+                height: 32px;
+                text-align: center;
+                line-height: 32px;
+                position: absolute;
+                right: 0;
+                top: 10px;
+                background: #fff;
+                color: #666;
+                border-color: #d4d4d4;
+            }
+
+            .SecurityCenter .item .btn:hover {
+                background: #ff4b33;
+                color: #fff;
+                border-color: #ff4b33;
+            }
+
+            .SecurityCenter .item .switch {
+                position: absolute;
+                right: 24px;
+                top: 10px;
+            }
+
+            .SecurityCenter .item + .item .imgicon {
+                top: 62px;
+            }
+
+            .SecurityCenter .item + .item .btn {
+                top: 62px;
+            }
+
+            .SecurityCenter .item h4, .SecurityCenter .item p {
+                font-size: 14px;
+                color: #666;
+                line-height: 1.3;
+            }
+
+            .SecurityCenter .item h4 {
+                margin-bottom: 10px;
+            }
+
+            .SecurityCenter .item h4 .status {
+                color: #ff4b33;
+                margin-left: 12px;
+            }
+
+            .SecurityCenter .item p a {
+                color: #ff4b33;
+                text-decoration: underline;
+            }
+
+            .apiSeting {
+                padding: 30px 132px 30px 18px;
+                border: 1px solid #e6e6e6;
+                position: relative;
+            }
+
+            .apiSeting p {
+                font-size: 14px;
+                color: #666;
+                line-height: 1.6;
+                width: 900px;
+            }
+
+            .apiSeting p a {
+                text-decoration: underline;
+                color: #ff4b33;
+            }
+
+            .apiSeting .btn {
+                position: absolute;
+                top: 50%;
+                right: 18px;
+                margin-top: -18px;
+            }
+
+            .levels {
+                width: 600px;
+                overflow: hidden;
+                margin: -73px 10px 0 0;
+            }
+
+            .levels li {
+                float: left;
+                width: 200px;
+                text-align: center;
+                position: relative;
+            }
+
+            .levels li:after {
+                content: '';
+                display: inline-block;
+                width: 130px;
+                height: 3px;
+                background: #eaeaea;
+                position: absolute;
+                left: -66px;
+                top: 34px;
+            }
+
+            .levels li:first-of-type:after {
+                display: none;
+            }
+
+            .levels li h4 {
+                color: #666;
+                font-size: 12px;
+                font-weight: normal;
+                margin-bottom: 10px;
+            }
+
+            .levels li h4 strong {
+                font-size: 14px;
+                margin-right: 3px;
+            }
+
+            .levels li p {
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 8px;
+            }
+
+            .levels li p .iconfont {
+                font-size: 28px;
+                color: #929292;
+                vertical-align: middle;
+            }
+
+            .levels li.curlevel p, .levels li.curlevel p .iconfont {
+                color: #ff4b33;
+            }
+
+            .levels li.curlevel:after {
+                background: #ff4b33;
+            }
+
+            .levels li .status {
+                font-size: 14px;
+                color: #999;
+            }
+
+            .levels li .status .iconfont {
+                position: relative;
+                cursor: pointer;
+                font-size: 14px;
+                color: #ff4b33;
+            }
+
+            .levels li .status .iconfont b {
+                display: none;
+                position: absolute;
+                left: 50%;
+                top: -30px;
+                z-index: 99;
+                background: #fff;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                font-size: 12px;
+                font-weight: normal;
+                color: #999;
+                padding: 4px 12px;
+                -webkit-transform: translateX(-50%);
+                -moz-transform: translateX(-50%);
+                -o-transform: translateX(-50%);
+                -ms-transform: translateX(-50%);
+                transform: translateX(-50%);
+                white-space: nowrap;
+            }
+
+            .levels li .status .iconfont:hover b {
+                display: block;
+            }
+
+            .levels li a {
+                font-size: 14px;
+                color: #666;
+                text-decoration: underline;
+            }
+
+            .levels li a.orange {
+                color: #ff4b33;
+            }
+
+            .account .lev {
+                font-size: 14px;
+                color: #ff4b33;
+                font-weight: normal;
+                margin: 0 4px;
+            }
+
+            .account .lev .iconfont {
+                vertical-align: middle;
+            }
+
+            .account .notCertified, .account .certified {
+                font-size: 12px;
+                color: #fff;
+                font-weight: normal;
+                background: #929292;
+                border-radius: 3px;
+                padding: 2px 4px;
+            }
+
+            .account .certified {
+                background: #ff4b33;
+            }
+
+            .itemBox .itemTitle {
+                height: 46px;
+                line-height: 46px;
+                margin-top: 30px;
+                font-size: 16px;
+            }
+
+            .itemBox .itemTitle a {
+                top: 20px;
+            }
+
+            .safeTip {
+                width: 488px;
+                text-align: center;
+                background: #fff
+            }
+
+            .jgimg {
+                padding: 49px 0 20px 0
+            }
+
+            .decp {
+                text-align: center;
+                font-size: 14px
+            }
+
+            .decp p {
+                line-height: 24px;
+                color: #333
+            }
+
+            .decp p:first-child {
+                color: #ea2323;
+            }
+
+            .yzChoose {
+                width: 458px;
+                margin: 35px auto
+            }
+
+            .yzChoose a {
+                display: inline-block;
+                width: 143px;
+                height: 36px;
+                border: 1px solid #efefef;
+                color: #666666;
+                font-size: 14px;
+                background: #fafafa;
+                position: relative;
+                padding: 16px 11px 16px 68px;
+                line-height: 36px
+            }
+
+            .yzChoose a:hover {
+                border: 1px solid #f6e4be;
+                color: #ff4b33;
+            }
+
+            .yzChoose .imgicon {
+                display: inline-block;
+                width: 36px;
+                height: 36px;
+                vertical-align: middle;
+                background: url(/resources/img/yzchoose.png) no-repeat center;
+                position: absolute;
+            }
+
+            .yzChoose .img-google1 {
+                background-position: -46px 0;
+                top: 16px;
+                left: 20px
+            }
+
+            .yzChoose .img-phone {
+                background-position: -92px 0;
+                top: 16px;
+                left: 30px
+            }
+
+            .yzChoose a:hover .img-google1 {
+                background-position: 0 0;
+                top: 16px;
+                left: 20px
+            }
+
+            .yzChoose a:hover .img-phone {
+                background-position: -131px 0;
+                top: 16px;
+                left: 30px
+            }
+
+            .btphone p {
+                font-size: 14px;
+                color: #666;
+                text-align: left;
+            }
+
+            /* .btphone h3{font-size: 14px;color: #666;text-align: left;padding-bottom: 3px}   */
+            .yzChoose a:hover h3 {
+                color: #ff4b33;
+            }
+
+            .yzChoose a:hover p {
+                color: #ff4b33
+            }
+
+            .btgoogle {
+                margin-right: 10px;
+                float: left;
+            }
+
+            .btgoogle p {
+                font-size: 14px;
+                line-height: 36px;
+                text-align: left;
+            }
+
+            .smalltip {
+                text-align: right;
+                font-size: 12px;
+                color: #666;
+                padding-bottom: 28px
+            }
+
+            .smalltip span {
+                padding-right: 15px
+            }
+
+            .alert {
+                margin: 15px auto 0;
+                color: #f00;
+                font-size: 12px;
+                background: rgba(255,75,51,0.1);
+                border: 1px solid #f8ebcf;
+                height: 40px;
+                line-height: 40px;
+                padding-left: 18px;
+                padding: 0 0 0 18px;
+                position: relative;
+                cursor: pointer;
+            }
+
+            .alert .iconfont {
+                position: absolute;
+                width: 40px;
+                height: 40px;
+                top: 0;
+                right: 10px;
+                text-align: right;
+                line-height: 40px;
+                font-size: 20px;
+            }
+
+            .showContent {
+                height: auto;
+                overflow: hidden;
+                border-left: 1px solid #f8ebcf;
+                border-right: 1px solid #f8ebcf;
+                border-bottom: 1px solid #f8ebcf;
+                padding: 15px 20px 10px 20px;
+                font-size: 12px;
+                color: #454545;
+                display: none;
+            }
+
+            .showContent ul {
+                padding-bottom: 5px;
+            }
+
+            .showContent ul li {
+                height: 30px;
+                line-height: 30px;
+                background: url("https://resource.binance.com/resources/img/safetyIcons.png") no-repeat;
+                background-size: 1.8% auto;
+                padding-left: 40px;
+            }
+
+            .showContent ul li img {
+                vertical-align: middle;
+            }
+
+            .showContent ul li span.binanceUrl {
+                margin: -3px 10px 0;
+                display: inline-block;
+                width: 170px;
+                height: 23px;
+                line-height: 23px;
+                background: url(/resources/img/home_bg.png) no-repeat center;
+                padding-left: 38px;
+                box-sizing: border-box;
+                vertical-align: middle;
+            }
+
+            .showContent ul li.showico1 {
+                background-position: left -2px;
+            }
+
+            .showContent ul li.showico2 {
+                background-position: left -40px;
+            }
+
+            .showContent ul li.showico3 {
+                background-position: left -74px;
+            }
+
+            .showContent ul li.showico4 {
+                background-position: left -108px;
+            }
+
+            .showContent ul li.showico5 {
+                background-position: left -143px;
+            }
+
+            .showContent p {
+                border-top: 1px solid #f0f0f0;
+                padding-top: 12px;
+            }
+
+            .showContent p a {
+                color: #ff4b33;
+            }
+
+            .showContent p a:hover {
+                text-decoration: underline;
+            }
+        </style>
+        <div class="myAccount itemBox ng-scope" ng-controller="safeCtrl">
+            <div class="alert ng-binding" id="showText" ng-bind="lang.seest.tip">
+
+            </div>
+            <div class="basicInfo f-cb">
+                <div class="f-fl left">
+                    <i class="iconfont" style="font-size: 50px;margin-top: 23px;color: #999;">&#xe617;</i>
+                </div>
+                <div class="f-fl right">
+                    <div class="account ng-binding" >
+                       \{{user.email_num}}
+                    </div>
+                    <div class="loginInfo ng-binding">\{{lang.lastlogin}}： \{{lastLogin.fcreateTime | date : 'yyyy-MM-dd HH:mm:ss'}}
+                        &nbsp;&nbsp;&nbsp;&nbsp;IP：
+                        \{{lastLogin.fkey3}}
+                    </div>
+                </div>
+            </div>
+            <div class="SecurityCenter f-cb">
+                <div class="f-fl">
+                    <div class="panel account-panel">
+                        <div class="panel-title ng-binding" ng-bind="lang.passwordVerify"></div>
+                        <div class="panel-body">
+                            <div class="item">
+                                <span class="iconfont">&#xe615;</span>
+                                <h4 class="ng-binding" ng-bind="lang.passwordVerify"> </h4>
+                                <p class="ng-binding" ng-bind="lang.useforlogin"></p>
+                                <a href="/account/password" class="btn ng-binding" ng-bind="lang.change"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel account-panel">
+                        <div class="panel-title ng-binding" ng-bind="authVerify"></div>
+                        <div class="panel-body">
+                            <div class="item">
+                                <span class="iconfont">&#xe694;</span>
+                                <h4 class="ng-binding" ng-bind="lang.authVerify"></h4>
+                                <p class="ng-binding" ng-bind="lang.useforwith"></p>
+                                {% if user.auth then %}
+                                <a href="/account/auth" class="btn ng-binding" ng-bind="lang.js.account.goSee"></a>
+                                {% else %}
+                                <a href="/account/auth" class="btn ng-binding" ng-bind="lang.goo.a4"></a>
+                                {% end %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel account-panel">
+                        <div class="panel-title ng-binding" ng-bind="lang.goo.goo"></div>
+                        <div class="panel-body">
+                            <div class="item">
+                                <span class="iconfont">&#xe8ff;</span>
+                                <h4 class="ng-binding" ng-bind="lang.goo.goo"></h4>
+                                <p class="ng-binding" ng-bind="lang.goo.a1"></p>
+                                {% if user.googleBind then %}
+                                <a href="/account/google" class="btn ng-binding ng-scope" ng-bind="lang.goo.a2"></a>
+                                {% else %}
+                                <a href="/account/google" class="btn ng-binding ng-scope" ng-bind="lang.goo.a3"></a>
+                                {% end %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="f-fr">
+                    <div class="panel account-panel">
+                        <div class="panel-title ng-binding" ng-bind="lang.safewordVerify"></div>
+                        <div class="panel-body">
+                            <div class="item">
+                                <span class="iconfont">&#xe684;</span>
+                                <h4 class="ng-binding" ng-bind="lang.safewordVerify"></h4>
+                                <p class="ng-binding" ng-bind="lang.usefortrade"></p>
+                                {% if user.safeword then %}
+                                <a href="/account/safeword" class="btn ng-binding" ng-bind="lang.change"></a>
+                                {% else %}
+                                <a href="/account/safeword" class="btn ng-binding" ng-bind="lang.add"></a>
+                                {% end %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel account-panel">
+                        <div class="panel-title ng-binding" ng-bind="lang.deepAuthVerify"></div>
+                        <div class="panel-body">
+                            <div class="item">
+                                <span class="iconfont">&#xe6ca;</span>
+                                <h4 class="ng-binding" ng-bind="lang.deepAuthVerify"></h4>
+                                <p class="ng-binding" ng-bind="lang.useforwith"></p>
+                                {% if user.authDeepPost or user.authDeep then %}
+                                <a href="/account/auth-deep" class="btn ng-binding" ng-bind="lang.js.account.goSee"></a>
+                                {% else %}
+                                {% if user.auth then %}
+                                <a href="/account/auth-deep" class="btn ng-binding" ng-bind="lang.goo.a4"></a>
+                                {% else %}
+                                <a href="javascript:error_win(lang.goo.a5)" class="btn ng-binding" ng-bind="lang.goo.a4"></a>
+                                {% end %}
+                                {% end %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="itemTitle ng-binding" ng-bind="lang.recentLogin"></div>
+            <table class="table table-striped">
+                <colgroup style="width:150px;"></colgroup>
+                <colgroup></colgroup>
+                <colgroup style="width:150px;"></colgroup>
+                <tbody>
+                <tr>
+                    <th class="ng-binding" ng-bind="lang.logindate"></th>
+                    <th class="ng-binding" ng-bind="lang.loginip"></th>
+                    <th width="30%" class="ng-binding" ng-bind="lang.loginaddress"></th>
+                </tr>
+                <tr  class="ng-scope" ng-repeat="row in loginIp">
+                    <td class="ng-binding" ng-bind="row.fcreateTime | date : 'yyyy-MM-dd HH:mm:ss'"></td>
+                    <td class="ng-binding" ng-bind="row.fkey3"></td>
+                    <td width="30%" class="ng-binding" ng-bind="row.fkey4"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+{(tpl/common/footer.html)}
+<script src="{+resources+}/dist/js/account/safe.js?v={{version}}"></script>
+</body>
+</html>

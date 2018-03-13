@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" ng-app = "app" ng-controller="Ctrl">
+{%
+local ck = require "resty.cookie"
+local cookie, err = ck:new()
+if not cookie then
+ngx.log(ngx.ERR, err)
+return
+end
+local lang, err = cookie:get("lang")
+if not lang then
+lang="cn"
+local param = { key = "lang", value = lang, path = '/', max_age = 60 * 60 * 24 * 365 }
+cookie:set(param)
+end
+
+--lang="cn"
+--local param = { key = "lang", value = lang, path = '/', max_age = 60 * 60 * 24 * 365 }
+--cookie:set(param)
+
+context.lang = lang
+context.otherLang = lang == "en" and "cn" or "en"
+%}
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="shortcut icon" type="image/x-icon" href="//theme.zdassets.com/theme_assets/2061195/110a43ce02fdf6edcef375a46a29b4e488bfe5bb.png" />
+    <link rel="stylesheet" type="text/css" href="{+resources+}/dist/css/news_list.css">
+    <link rel="stylesheet" type="text/css" href="{+resources+}/dist/css/common/reset.css">
+    <link rel="stylesheet" type="text/css" href="{+resources+}/dist/css/nance//global.css">
+    <link rel="stylesheet" type="text/css" href="{+resources+}/dist/css/nance//trade.css">
+    <link rel="stylesheet" type="text/css" href="{+resources+}/dist/css/common/style.css">
+    <script src="{+resources+}/dist/js/angular.min.js"></script>
+    <style>
+        .header {
+          max-width:4000px;
+        }
+
+        .container {
+            height: 48px;
+        }
+
+        .nav-wrapper >.user-nav {
+            height: 48px;
+        }
+
+      .nav-wrapper>   div.footer-language-selector {
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="">
+{(tpl/common/news_header.html)}
+<main role="main" style="height: 800px;" ng-controller="newsDetailCtrl">
+    <div class="container-divider"></div>
+    <div class="container">
+        <nav class="sub-nav">
+            <ol class="breadcrumbs">
+                <li title="Bibox">
+                    <a href="/news" target="_self">Bilaxy</a>
+                </li>
+                <li title="\title{{}}">
+                    <a href="/news/all?type=\{{detail.type}}" ng-bind="title" target="_self"></a>
+                </li>
+            </ol>
+            <form role="search" class="search"  action="/news/search" accept-charset="UTF-8" method="get">
+                <input type="search" name="keyWord"  placeholder="\{{lang.search}}" autofocus="autofocus"  />
+            </form>
+        </nav>
+
+        <div class="article-container" id="article-container">
+            <section class="article-sidebar">
+                <section class="section-articles collapsible-sidebar">
+                    <h3 class="collapsible-sidebar-title sidenav-title" ng-bind="lang.newss.other"></h3>
+                    <ul>
+                        <li ng-repeat="item in items">
+                            {% if lang == 'cn' then %}
+                            <a href="/news/detail?id=\{{item.id}}" target="_self"  ng-class="\{{item.id}} == id ? 'sidenav-item current-article' : 'sidenav-item'" ng-bind="item.title"></a>
+                            {% else %}
+                            <a href="/news/detail?id=\{{item.id}}" target="_self"  ng-class="\{{item.id}} == id ? 'sidenav-item current-article' : 'sidenav-item'" ng-bind="item.enTitle"></a>
+                            {% end %}
+                        </li>
+                    </ul>
+                    <a href="/news/all?type=\{{detail.type}}" class="article-sidebar-item" target="_self" ng-bind="lang.newss.more"></a>
+
+                </section>
+            </section>
+            <article class="article">
+                <header class="article-header">
+                    {% if lang == 'cn' then %}
+                    <h1  class="article-title" ng-bind="detail.title"></h1>
+                    {% else %}
+                    <h1  class="article-title" ng-bind="detail.enTitle"></h1>
+                    {% end %}
+                    <div class="article-author">
+                        <div class="avatar article-avatar">
+                            <span class="icon-agent"></span>
+                            <img src="{+resources+}/dist/images/header.jpg"  class="user-avatar"/>
+                        </div>
+                        <div class="article-meta">
+                            Bilaxy
+                            <ul class="meta-group">
+                                <li class="meta-data"><time ng-bind="detail.createTime | date:'yyyy-MM-dd HH:mm:ss '"></time></li>
+                                <li class="meta-data" ng-bind="lang.newss.update"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </header>
+                <section class="article-info">
+                    {% if lang == 'cn' then %}
+                    <div class="article-content" ng-bind="detail.content"></div>
+                    {% else %}
+                    <div class="article-content" ng-bind="detail.enContent"></div>
+                    {% end %}
+                </section>
+            </article>
+        </div>
+    </div>
+</main>
+{(tpl/common/footer.html)}
+<script src="{+resources+}/dist/js/news/newsDetail.js?v={{version}}"></script>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<html  class="ng-scope" ng-app="app" ng-controller="Ctrl">
+<head>
+    {(tpl/common/include.html)}
+    <title>{{param[lang..'_title']}}</title>
+    <style>
+        body, html {
+            height: 100%;
+        }
+
+        body {
+            padding-bottom: 0;
+        }
+
+        .verifyLayout {
+            box-sizing: border-box;
+            height: 100%;
+            min-height: 608px;
+            min-width: 870px;
+            background: #f7f7f7;
+            padding-bottom: 82px;
+            position: relative;
+        }
+
+        .verifyLayout .main {
+            width: 518px;
+            padding: 30px 30px 40px;
+            background: #fff;
+            position: absolute;
+            left: 50%;
+            top: 55%;
+            text-align: center;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            margin-top: -41px;
+        }
+
+        .verifyLayout .main .logo {
+            display: inline-block;
+            height: 64px;
+        }
+
+        .verifyLayout .main .icon-logo {
+            margin-bottom: 24px;
+            height: 40px;
+        }
+
+        .verifyLayout .main .messageBox {
+            margin: 0 auto 10px;
+        }
+
+        .verifyLayout .main .alert {
+            width: 100%;
+            text-align: left;
+            box-sizing: border-box;
+            background: none;
+            font-size: 12px;
+            white-space: nowrap;
+            padding: 0;
+            line-height: 100%;
+            margin-top: 44px;
+        }
+
+        .verifyBottom {
+            padding: 15px 0;
+            text-align: center;
+            width: 100%;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            background: #f7f7f7
+        }
+
+        .verifyBottom .item {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .verifyBottom .item.lang span {
+            cursor: pointer;
+        }
+
+        .verifyBottom .item.lang span.black {
+            color: #333;
+        }
+
+        .verifyBottom .item.lang a, .verifyBottom .item.lang a:visited {
+            color: #999;
+        }
+
+        .verifyBottom .item.lang a:hover {
+            color: #333;
+        }
+    </style>
+    <style>
+        .layui-layer-msg {
+            width: auto !important;
+        }
+
+        .importantInfo {
+            margin-top: 24px;
+            text-align: center;
+            width: 100%;
+            position: relative;
+            padding-top: 22px;
+            margin-bottom:25px;
+
+        }
+
+        .importantInfo p {
+            font-size: 12px;
+            color: #333;
+            line-height: 100%;
+            margin-left: -4px;
+            white-space: nowrap;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            -moz-transform: translateX(-50%);
+            -o-transform: translateX(-50%);
+            transform: translateX(-50%);
+        }
+
+        .importantInfo p .iconfont {
+            font-size: 16px;
+            color: #ff0000;
+            vertical-align: text-top;
+        }
+
+        /* .verifyLayout .main {
+             height: 370px;
+         }*/
+    </style>
+
+<body style="">
+<!-- 主体内容 -->
+<div class="verifyLayout ng-scope" >
+    <div class="main">
+        <style>
+            .btn.btn-grey {
+                line-height: 44px;
+                background: #f3f3f3;
+                color: #666;
+                font-size: 14px;
+            }
+        </style>
+        <div  class="ng-scope">
+
+            <div class="f-prz formWrapLR">
+                <form class="loginReg-form ng-valid ng-dirty" id="login-form">
+                    <h3 class="LRtitle"><span class="ng-binding" ng-bind="lang.login + 'BILAXY'"></span></h3>
+                    <div class="importantInfo">
+                        <p class="ng-binding"><i class="iconfont" style="color:#3bc451; line-height:20px;">&#xe6e8;</i>
+                            <span ng-bind="lang.con"></span>
+                            <strong>https://www.bilaxy.com</strong></p>
+                    </div>
+
+
+                    <div class="filed">
+                        <i class="iconfont">&#xe60b;</i>
+                        <input type="email" name="email" placeholder="邮箱" ng-model="loginParams.email" id="name"
+                               class="ipt fillemail ng-valid ng-valid-email ng-dirty" datatype="e" errormsg="无效的邮箱地址"
+                               nullmsg="该字段不能为空">
+                    </div>
+
+                    <div class="filed">
+                        <i class="iconfont">&#xe623;</i>
+                        <input type="password" placeholder="密码"  id="pwd"
+                               class="ipt pwd ng-pristine ng-valid" datatype="*" >
+                    </div>
+                    <div class="filed" style="display: none" id="code_area">
+                        <i class="iconfont" style="font-size:16px;">&#xe6e8;</i>
+
+                        <input id="code" style="width:214px;" type="text" id="code" placeholder="验证码"
+                               class="ipt pwd ng-pristine ng-valid"  >
+                        <span class="code_btn" id="code_btn" ng-bind="lang.send"></span>
+                    </div>
+
+                    <div class="filed">
+                        <input type="submit" value="\{{lang.login}}" id="login-btn"  class="confirm btn btn-orange btn-block ">
+                    </div>
+
+                    <div class="filde">
+                        <p class="login-tip f-cb">
+                            <a href="/user/forget" class="yellow f-fl ng-binding" style="float: left" ng-bind="lang.forget"></a>
+                            <a href="/" class="yellow f-fl ng-binding" style="float: right" ng-bind="lang.backhome "></a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="verifyBottom">
+        <div class="item">{{param[lang..'_copyRight']}}</div>
+    </div>
+</div>
+{(tpl/common/script.html)}
+<script src="{+resources+}/dist/js/login.js?v={{version}}"></script>
+</body>
+</html>

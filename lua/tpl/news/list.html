@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<html dir="ltr" lang="zh-CN">
+{%
+local ck = require "resty.cookie"
+local cookie, err = ck:new()
+if not cookie then
+ngx.log(ngx.ERR, err)
+return
+end
+local lang, err = cookie:get("lang")
+if not lang then
+lang="cn"
+local param = { key = "lang", value = lang, path = '/', max_age = 60 * 60 * 24 * 365 }
+cookie:set(param)
+end
+
+--lang="cn"
+--local param = { key = "lang", value = lang, path = '/', max_age = 60 * 60 * 24 * 365 }
+--cookie:set(param)
+
+context.lang = lang
+context.otherLang = lang == "en" and "cn" or "en"
+%}
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="{{param[lang..'_desc']}}"/>
+<meta name="keywords" content="{{param[lang..'_keywords']}}"/>
+<link rel="shortcut icon" href="/favicon.ico?v=1.0.0">
+<title>{{param[lang..'_title']}}</title>
+<link rel="stylesheet" media="all"
+      href="{+resources+}/dist/css/news.css" id="stylesheet">
+<link rel="stylesheet" type="text/css"
+      href="{+resources+}/dist/css/news_list.css">
+
+</head>
+<body class="">
+
+{(tpl/common/news_header.html)}
+
+<main role="main">
+    <div class="container-divider"></div>
+    <div class="container">
+        <nav class="sub-nav">
+            <ol class="breadcrumbs">
+
+                <li title="Bibox">
+
+                    <a href="/hc/zh-cn">Bibox</a>
+
+                </li>
+
+                <li title="公告">
+
+                    公告
+
+                </li>
+
+            </ol>
+
+            <form role="search" class="search" data-search="" action="/hc/zh-cn/search" accept-charset="UTF-8"
+                  method="get"><input name="utf8" type="hidden" value="✓"><input type="search" name="query" id="query"
+                                                                                 placeholder="搜索" aria-label="搜索">
+            </form>
+        </nav>
+
+        <div class="category-container">
+            <div class="category-content">
+                <header class="page-header">
+                    <h1>公告</h1>
+
+                </header>
+
+                <div class="section-tree">
+
+                    <section class="section">
+                        <h3 class="section-tree-title">
+                            <a href="/hc/zh-cn/sections/115000986074-%E5%85%AC%E5%91%8A">公告</a>
+
+                        </h3>
+
+                        <ul class="article-list">
+
+                            <li class="article-list-item">
+
+                                <a href="/hc/zh-cn/articles/360001280594--%E5%85%AC%E5%91%8A-%E5%85%B3%E4%BA%8E%E5%BC%80%E6%94%BEArcBlock-ABT-%E4%BA%A4%E6%98%93%E7%9A%84%E5%85%AC%E5%91%8A"
+                                   class="article-list-link">【公告】关于开放ArcBlock (ABT)交易的公告</a>
+                            </li>
+
+                            <li class="article-list-item">
+
+                                <a href="/hc/zh-cn/articles/360001235674--%E5%85%AC%E5%91%8A-%E5%85%B3%E4%BA%8E%E5%BC%80%E6%94%BEKickCoin-KICK-%E4%BA%A4%E6%98%93%E7%9A%84%E5%85%AC%E5%91%8A"
+                                   class="article-list-link">【公告】关于开放KickCoin (KICK)交易的公告</a>
+                            </li>
+
+                            <li class="article-list-item">
+
+                                <a href="/hc/zh-cn/articles/360001175974--%E5%85%AC%E5%91%8A-%E5%85%B3%E4%BA%8E%E5%BC%80%E6%94%BEU-Network-UUU-%E4%BA%A4%E6%98%93%E7%9A%84%E5%85%AC%E5%91%8A"
+                                   class="article-list-link">【公告】关于开放U Network (UUU)交易的公告</a>
+                            </li>
+
+                            <li class="article-list-item">
+
+                                <a href="/hc/zh-cn/articles/360000958153--%E5%85%AC%E5%91%8A-%E8%87%B4Bibox%E7%9B%92%E7%B2%89%E7%9A%84%E4%B8%80%E5%B0%81%E4%BF%A1"
+                                   class="article-list-link">【公告】致Bibox盒粉的一封信</a>
+                            </li>
+
+                            <li class="article-list-item">
+
+                                <a href="/hc/zh-cn/articles/360000841833--%E5%85%AC%E5%91%8A-%E5%85%B3%E4%BA%8E%E5%BC%80%E6%94%BE%E6%B3%A2%E5%9C%BATron-TRX-%E4%BA%A4%E6%98%93%E7%9A%84%E5%85%AC%E5%91%8A"
+                                   class="article-list-link">【公告】关于开放波场Tron (TRX)交易的公告</a>
+                            </li>
+
+                            <li class="article-list-item">
+
+                                <a href="/hc/zh-cn/articles/360000841453--%E5%85%AC%E5%91%8A-%E5%85%B3%E4%BA%8E%E5%BC%80%E6%94%BEFusion-FSN-%E4%BA%A4%E6%98%93%E7%9A%84%E5%85%AC%E5%91%8A"
+                                   class="article-list-link">【公告】关于开放Fusion (FSN)交易的公告</a>
+                            </li>
+
+                        </ul>
+
+                        <a href="/hc/zh-cn/sections/115000986074-%E5%85%AC%E5%91%8A" class="see-all-articles">
+                            查看所有 55 篇文章
+                        </a>
+
+
+                    </section>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer class="footer">
+    <div class="footer-inner">
+        <a title="主页" href="/hc/zh-cn">Bibox</a>
+
+
+    </div>
+</footer>
+</body>
+</html>

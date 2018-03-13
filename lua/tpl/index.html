@@ -1,0 +1,362 @@
+<!DOCTYPE HTML>
+<html ng-app="app" ng-controller="Ctrl">
+<head>
+    {(tpl/common/include.html)}
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{{param[lang..'_desc']}}"/>
+    <meta name="keywords" content="{{param[lang..'_keywords']}}"/>
+    <link rel="shortcut icon" href="/favicon.ico?v=1.0.0">
+    <title>{{param[lang..'_title']}}</title>
+    <style>.body-mark {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        text-align: center;
+        display: none;
+        background: #f8f8fb;
+    }
+
+    .main{
+        padding-bottom:0px;
+    }
+
+    span, td {
+        color: #666;
+    }
+
+    .body-mark.show {
+        display: block;
+    }
+
+    .loading {
+        width: 60px;
+        height: 40px;
+        position: absolute;
+        top: 40%;
+        transform: translate(-50%, -50%);
+    }
+
+    .login-register > .ng-binding {
+        color: #bcbcbc;
+    }
+
+    .login-register > .ng-binding:hover {
+        color: #fff;
+    }
+
+    .home-banner {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 18% !important;
+    }
+
+    .home-banner > .banner-notice_ {
+        line-height: 21px;
+        font-size: 14px;
+        color: #bcbcbc;
+    }
+
+    .home-banner > .banner-notice_ > a:hover {
+        color: #fff;
+    }
+
+    .home-banner > .banner-notice_ > a {
+        color: #bcbcbc;
+    }
+
+    .home-banner > .banner-notice_ > i {
+    / / color: #c2daff;
+        color: #bcbcbc;
+
+    }
+
+    #select.home-market .table-header-tab {
+        height: 30px;
+    }
+
+    #select.home-market {
+        background-color: #252525 !important;
+        padding: 40px 0 80px;
+        min-height: 500px;
+    }
+
+    #select.home-market .table-header-tab > span {
+        padding: 0 15px;
+        color: #bcbcbc;
+        font-size: 14px;
+        line-height: 30px;
+    }
+
+    #select.home-market .table-header-tab > span.active {
+        color: #fff;
+        font-weight: normal;
+        background-color: #ff4b33;
+    }
+
+    #select.home-market .item:hover {
+        color: #fff;
+        background-color: #ff4b33;
+    }
+
+    #select table.home-table thead.ts-12 {
+        background-color: #252525;
+    }
+
+    #select .home-table-header {
+        border-bottom:0px;
+        position: relative;
+    }
+
+
+    #select .home-table-header .table-header-input {
+        position: absolute;
+
+        top: -8px;
+        right: 0;
+    }
+
+    #select .home-table-header .table-header-input input {
+        border-color: #666;
+    }
+
+    .table-header-tab > span {
+        height: 100%;
+    }
+
+    input[type=text]:not(.input-error):hover {
+        border-style: solid;
+        border-color: #a0a0a0 !important;
+    }
+
+    #select table.home-table tbody tr:nth-child(even) {
+        background-color: #252525;
+    }
+
+    #select table.home-table tbody tr:nth-child(odd) {
+        background-color: #191919;
+    }
+
+    #select table.home-table .no-data {
+        padding: 40px 0 10px;
+        font-size: 14px;
+    }
+
+    a[title="Email"]:hover {
+        color: #fff;
+    }
+
+    #search-input:focus,#search-input:active{
+        border-width:0px 0px 1px;
+        outline: none
+    }
+    a.button {
+        background-color: #ff4b33;
+    }
+
+   .hero-body a.trade-now-button {
+        background-color: #ff4b33;
+        color: #fff;
+    }
+    </style>
+    <link href="{+resources+}/dist/css/index.css" rel="stylesheet">
+    <link href="{+resources+}/dist/css/banner.css" rel="stylesheet">
+</head>
+<body>
+
+{(tpl/common/header.html)}
+<div data-v-15f70906="" id="app" class="body font-family-zh" ng-controller="indexController">
+    <div data-v-15f70906="">
+        <div class="main min-w" style="background-color: #262626;">
+            <main data-v-e893afaa="" class="min-w" style="line-height: 1.5;">
+                <section class="hero hero-main">
+                    <div class="content-wrap">
+                        <div class="hero-body">
+                            <div class="columns">
+                                <div class="column is-12-mobile is-6-tablet is-5-desktop hero-content">
+                                    <div style="width:300px;position:relative;">
+                                        <img src="{+resources+}/dist/images/logo.png" alt="R">
+                                        <h2 style="position:absolute; bottom: -5px;left: 90px;font-size:38px;" ng-bind="lang.an.t6"></h2>
+                                    </div>
+                                    <h2 style="font-size:38px;" ng-bind="lang.an.t5"></h2>
+                                    <p ng-bind="lang.an.t4"></p>
+                                    <a class="button is-primary trade-now-button" style="color:#fff;" href="/exchange" target="_blank" style="background-color: #ff4b33; color:white;" ng-bind="lang.trade_now"></a>
+                                </div>
+                                <div class="is-6-tablet is-7-desktop">
+                                    <img src="{+resources+}/dist/images/banner.png" class="hero-background-image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div data-v-e893afaa="" class="home-banner">
+                    <span class="text-center banner-notice_" ng-repeat="a in articles">
+                        <!--<i class="iconfont">&#xe61d;</i>-->
+                        {% if lang == 'cn' then %}
+                        <a  target="_blank" href="/news/detail?id=\{{a.id}}" class="notice-a" ng-bind="a.title"></a>
+                        {% else %}
+                        <a  target="_blank" href="/news/detail?id=\{{a.id}}" class="notice-a" ng-bind="a.enTitle"></a>
+                        {% end %}
+                    </span>
+                </div>
+                <div data-v-e893afaa="" class="home-market" id="select">
+                    <div data-v-e893afaa="" class="max-w">
+                        <div data-v-e893afaa="">
+                            <div data-v-e893afaa="" class="home-table-header">
+                                <div data-v-e893afaa="" class="table-header-tab ts-16 color-666">
+                                    <span data-v-e893afaa="" class="item mg-r20" id="self"
+                                          ng-mouseenter="setMarketBySelf($event)" ng-bind="lang.my"></span>
+                                    <span data-v-e893afaa="" data-ng-repeat="market in markets" class="item mg-r20"
+                                          ng-class="selectedMarket == market ? 'active' : ''"
+                                          data-ng-mouseenter="setMarket($event,market)" ng-bind="market + lang.area"></span>
+                                </div>
+                                <div data-v-e893afaa="" class="table-header-input">
+                                    <div data-v-40fb2a9f="" data-v-e893afaa="" class="ts-14 newInput"
+                                         style="width: 200px;">
+                                        <div data-v-40fb2a9f="" class="box-input-box">
+                                            <span data-v-40fb2a9f="" class="box-input_prefix pd-l8"><div
+                                                    data-v-e893afaa="" data-v-40fb2a9f=""
+                                                    class="icon-my-search color-grey"></div>
+                                            </span> <span data-v-40fb2a9f="" class="box-input_suffix pd-r8"
+                                                          style="z-index: 1;"></span>
+                                            <!----> <input data-v-40fb2a9f="" type="text" id="searchInput"
+                                                           ng-keyup="search()"
+                                                           class="box-input_input input__input_style js_input input_small box-input_input-undefined"
+                                                          id="search-input" style="padding-left: 8px; padding-right: 30px; color:#aaa;outline: 0; border-width:0px 0px 1px">
+                                        </div>
+                                        <div data-v-40fb2a9f="" class="box-input_err text-left ts-12"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table data-v-e893afaa="" border="0" cellspacing="0" cellpadding="0"
+                                   class="text-right home-table">
+                                <colgroup data-v-e893afaa="">
+                                    <col data-v-e893afaa="" width="48">
+                                    <col data-v-e893afaa="" width="180">
+                                    <col data-v-e893afaa="" width="200">
+                                    <col data-v-e893afaa="" width="198">
+                                    <col data-v-e893afaa="" width="188">
+                                    <col data-v-e893afaa="" width="188">
+                                    <col data-v-e893afaa="" width="100">
+                                    <col data-v-e893afaa="" width="30">
+                                </colgroup>
+                                <thead data-v-e893afaa="" class="ts-12">
+                                <tr data-v-e893afaa="" class="home-th">
+                                    <th data-v-e893afaa="" class="H text-left"></th>
+                                    <th data-v-e893afaa="" class="H text-left link-hover"
+                                        ng-click="orderByClick('fname_sn')"><span
+                                            data-v-e893afaa="" ng-bind="lang.market"></span>
+                                        <span data-v-0b1c0182="" data-v-e893afaa="" class="box-icon-sort box-icon-sort_Light"><i
+                                            data-v-0b1c0182="" class="icon-my-sort-up"></i>
+                                            <i data-v-0b1c0182=""  class="icon-my-sort-down"></i></span>
+                                    </th>
+                                    <th data-v-e893afaa="" class="H text-left link-hover"
+                                        ng-click="orderByClick('lastDealPrize')">
+                                        <span data-v-e893afaa="" ng-bind="lang.latest"></span>
+                                        <span data-v-0b1c0182="" data-v-e893afaa=""
+                                              class="box-icon-sort box-icon-sort_Light">
+                                            <i data-v-0b1c0182="" class="icon-my-sort-up"></i>
+                                            <i data-v-0b1c0182="" class="icon-my-sort-down"></i>
+                                        </span>
+                                    </th>
+                                    <th data-v-e893afaa="" class="H link-hover" ng-click="orderByClick('fupanddown')">
+                                        <span data-v-e893afaa="" ng-bind="lang.shake"></span>
+                                        <span data-v-0b1c0182="" data-v-e893afaa=""
+                                              class="box-icon-sort box-icon-sort_Light">
+                                            <i data-v-0b1c0182="" class="icon-my-sort-up"></i>
+                                            <i data-v-0b1c0182="" class="icon-my-sort-down"></i>
+                                        </span>
+                                    </th>
+                                    <th data-v-e893afaa="" class="H link-hover"
+                                        ng-click="orderByClick('highestPrize24')">
+                                        <span data-v-e893afaa="" ng-bind="lang.highest"></span>
+                                        <span data-v-0b1c0182="" data-v-e893afaa=""
+                                              class="box-icon-sort box-icon-sort_Light">
+                                            <i data-v-0b1c0182="" class="icon-my-sort-up"></i>
+                                            <i data-v-0b1c0182="" class="icon-my-sort-down"></i>
+                                        </span>
+                                    </th>
+                                    <th data-v-e893afaa="" class="H link-hover"
+                                        ng-click="orderByClick('lowestPrize24')">
+                                        <span data-v-e893afaa="" ng-bind="lang.lowest"></span>
+                                        <span data-v-0b1c0182="" data-v-e893afaa=""
+                                              class="box-icon-sort box-icon-sort_Light">
+                                            <i data-v-0b1c0182="" class="icon-my-sort-up"></i>
+                                            <i data-v-0b1c0182="" class="icon-my-sort-down"></i>
+                                        </span>
+                                    </th>
+                                    <th data-v-e893afaa="" class="text-right H link-hover" ng-click="orderByClick('volumn')"><span
+                                            data-v-e893afaa="" ng-bind="lang.dealVol"></span>
+                                        <span data-v-0b1c0182="" data-v-e893afaa=""
+                                              class="box-icon-sort box-icon-sort_Light">
+                                            <i data-v-0b1c0182="" class="icon-my-sort-up"></i>
+                                            <i data-v-0b1c0182="" class="icon-my-sort-down"></i>
+                                        </span>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div data-v-e893afaa="" class="js_table-box">
+                            <table id="table" data-v-e893afaa="" border="0" cellspacing="0" cellpadding="0"
+                                   class="text-right home-table">
+                                <colgroup data-v-e893afaa="">
+                                    <col data-v-e893afaa="" width="48">
+                                    <col data-v-e893afaa="" width="180">
+                                    <col data-v-e893afaa="" width="200">
+                                    <col data-v-e893afaa="" width="198">
+                                    <col data-v-e893afaa="" width="188">
+                                    <col data-v-e893afaa="" width="188">
+                                    <col data-v-e893afaa="" width="100">
+                                    <col data-v-e893afaa="" width="30">
+                                </colgroup>
+                                <tbody data-v-e893afaa="" class="ts-14">
+                                <tr data-v-e893afaa="" class="home-td color-333 ng-hide" ng-show="tickers.length > 0"
+                                    ng-repeat="ticker in tickers | orderBy : oderField :isDesc "
+                                    data-ng-click="setPair(ticker)"
+                                    ng-class="ticker.fid == selectedPair.fid ? 'market-active':''">
+                                    <td data-id="\{{ticker.fid}}" data-v-e893afaa="" class="D collect-hover text-center ts-18"
+                                        ng-click="selfSelect(ticker.fid)">
+                                        <i data-v-e893afaa="" class="icon-my-no-collect"
+                                           ng-class="ticker.self == '1' ? 'color-theme' : ''"></i>
+                                    </td>
+                                    <td data-v-e893afaa="" class="D text-left" ng-click="trade(ticker.fid)">
+                                        <span data-v-e893afaa="" ng-bind="ticker.fname_sn"></span>
+                                    </td>
+                                    <td data-v-e893afaa="" class="D text-left" ng-click="trade(ticker.fid)">
+                                        <span data-v-e893afaa="" ng-bind="ticker.lastDealPrize | currency:'':8"></span>
+                                        <!-- <span data-v-e893afaa="" class="color-minor"> / 4.62CNY</span>-->
+                                    </td>
+                                    <td data-v-e893afaa="" class="D text-left " ng-click="trade(ticker.fid)"
+                                        ng-class="ticker.fupanddown > 0 ? 'color-rose' : 'color-fall'" ng-bind="\{{ticker.fupanddown || 0 | currency:'':2}} + '%'">
+                                    </td>
+                                    <td data-v-e893afaa="" class="D" ng-click="trade(ticker.fid)" ng-bind="ticker.highestPrize24"></span></td>
+                                    <td data-v-e893afaa="" class="D" ng-click="trade(ticker.fid)" ng-bind="ticker.lowestPrize24"></td>
+                                    <td data-v-e893afaa="" class="D text-right" ng-click="trade(ticker.fid)" style="padding-right:8px;">
+                                        <span data-v-e893afaa="" ng-bind="ticker.volumn"></span>
+                                        <span data-v-e893afaa="" class="color-minor" ng-bind="ticker.fShortName"></span>
+                                    </td>
+                                    <td ng-click="trade(ticker.fid)"></td>
+                                </tr>
+
+                                <tr data-v-e893afaa="" class="ng-hide" ng-show="tickers && 0 == tickers.length">
+                                    <td data-v-e893afaa="" colspan="9" class="text-center no-data ts-24" ng-bind="lang.noRecord"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        {(tpl/common/footer.html)}
+    </div>
+</div>
+<div class="body-mark js_loading"><img class="loading" src="https://www.bibox.com/static/loading.gif"></div>
+<script src="{+resources+}/dist/js/index.js?v={+versoion+}"></script>
+</body>
+</html>

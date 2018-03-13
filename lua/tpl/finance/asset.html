@@ -1,0 +1,317 @@
+<!DOCTYPE HTML>
+<html ng-app="app" class="ng-scope" ng-controller="Ctrl">
+<head>
+    {(tpl/common/include.html)}
+    <title>{{param[lang..'_title']}}</title>
+    <link rel="stylesheet" href="{+resources+}/dist/css/nance/depositWithdrawal.css">
+</head>
+<body style="" class="ng-scope">
+
+<div  class="ng-scope">
+    {(tpl/common/header.html)}
+</div>
+<div class="wrap" >
+    <div class="container">
+        <style>
+            .balance_search {
+                height: 50px;
+                line-height: 50px;
+                font-size: 14px;
+                color: #666;
+                font-family: Arial;
+
+            }
+
+            .balance_search > div:nth-child(2) {
+                width: 169px;
+                height: 50px;
+                margin-left: 30px;
+            }
+
+            .balance_search > div:nth-child(2) label {
+                cursor: pointer;
+            }
+
+            .balance_search > div:nth-child(2) label:hover {
+                color: #ff4b33;
+            }
+
+            .balance_search > div:nth-child(2) > input {
+                vertical-align: middle;
+                margin-top: -1px;
+                cursor: pointer;
+            }
+
+            .balance_search .search_input {
+                position: relative;
+            }
+
+            .search_input > i {
+                position: absolute;
+                left: 2px;
+                top: 1px;
+                color: #999;
+                font-size: 16px;
+
+            }
+
+            .balance_search .search_input > input {
+                width: 120px;
+                height: 24px;
+                line-height: 24px;
+                text-indent: 25px;
+                border: 1px solid #d4d4d4;
+
+            }
+
+            .balance_search .toolTip {
+                cursor: pointer;
+                position: relative;
+                font-size: 14px;
+                color: #666;
+            }
+
+            .balance_search .toolTip > div {
+                display: none;
+                font-size: 13px;
+                color: #333;
+                position: absolute;
+                top: 24px;
+                left: 50%;
+                background: #fff;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+                padding: 10px;
+                -webkit-transform: translateX(-50%);
+                -moz-transform: translateX(-50%);
+                -o-transform: translateX(-50%);
+                -ms-transform: translateX(-50%);
+                transform: translateX(-50%);
+                min-width: 140px;
+                word-break: break-word;
+                line-height: 18px;
+                text-align: center;
+            }
+
+            .decp p {
+                line-height: 24px;
+                color: #333
+            }
+
+            .decp p:first-child {
+                color: #ea2323;
+            }
+
+            .smalltip {
+                text-align: right;
+                font-size: 12px;
+                color: #666;
+                padding-bottom: 28px
+            }
+
+            .smalltip span {
+                padding-right: 15px
+            }
+
+            .alert {
+                margin: 15px auto 0px;
+                color: #f00;
+                font-size: 12px;
+                background: rgba(255,75,51,0.1);
+                border: 1px solid #f8ebcf;
+                height: 40px;
+                line-height: 40px;
+                padding-left: 18px;
+                padding: 0 0 0 18px;
+                position: relative;
+                cursor: pointer;
+            }
+
+            .alert .iconfont {
+                position: absolute;
+                width: 40px;
+                height: 40px;
+                top: 0;
+                right: 10px;
+                text-align: right;
+                line-height: 40px;
+                font-size: 20px;
+            }
+
+            .showContent {
+                height: auto;
+                overflow: hidden;
+                border-left: 1px solid #f8ebcf;
+                border-right: 1px solid #f8ebcf;
+                border-bottom: 1px solid #f8ebcf;
+                padding: 15px 20px 10px 20px;
+                font-size: 12px;
+                color: #454545;
+                display: none;
+            }
+
+            .showContent ul {
+                padding-bottom: 5px;
+            }
+
+            .showContent ul li {
+                height: 30px;
+                line-height: 30px;
+                background: url("https://resource.binance.com/resources/img/safetyIcons.png") no-repeat;
+                background-size: 1.8% auto;
+                padding-left: 40px;
+            }
+
+            .showContent ul li img {
+                vertical-align: middle;
+            }
+
+
+
+            .showContent ul li.showico1 {
+                background-position: left -2px;
+            }
+
+            .showContent ul li.showico2 {
+                background-position: left -40px;
+            }
+
+            .showContent ul li.showico3 {
+                background-position: left -74px;
+            }
+
+            .showContent ul li.showico4 {
+                background-position: left -108px;
+            }
+
+            .showContent ul li.showico5 {
+                background-position: left -143px;
+            }
+
+            .showContent p {
+                border-top: 1px solid #f0f0f0;
+                padding-top: 12px;
+            }
+
+            .showContent p a {
+                color: #ff4b33;
+            }
+
+            .showContent p a:hover {
+                text-decoration: underline;
+            }
+
+            .tradeSymbol {
+                position: absolute;
+                z-index: 999;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+                padding: 0 10px;
+                border: 1px solid #f0f0f0;
+                background: #fff;
+                display: none;
+            }
+
+            .tradeSymbol ul li {
+                height: 30px;
+                line-height: 30px;
+                border-bottom: 1px solid #f0f0f0;
+                color: #666;
+                font-size: 12px;
+                text-align: center;
+                cursor: pointer;
+            }
+
+            .tradeSymbol ul li:hover {
+                color: #ff4b33;
+            }
+
+            .tradeSymbol .noSymbols {
+                font-size: 12px;
+                color: #666;
+                line-height: 30px;
+            }
+
+            .chargeWithdraw-title {
+                margin-top: 6px;
+            }
+        </style>
+        <div class="chargeWithdraw ng-scope" ng-controller="assetController">
+            <div class="alert ng-binding" id="showText" ng-bind="lang.seest.tip">
+
+            </div>
+            <div class="chargeWithdraw-title f-cb">
+                <h3 class="ng-binding" >
+                    <span ng-bind="lang.recharge"></span>
+                    <span ng-if="cur_lang!='es'" class="ng-scope">&amp;</span>
+                    <span ng-bind="lang.withdraw"></span>
+                </h3>
+            </div>
+
+            <div class="balance_search f-cb">
+                <div class="search_input f-fl">
+
+                    <input type="text" ng-keyup="search($event)" class="ng-pristine ng-valid">
+                    <i class="iconfont icon-sousuo"></i>
+                </div>
+                <div class="f-fl">
+                    <input type="checkbox" ng-model="hideAccount"   class="ng-pristine ng-valid" >
+                    <label class="ng-binding" ng-bind="lang.hidden">
+                    </label>
+                </div>
+            </div>
+            <!--结束筛选  -->
+            <ul class="accountInfo-lists">
+                <li class="th">
+                    <div class="items f-cb">
+                        <div class="coin ng-binding" ng-click="sortByKey('asset')" ng-bind="lang.coin">
+                        </div>
+                        <div class="fullName ng-binding" ng-click="sortByKey('assetName')" ng-bind="lang.seest.name">
+                        </div>
+                        <div class="total f-right ng-binding" ng-click="sortByKey('total')" ng-bind="lang.entrustTotal">
+                        </div>
+                        <div class="useable f-right ng-binding" ng-click="sortByKey('free')" ng-bind=" lang.js.payout.total">
+                        </div>
+                        <div class="locked f-right ng-binding" ng-click="sortByKey('locked')" ng-bind=" lang.js.payout.frozen">
+                        </div>
+                        <div class="action f-right"></div>
+                    </div>
+                </li>
+                <li class="td ng-scope ng-hide"  ng-show="balances.length > 0" ng-repeat="wallet in balances | filter: func ">
+                    <div class="items f-cb">
+                        <div class="coin ng-binding">
+                            <img  src="\{{wallet.url}}" ><span ng-bind="wallet.name"></span>
+                        </div>
+                        <div class="fullName" ng-bind="wallet.allName">
+                        </div>
+                        <div class="useable f-right ng-binding" ng-bind="wallet.total*1 + wallet.frozen*1"></div>
+                        <div class="locked f-right ng-binding" ng-bind="wallet.total"></div>
+                        <div class="equalValue f-right ng-binding" ng-bind="wallet.frozen"></div>
+                        <div class="action f-right">
+                            <a  href="/finance/payin?id=\{{wallet.id}}"  class="btn btn-deposit ng-binding ng-scope" ng-bind="lang.recharge"></a>
+                            <a href="/finance/payout?id=\{{wallet.id}}"  class="btn btn-withdraw ng-binding ng-scope" ng-bind="lang.withdraw"></a>
+                            <span class="btn trade-btn ng-binding" ng-click="goExchange(wallet.name)" ng-bind="lang.goExchange"></span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- 当前币种交易市场 -->
+            <div class="tradeSymbol" id="tradeSymbol" ng-mouseleave="resetSymbols()">
+                <ul>
+                </ul>
+                <div class="noSymbols ng-binding ng-scope" ng-if="!assetSymbols.length">
+                    暂无交易市场
+                </div>
+            </div>
+
+            <div ng-hide="init_load">
+                {(tpl/common/pending.html)}
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{+resources+}/dist/js/finance/asset.js?v={+versoion+}"></script>
+
+    {(tpl/common/footer.html)}
+
+</body>
+</html>

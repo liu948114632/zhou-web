@@ -1,0 +1,29 @@
+<div class="footer-wrapper">
+    <div class="footer">
+        <div class="footerTWrap">
+            <div class="container">
+                <div class="footerT">
+                    <div class="footerTL">
+                        <ul class="clear">
+                            <li><a href="{{param['article_intro']}}" class="ng-binding" ng-bind="lang.footer.coin"></a></li>
+                            <li><a href="{{param['article_apply']}}" class="ng-binding" ng-bind="lang.footer.apply"></a></li>
+                            <li><a href="{{param['article_help']}}" class="ng-binding" ng-bind="lang.help"></a></li>
+                            <li><a href="{{param['article_faq']}}" class="ng-binding" ng-bind="lang.footer.faq"></a></li>
+                        </ul>
+                        <p class="footer_script">{{param[lang..'_copyRight']}}</p>
+                    </div>
+                    <div class="footerTR f-cb">
+                        <ul class="f-fr f-cb clear">
+                            <li><a href="#" title="Telegram" target="_blank"><i class="iconfont">&#xe715;</i></a></li>
+                            <li><a href="#" title="Twitter" target="_blank"><i class="iconfont">&#xe6ee;</i></a></li>
+                        </ul>
+                        <p class="footer-email"><a href="mailto:{{param['email']}}" title="Email" target="_blank"><span ng-bind="lang.contact"></span>{{param['email']}}</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<a href="javascript:void(0)" id="to_mobile" class="dn" ng-bind="lang.to_mobile"></a>
+<div id="tm_yy" ></div>
+{(tpl/common/script.html)}

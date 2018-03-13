@@ -1,0 +1,53 @@
+<header class="header" ng-controller="Ctrl">
+    <div class="container">
+        <!--<div class="logo">-->
+            <!--<a href="https://www.bibox.com">-->
+                <!--<img src="//theme.zdassets.com/theme_assets/2061195/441b5cf780ff73120720f4fd15b85b26125e9964.png">-->
+            <!--</a>-->
+        <!--</div>-->
+        <a href="/" class="logo"><img src="{+cdn+}{{param['logo']}}"></a>
+        <div class="nav-wrapper">
+            <span class="icon-menu"></span>
+            <nav class="user-nav" id="user-nav">
+                <a class="submit-a-request" href="/" target="_self" ng-bind="lang.header.HOME">
+                </a>
+                <a class="submit-a-request" href="/news" target="_self" ng-bind="lang.header.announce">
+                </a>
+                <a class="submit-a-request" href="/support" target="_self" ng-bind="lang.newss.subask">
+
+                </a>
+                <a class="submit-a-request" href="/support/mine" target="_self" ng-bind="lang.newss.myask">
+                </a>
+            </nav>
+            <div class="user_info" id="newslogin">
+                <a href="/user/login" class="exp" target="_self" ng-bind="lang.login">
+
+                </a>
+            </div>
+            <div class="user_info" id="newsinfo" style="display: none">
+                <a class="link" href="/account/safe" target="_self">
+                    <span class="ng-binding" id="M_userName"></span>
+                </a>
+            </div>
+
+            <div >
+                <div  aria-haspopup="true">
+                    {% if lang == 'en' then %}
+                    <a class="dropdown-toggle" data-lang="cn" ng-bind="lang.chinese">
+                    </a>
+                    {% else %}
+                    <a class="dropdown-toggle" data-lang="en">
+                        English
+                    </a>
+                    {% end %}
+                    <!--<span class="dropdown-menu dropdown-menu-end" role="menu">-->
+                      <!--<a class="exp" data-lang="en">-->
+                        <!--English-->
+                      <!--</a>-->
+                    <!--</span>-->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</header>

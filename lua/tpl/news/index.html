@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html dir="ltr" lang="zh-CN" ng-app="app" ng-controller="Ctrl">
+{%
+local ck = require "resty.cookie"
+local cookie, err = ck:new()
+if not cookie then
+ngx.log(ngx.ERR, err)
+return
+end
+local lang, err = cookie:get("lang")
+if not lang then
+lang="cn"
+local param = { key = "lang", value = lang, path = '/', max_age = 60 * 60 * 24 * 365 }
+cookie:set(param)
+end
+
+--lang="cn"
+--local param = { key = "lang", value = lang, path = '/', max_age = 60 * 60 * 24 * 365 }
+--cookie:set(param)
+
+context.lang = lang
+context.otherLang = lang == "en" and "cn" or "en"
+%}
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="{{param[lang..'_desc']}}"/>
+<meta name="keywords" content="{{param[lang..'_keywords']}}"/>
+<link rel="shortcut icon" href="/favicon.ico?v=1.0.0">
+<title>{{param[lang..'_title']}}</title>
+<link rel="stylesheet" media="all"
+      href="{+resources+}/dist/css/news.css" id="stylesheet">
+<link rel="stylesheet" type="text/css" href="{+resources+}/dist/css/common/reset.css">
+<link rel="stylesheet" type="text/css" href="{+resources+}/dist/css/nance//global.css">
+<link rel="stylesheet" type="text/css" href="{+resources+}/dist/css/nance//trade.css">
+<link rel="stylesheet" type="text/css" href="{+resources+}/dist/css/news_list.css">
+<link rel="stylesheet" type="text/css" href="{+resources+}/dist/css/common/style.css">
+
+<script src="{+resources+}/dist/js/angular.min.js"></script>
+
+<style>
+    body {
+        width: 100%;
+    }
+
+    .header > .container {
+        width: 1200px !important;
+        max-width: none;
+        height: 48px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .header > .container > .nav-wrapper {
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .section .blocks-list > .blocks-item {
+        border: 1px solid #f00;
+
+    }
+
+    .section .blocks-list > .blocks-item .blocks-item-title {
+        color: #424242;
+    }
+
+    .section .blocks-list > .blocks-item > a:hover >h4  {
+       // background-color: #f00;
+        color: #fff;
+    }
+
+</style>
+
+</head>
+<body class="">
+{(tpl/common/news_header.html)}
+<main role="main" ng-controller="newsIndexCtrl">
+    <section class="section hero">
+        <div class="hero-inner">
+            <form role="search" class="search search-full" action="/news/search" accept-charset="UTF-8" method="get">
+                <input type="search" name="keyWord" placeholder="\{{lang.search}}" autocomplete="off">
+            </form>
+        </div>
+    </section>
+    <div class="container">
+        <section class="section knowledge-base">
+            <section class="categories blocks">
+                <ul class="blocks-list">
+                    <li class="blocks-item">
+                        <a href="/news/all?type=1" class="blocks-item-link">
+                            <h4 class="blocks-item-title" ng-bind="lang.newss.announce"></h4>
+                            <p class="blocks-item-description"></p>
+                        </a>
+                    </li>
+                    <li class="blocks-item">
+                        <a href="/news/all?type=4" class="blocks-item-link">
+                            <h4 class="blocks-item-title" ng-bind="lang.newss.help"></h4>
+                            <p class="blocks-item-description"></p>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </section>
+        <section class="section activity">
+            <div>
+                <div class="recent-activity"><h2 class="recent-activity-header" ng-bind="lang.newss.lastest"></h2>
+                    <ul class="recent-activity-list" style="">
+                        <li class="recent-activity-item" data-recent-activity-action="article_created"
+                            ng-repeat="news in allNews">
+                            {% if lang == 'cn' then %}
+                            <a class="recent-activity-item-parent" href="/news/detail?id=\{{news.id}}" ng-bind="news.title"></a>
+                            {% else %}
+                            <a class="recent-activity-item-parent" href="/news/detail?id=\{{news.id}}" ng-bind="news.enTitle"></a>
+                            {% end %}
+                            <div class="recent-activity-item-meta">
+                                <div class="recent-activity-item-time"
+                                     ng-bind="news.createTime | date:'yyyy-MM-dd HH:mm:ss' "></div>
+                                <!--<div class="recent-activity-item-comment"><span>0</span></div>-->
+                            </div>
+                        </li>
+
+                    </ul>
+                    <div class="recent-activity-no-activities" style="display: none;"></div>
+                    <div class="recent-activity-loader" style="display: none;">...</div>
+                    <div class="recent-activity-controls" style=""><a href="/news/all?type=1" ng-bind="lang.newss.more"></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</main>
+{(tpl/common/footer.html)}
+
+<script src="{+resources+}/dist/js/news/index.js?v={{version}}"></script>
+
+</body>
+</html>

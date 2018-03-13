@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html ng-app="app" ng-controller="Ctrl">
+<head>
+    {(tpl/common/include.html)}
+    <title>{{param[lang..'_title']}}</title>
+<body>
+<div class="bk-body">
+    {(tpl/common/header.html)}
+    <div class="bk-safe">
+        <div class="container">
+            <div class="safe-rd">
+                <div class="fill_right account_newscenter" id="msg-list">
+                    <div class="news_operation f12">
+                        <a href="javascript:void(0)" data-url="/v1/account/delMessage" id="delete_news" ng-bind="lang.delete"></a>
+                        <a href="javascript:void(0)" data-url="/v1/account/markMessage" id="flag_all" ng-bind="lang.mark"></a>
+                    </div>
+                    <div class="content">
+                        <div class="Tenbody">
+                            <table id="news">
+                                <tr style="border-bottom: 1px solid gray;">
+                                    <th width="50" id="selectAll">
+                                        <i class="iconfont">&#xe615;</i>
+                                    </th>
+                                    <th width="80" ng-bind="lang.status"></th>
+                                    <th width="240" ng-bind="lang.title"></th>
+                                    <th width="150" ng-bind="lang.time"></th>
+                                </tr>
+                                <tbody id="content">
+                                <tr>
+                                    <td colspan="4">
+                                        {(tpl/common/pending.html)}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="page"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {(tpl/common/footer.html)}
+    <script src="{+resources+}/dist/js/jquery/jquery.pagination.js?v=1.0.0"></script>
+    <script src="{+resources+}/dist/js/account/message.js?v={{version}}"></script>
+</div>
+</body>
+</html>

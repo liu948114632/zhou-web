@@ -1,0 +1,493 @@
+<html ng-app="app" ng-controller="Ctrl" class="ng-scope">
+<head>
+    {(tpl/common/include.html)}
+    <title>{{param[lang..'_title']}}</title>
+</head>
+<body ng-controller="googleCtrl" style="" class="ng-scope">
+
+<div  class="ng-scope">
+    {(tpl/common/header.html)}
+</div>
+
+<!-- 主体内容 -->
+<div class="wrap account-tab">
+    <!-- ngIf: inviteStarted -->
+    <style>
+        body{background: #f7f7f7}
+        .wrap{background:#f7f7f7;min-width:1200px;}
+        .container{width:1200px;margin:0 auto;}
+        .midContainer{width:960px;margin:0 auto;background: #fff;}
+        .safetip {
+            width: 940px;
+            padding: 0 0 0 18px;
+            margin: 15px auto;
+            color: #f00;
+            font-size: 12px;
+            background: rgba(255,75,51,0.1);
+            border: 1px solid #f8ebcf;
+            height: 40px;
+            line-height: 40px;
+        }
+
+        .safetitle {
+            font-size: 16px;
+            line-height: 20px;
+            color: #454545;
+            padding: 13px 0 13px 18px;
+            border-bottom: 1px solid #efefef;
+        }
+
+        .safecontent {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .safecontent form{ padding: 0 35px;
+            margin: 60px auto;
+            width: 587px;
+        }
+        .safecontent form label{font-size:14px;color:#666;display:block;line-height:32px;margin-bottom:12px;display: inline-block;    width: 190px;text-align: right;}
+        .safecontent form input{vertical-align:top;display:inline-block;height:32px;border:1px solid #d4d4d4;width:270px;box-sizing:border-box;padding:0 10px;color:#333;}
+
+        .safecontent form .ipt-code{width:195px;}
+        .safecontent form .btn{border-radius:0!important;padding:10px 0;width:150px;text-align:center;}
+
+    </style>
+    <div class="container">
+        <style>
+            body {
+                background: #f7f7f7
+            }
+
+            .wrap {
+                background: #f7f7f7;
+                min-width: 1200px;
+            }
+
+            .container {
+                width: 1200px;
+                margin: 0 auto;
+            }
+
+            .midContainer {
+                width: 960px;
+                margin: 15px auto;
+                background: #fff;
+            }
+
+            .safetitle {
+                font-size: 16px;
+                line-height: 20px;
+                color: #454545;
+                padding: 13px 18px 13px 2px;
+                height: auto;
+                overflow: hidden;
+                background: #f7f7f7;
+            }
+
+            .safecontent {
+                color: #666;
+                font-size: 14px;
+                height: 560px;
+                border: 1px solid #e6e6e6;
+                margin-top: -1px;
+            }
+
+            .steps {
+                background: #f7f7f7;
+                height: 34px
+            }
+
+            .steps li a {
+                display: inline-block;
+                width: 239px;
+                background: #fff;
+                border: 1px solid #e6e6e6;
+                float: left;
+                font-size: 14px;
+                color: #333;
+                text-align: center;
+                padding: 7px 0;
+                margin-right: 1px
+            }
+
+            .first-step {
+                width: 800px;
+                margin: 0 auto;
+                border-bottom: 1px solid #e6e6e6;
+                position: relative;
+                padding: 58px 0 0 98px
+            }
+
+            .first-step h4 {
+                font-size: 14px;
+                color: #333;
+                font-weight: normal;
+                line-height: 20px;
+                margin-bottom: 30px
+            }
+
+            .stepNum {
+                position: absolute;
+                top: 50px;
+                left: 0;
+                font-size:20px;
+                color:#333;
+            }
+
+            .second-step {
+                width: 800px;
+                margin: 0 auto;
+                border-bottom: 1px solid #e6e6e6;
+                position: relative;
+                padding: 50px 0 50px 98px
+            }
+
+            .second-step h4 {
+                font-size: 14px;
+                color: #333;
+                font-weight: normal;
+                line-height: 20px;
+                margin-bottom: 30px
+            }
+
+
+
+            .third-step h4 {
+                font-size: 14px;
+                color: #333;
+                font-weight: normal;
+                line-height: 20px;
+                margin-bottom: 30px
+            }
+
+
+            .third-step {
+                width: 800px;
+                margin: 0 auto;
+                border-bottom: 1px solid #e6e6e6;
+                position: relative;
+                padding: 50px 0 50px 98px
+            }
+
+            .fourth-step {
+                width: 800px;
+                margin: 0 auto;
+                border-bottom: 1px solid #e6e6e6;
+                position: relative;
+                padding: 50px 0 50px 98px
+            }
+
+            .fourth-step h4 {
+                font-size: 14px;
+                color: #333;
+                font-weight: normal;
+                line-height: 20px;
+                margin-bottom: 30px
+            }
+
+
+
+            .downloads {
+                margin-bottom: 58px
+            }
+
+            .option1, .option2, .option3, .option4 {
+                width: 800px;
+                margin: 23px auto 0;
+                height: 34px;
+                line-height: 34px
+            }
+
+            .option1 span, .option2 span, .option3 span {
+                margin-right: 20px
+            }
+
+            .icon-googleAuthen {
+                display: inline-block;
+                width: 154px;
+                height: 54px;
+                background: url("{{resources}}/dist/images/googleAuthen_downloads.png") no-repeat;
+            }
+
+            .icon-googleAuthen-ios {
+                background-position: 3px 2px;
+            }
+
+            .icon-googleAuthen-play {
+                background-position: -159px 2px;
+            }
+
+            .icon-googleAuthen-adr {
+                background-position: -321px 2px;
+            }
+
+            .next-step {
+                display: block;
+                width: 119px;
+                height: 34px;
+                text-align: center;
+                color: #fff;
+                background: #ff4b33;
+                line-height: 34px;
+            }
+
+            .prev-step {
+                color: #333;
+                font-size: 14px
+            }
+
+            .enable {
+                display: block;
+                width: 220px;
+                height: 34px;
+                text-align: center;
+                color: #fff;
+                background: #ff4b33;
+                line-height: 34px;
+            }
+
+            .cur {
+                background: #ff4b33 !important;
+                color: #fff !important;
+                border: 1px solid #ff4b33 !important
+            }
+
+            .code {
+                width: 169px;
+                border: 1px solid #e6e6e6;
+                height: 169px;
+                display: inline-block;
+            }
+
+            .code p {
+                /*padding: 5px 11px 0 11px;*/
+                font-size: 12px;
+                line-height: 16px;
+                color: #333;text-align: center;
+            }
+
+            .ewmu {
+                width: 115px;
+                height: 115px;
+                margin: 9px auto 0 auto;
+            }
+
+            .key canvas{width:190px;height:40px;}
+
+            .secretkey {
+                float: right;
+                display: inline-block;
+                width: 300px;
+                margin: 40px 195px 0 0
+            }
+
+            .secretkey .key {
+                font-weight: bold;
+                font-size: 14px;
+                color: #333;
+                width: 190px;
+                height: 40px;
+                line-height: 40px;
+                background: #f7f7f7;
+                text-align: center;
+                margin-bottom: 10px
+            }
+
+            .secretkey p {
+                font-size: 14px;
+                color: #333;
+                line-height: 20px
+            }
+            .secretkey .scret-tab{
+                height:40px;
+                line-height: 40px;
+                text-align: center;
+                width: 180px;
+                background: #ccc;
+                margin-bottom: 20px;
+            }
+
+            .backupkey {
+                float: right;
+                display: inline-block;
+                width: 450px;
+                margin-top: 20px
+            }
+
+            .backupkey p {
+                font-size: 14px;
+                color: #333;
+                line-height: 20px
+            }
+
+            .keepkey {
+                width: 235px;
+                height: 147px;
+                display: inline-block;
+                background: url("{{resources}}/dist/images/keepkey.jpg");
+            }
+
+            .keepkey canvas{
+                width: 235px;
+                height: 147px;
+            }
+
+            .keepkey p {
+                color: #333;
+                font-size: 14px;
+                font-weight: bold;
+                width: 190px;
+                text-align: center;
+                margin-top: 56px
+            }
+
+            .faCode input {
+                width: 281px;
+                height: 30px;
+                border: 1px solid #d4d4d4;
+                border-radius: 0px;
+                box-sizing: border-box;
+                padding: 0 10px;
+                color: #333;
+                vertical-align: middle;
+            }
+
+            .faCode label {
+                width: 190px;
+                text-align: right;
+                display: inline-table;
+                font-size: 14px;
+                font-weight: normal;
+            }
+
+            .faCode p {
+                padding-left: 194px
+            }
+        </style>
+        {% if googleBind then %}
+        <div class="safetitle ng-binding">解除谷歌验证</div>
+        <div class="safecontent">
+
+            <form id="unbind-form" class="ng-pristine ng-valid" >
+                <div class="filed">
+                    <label class="ng-binding" >登录密码: </label>
+                    <input id="unbind-pwd" ng-model="google.password" type="password" >
+                </div>
+                <div class="filed">
+                    <label class="ng-binding">谷歌验证码: </label>
+                    <input name="verifyCode" ng-model="google.code" type="text" >
+                </div>
+
+                <div class="filed">
+                    <label></label>
+                    <span class="btn btn-orange ng-binding" ng-click="unbind()">确定</span>
+                </div>
+            </form>
+        </div>
+        {% else %}
+        <div class="container midContainer ng-scope">
+            <div class="safetitle">
+                <span class="pull-left ng-binding" ng-bind="lang.goo.enablegool"></span>
+            </div>
+            <ul class="steps">
+                <li ng-click="setstep(0)"><a ng-class="{'cur':tabs[0]}" class="ng-binding cur" ng-bind="lang.goo.downapp"></a></li>
+                <li ng-click="setstep(1)"><a ng-class="{'cur':tabs[1]}" class="ng-binding" ng-bind="lang.goo.saomiao"></a></li>
+                <li ng-click="setstep(2)"><a ng-class="{'cur':tabs[2]}" class="ng-binding" ng-bind="lang.goo.beifen"></a></li>
+                <li ng-click="setstep(3)"><a ng-class="{'cur':tabs[3]}" style="width: 240px;margin-right: 0" class="ng-binding" ng-bind="lang.goo.kaiqi"></a></li>
+            </ul>
+            <div class="safecontent">
+                <div class="first ng-hide" ng-show="tabs[0]">
+                    <div class="first-step">
+                        <span class="stepNum ng-binding" ng-cloak=""> \{{lang.goo.step}}①</span>
+                        <h4 class="ng-binding" ng-bind="lang.goo.downand"></h4>
+                        <div class="item-body downloads ">
+                            <a class="f-fl" href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8" target="_blank"><i style="margin-bottom: 5px" class="icon-googleAuthen icon-googleAuthen-ios"></i></a>
+                            <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank"><i class="icon-googleAuthen icon-googleAuthen-play"></i></a>
+                        </div>
+
+                    </div>
+                    <div class="option1"><a ng-click="setstep(1)" class="f-fr next-step ng-binding" ng-cloak="">\{{lang.goo.next}} &gt;</a><span class="f-fr ng-binding" ng-bind="lang.goo.havedown"></span></div>
+
+                </div>
+
+                <div class="second ng-hide" ng-show="tabs[1]">
+                    <div class="second-step">
+                        <span class="stepNum ng-binding" ng-cloak="">\{{step}} ②</span>
+                        <div class="code">
+                            <div class="ewmu" id="qrcode-google"></div>
+                            <p class="ng-binding" ng-bind="lang.goo.t1" style="padding-top: -1px"></p>
+                        </div>
+                        <div class="secretkey">
+                            <div class="scret-tab" ng-bind="google.secret">
+
+                            </div>
+                            <p class="ng-binding" ng-bind="lang.goo.t2"></p>
+                        </div>
+
+
+                    </div>
+                    <div class="option2"><a ng-click="setstep(0)" class="f-fl prev-step ng-binding" ng-cloak="">&lt; \{{lang.goo.t3}}</a><a ng-click="setstep(2)" class="f-fr next-step ng-binding" ng-cloak="">\{{lang.goo.next}} &gt;</a><span class="f-fr ng-binding" ng-bind="lang.goo.t4"></span></div>
+
+                </div>
+
+
+                <div class="third ng-hide" ng-show="tabs[2]">
+                    <div class="third-step">
+                        <span class="stepNum ng-binding" ng-cloak="">\{{lang.goo.step}} ③</span>
+                        <div class="keepkey" >
+                            <span ng-bind="google.secret" style="margin-top: 57px;text-align: center;display: block;width: 190px;"></span>
+                        </div>
+                        <div class="backupkey">
+                            <p class="ng-binding" ng-bind="lang.goo.t5"></p>
+                            <p style="color: #ff0000;margin-top: 15px" class="ng-binding" ng-bind="lang.goo.t6"></p>
+                        </div>
+
+
+                    </div>
+                    <div class="option3"><a ng-click="setstep(1)" class="f-fl prev-step ng-binding" ng-cloak="">&lt; \{{lang.goo.t3}}</a><a ng-click="setstep(3)" class="f-fr next-step ng-binding" ng-cloak="">\{{lang.goo.next}} &gt;</a><span class="f-fr ng-binding" ng-bind="lang.goo.t7"></span></div>
+
+                </div>
+                <div class="fourth ng-hide" ng-show="tabs[3]">
+                    <div class="fourth-step">
+                        <span class="stepNum ng-binding" ng-cloak="">\{{lang.goo.step}} ④</span>
+                        <form autocomplete="off" class="ng-pristine ng-valid" style="margin-right: 116px!important;">
+                            <div class="item-body">
+                                <div class="faCode">
+                                    <label class="item-title ng-binding" ng-bind="lang.goo.t8"> </label>
+                                    <input id="miyao" type="text" autocomplete="off" ng-model="google.secretinput" >
+                                </div>
+                            </div>
+                            <div class="item-body">
+                                <div class="faCode">
+                                    <label class="item-title ng-binding" ng-bind="lang.goo.t9"> </label>
+                                    <input id="pwd" type="text" name="password" autocomplete="off" ng-model="google.password">
+                                </div>
+                            </div>
+                            <div class="item-body">
+                                <div class="faCode">
+                                    <label style="color:#262d33;" class="ng-binding" ng-bind="lang.goo.t10"></label>
+                                    <input ng-model="google.emailcode"  type="text" name="smsVerifyCode" datatype="*" style="width:155px" >
+                                    <span data-cate="inner" id="yzm-btn"  class="code_btn btn-yellow ng-binding" ng-bind="lang.send"></span>
+                                </div>
+                            </div>
+                            <div class="item-body">
+                                <div class="faCode">
+                                    <label class="item-title ng-binding" ng-bind="lang.goo.t11"></label>
+                                    <input type="text" name="verifyCode" ng-model="google.code" >
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="option4"><a ng-click="setstep(2)" class="f-fl prev-step ng-binding" ng-cloak="">&lt; \{{lang.goo.t3}}</a><a ng-click="clicksubmit()" class="f-fr enable ng-binding" ng-bind="lang.goo.enablegool"></a></div>
+                </div>
+            </div>
+
+        </div>
+        {% end %}
+    </div>
+</div>
+{(tpl/common/footer.html)}
+<script src="{+resources+}/dist/js/jquery/jquery.qrcode.js"></script>
+<script src="{+resources+}/dist/js/account/google.js?v={+versoion+}"></script>
+</body></html>

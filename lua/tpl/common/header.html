@@ -1,0 +1,81 @@
+<div class="header">
+
+    <!--<a href="/" class="logo"></a>-->
+        <!--<img ng-src="https://resource.binance.com/resources/img/logo-cn.svg"-->
+                                  <!--src="https://resource.binance.com/resources/img/logo-cn.svg">-->
+        <!--<span></span>-->
+
+
+    <a href="/" class="logo"><img src="{+cdn+}{{param['logo']}}"></a>
+
+    <div class="f-fr">
+        <div class="languages" ng-mouseover="showFlags=true;" ng-mouseout="showFlags=false;">
+
+            <span class="font-lang ng-scope" >
+                {% if lang == 'cn' then %}
+                <span ng-bind="lang.chinese"></span>
+                {% else %}
+                English
+                {% end %}
+            </span>
+
+            <ul ng-show="showFlags" class="ng-hide">
+                <li ng-click="switching('en')" data-lang ="en"  class="languagenew">English</li>
+                <li ng-click="switching('cn')"  data-lang = "cn" class="languagenew" ng-bind="lang.chinese">
+                    <span class="duigou ng-scope" ng-bind="lang.chinese"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="login-register f-fr ng-scope dn" >
+        <a href="/user/login" target="_self" class="ng-binding" ng-bind="lang.login"></a>&nbsp;&nbsp;
+        <a href="/user/register" target="_self" class="ng-binding" ng-bind="lang.register"></a>&nbsp;&nbsp;
+    </div>
+    <div class="user-info logined f-fr ng-scope dn {{account}}" >
+            <span class="ng-binding" ng-bind="lang.header.ACCOUNT"></span><br>
+        <ul>
+            <li>
+                <a class="link" href="/account/safe" target="_self">
+                    <strong class="ng-binding" >ID:</strong>
+                    <span class="ng-binding" id="M_userName"></span>
+                </a>
+            </li>
+            <li>
+                <a class="link" href="/account/message" target="_self">
+                    <span class="ng-binding" ng-bind="lang.message"></span><br>
+                </a>
+            </li>
+            <li>
+                <a class="link ng-binding exit"  href="javascript:;" ng-bind="lang.header.Log_out">
+
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <ul class="main-nav" >
+        <li  class="ng-scope {{home}}">
+            <a href="/"  class="ng-binding " ng-bind="lang.header.HOME" target="_self"></a>
+        </li>
+        <li  class="ng-scope  {{exchange}}">
+            <a href="/exchange" class="ng-binding" ng-bind="lang.header.EXCHANGE" target="_self"></a>
+        </li>
+        <li  class="ng-scope  {{funds}}" id="M_account">
+            <a href="javascript:;"  class="ng-binding" ng-bind="lang.header.BALANCES" target="_self"></a>
+            <ul class="subNav">
+                <li><a href="/finance/asset" class="ng-binding" ng-bind="lang.asset" target="_self"></a></li>
+                <li><a href="/finance/payin" class="ng-binding" ng-bind="lang.recharge" target="_self"></a></li>
+                <li><a href="/finance/payout" class="ng-binding" ng-bind="lang.withdraw" target="_self"></a></li>
+            </ul>
+        </li>
+        <li  class="ng-scope {{orders}}" id="M_open">
+            <a href="javascript:;" class="ng-binding {{orders}}" ng-bind="lang.orders"></a>
+            <ul class="subNav">
+                <li><a href="/finance/open" class="ng-binding" ng-bind="lang.opneOrders" target="_self"></a></li>
+                <li><a href="/finance/bill" class="ng-binding" ng-bind="lang.orderHis" target="_self"></a></li>
+            </ul>
+        </li>
+
+        <li><a href="/news" target="_blank" class="ng-binding" ng-bind="lang.help" target="_self"></a></li>
+    </ul>
+</div>

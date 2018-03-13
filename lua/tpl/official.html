@@ -1,0 +1,493 @@
+<html class="cn" ng-app="app" ng-controller="gCtrl">
+<head>
+    {%
+    local ck = require "resty.cookie"
+    local cookie, err = ck:new()
+    if not cookie then
+    ngx.log(ngx.ERR, err)
+    return
+    end
+    local lang, err = cookie:get("lang")
+    if not lang then
+    lang="cn"
+    local param = { key = "lang", value = lang, path = '/', max_age = 60 * 60 * 24 * 365 }
+    cookie:set(param)
+    end
+    context.lang = lang
+    context.otherLang = lang == "en" and "cn" or "en"
+    %}
+    <title>K - line</title>
+    <script type="text/javascript">
+        var JsCommon = {
+            uon: "zuon",
+            uname: "zuname",
+            uid: "zuid",
+            aid: "zaid",
+            rid: "zrid",
+            vip: "zvip",
+            aname: "zaname",
+            note: "znote",
+            lan: "zlan",
+            other: "zother",
+            mainDomain: "https://www.zb.com",
+            vipDomain: "https://vip.zb.com",
+            p2pDomain: "https://p2p.zb.com",
+            transDomain: "https://trans.zb.com",
+            staticDomain: "https://s.zb.com"
+        };
+    </script>
+
+    <script type="text/javascript">
+        var GLOBAL = {},
+            VERSION = GLOBAL['VERSION'] = '1512559504497',
+            ZNAME = GLOBAL['ZNAME'] = '',
+            DOMAIN_BASE = GLOBAL['DOMAIN_BASE'] = '',
+            DOMAIN_MAIN = GLOBAL['DOMAIN_MAIN'] = '',
+            DOMAIN_VIP = GLOBAL['DOMAIN_VIP'] = '',
+            DOMAIN_STATIC = GLOBAL['DOMAIN_STATIC'] = '',
+            DOMAIN_P2P = GLOBAL['DOMAIN_P2P'] = '',
+            DOMAIN_TRANS = GLOBAL['DOMAIN_TRANS'] = '',
+            LANG = GLOBAL['LANG'] = 'cn',
+            UON = GLOBAL['UON'] = 'zuon',
+            UID = GLOBAL['UID'] = 'zuid',
+            AID = GLOBAL['AID'] = 'zaid',
+            RID = GLOBAL['RID'] = 'zrid',
+            VIP = GLOBAL['VIP'] = 'zvip',
+            UNAME = GLOBAL['UNAME'] = 'zuname',
+            ANAME = GLOBAL['ANAME'] = 'zaname',
+            NOTE = GLOBAL['NOTE'] = 'znote';
+    </script>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta name="revisit-after" content="1 days">
+    <link rel="stylesheet" type="text/css" href="{+resources+}/dist/css/kline/cnbtc2014.css">
+    <link rel="stylesheet" href="{+resources+}/dist/css/kline/module.base.css">
+    <link rel="stylesheet" href="{+resources+}/dist/css/kline/module.common.css">
+    <script src="{+resources+}/dist/js/kline/module.base.js" charset="UTF-8"></script>
+    <script src="{+resources+}/dist/js/kline/module.lang.js" charset="UTF-8"></script>
+    <script src="{+resources+}/dist/js/kline/sea.js" charset="UTF-8"></script>
+    <script src="{+resources+}/dist/js/kline/sea.config.js" charset="UTF-8"></script>
+    <link rel="stylesheet" href="{+resources+}/dist/css/common/reset.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//at.alicdn.com/t/font_j96emwpaovzehfr.css" rel="stylesheet">
+    <script type="text/javascript" src="{+resources+}/dist/js/angular.min.js"></script>
+    <script type="text/javascript" src="{+resources+}/dist/js/kline/webcommon.js" charset="UTF-8"></script>
+    <script src="{+resources+}/dist/js/kline/jquery.imgscroll.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+        if (JuaBox.isMobile()) {
+            document.writeln("<style type=\"text/css\">");
+            document.writeln(".container, .bk-nav.navbar, .bk-footer, .bk-body, .bg-login, .Jua-showTip {min-width: 980px !important;}  ");
+            document.writeln("</style>");
+        }
+    </script>
+    <link rel="stylesheet" href="{+resources+}/dist/css/kline/module.trans.css">
+    <style type="text/css">
+        body {
+            overflow-x: hidden;
+            overflow-y: hidden;
+            background-color: #1F1D1D !important;
+        }
+
+        .top-market-show {
+            line-height: 42px;
+        }
+
+        #topMenuPrice {
+            height: 42px;
+            width: 560px;
+        }
+
+        .down-market-table {
+            width: 754px;
+            background: rgba(255, 255, 255, 0.95);
+            top: 41px;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .down-market-table tr a.kline {
+            color: #6d7b82;
+            margin-left: 0px;
+        }
+
+        .down-market-table table td:nth-child(7), .down-market-table .d-head span:nth-child(7) {
+            width: 10%;
+        }
+
+        .down-market-table table td:nth-child(2), .down-market-table .d-head span:nth-child(2) {
+            width: 18%;
+        }
+
+        .down-market-table .d-hd {
+            margin-bottom: 0;
+        }
+
+        .down-market-table .d-hd a.on {
+            background: #e8e8e8;
+        }
+    </style>
+    <link rel="stylesheet" id="mini_css" type="text/css" href="{+resources+}/dist/css/kline/cnbtc2014_mini.css">
+</head>
+<link href="{+resources+}/dist/css/common/style.css" rel="stylesheet" type="text/css">
+<style>
+    .close {
+        font-size: 30px;
+    }
+</style>
+<body>
+<div class="bk-body official" ng-controller="officialCtrl">
+    <div class="bk-kHeader clearfix">
+        <div class="bk-kLogo pull-left">
+            <a href="/" title="">
+                <img src="{+param['logo_opacity']+}">
+            </a>
+        </div>
+        <div class="top-market-show">
+            <div class="pull-left">&nbsp;<i class="fa fa-line-chart fa-fw"></i> <span ng-bind="lang.survey"></span>
+            </div>
+            <div class="pull-left topMenuPrice" id="topMenuPrice" style="overflow: hidden;">
+                <ul class="text-left ng-hide" style="position: relative; height: 36px; " ng-show="allCoins">
+                    <li ng-repeat="ticker in allCoins" style="width: 150px; height: 36px; float: left;"><p>&nbsp;\{{ticker.fShortName}}/\{{ticker.group}}：<b
+                            class="T_btcusdtLastPrice text-primary">\{{ticker.lastDealPrize}}<i
+                            class="fa fa-arrow-up fa-fw"></i></b></p></li>
+                </ul>
+            </div>
+            <div class="down-market-table" style="">
+                <div class="d-hd">
+                    <a ng-class="selectedGroup == group ? 'on' : ''" ng-mouseover="changeGroup(group)"
+                       ng-repeat="(group, coins) in coinGroup" ng-bind="group + lang.area"></a>
+                </div>
+                <div class="d-bd">
+                    <div class="d-head">
+                        <span class="market-name" ng-bind="lang.status"></span>
+                        <span class="nowprice" ng-bind="lang.latest"></span>
+                        <span class="highprice" ng-bind="lang.highest"></span>
+                        <span class="lowprice" ng-bind="lang.lowest"></span>
+                        <span class="rose" ng-bind="lang.shake"></span>
+                        <span class="volume" ng-bind="lang.dealVol"></span>
+                    </div>
+                    <div class="d-body">
+                        <table class="on">
+                            <tbody style="line-height: 42px">
+                            <tr class="H_btcqcMarket"
+                                ng-class="ticker.fupanddown > 0 ? 'up': ticker.fupanddown == 0 ? '' : 'down'"
+                                ng-repeat="ticker in tickers" ng-click="setPair(ticker)">
+                                <td>
+                                    <!--<i class="icon-btc"></i>-->
+                                    <!--<img ng-src="{+cdn+}\{{ticker.furl}}" width="18" height="18"/>-->
+                                    <b ng-bind="ticker.fShortName"></b>/<span ng-bind="ticker.group"></span>
+                                </td>
+                                <td>
+                                    <b class="price nocny on"
+                                       ng-class="ticker.fupanddown > 0 ? 'text-primary': ticker.fupanddown == 0 ? '' : 'text-second'"><span
+                                            ng-bind="ticker.lastDealPrize"></span><i class="iconfont"
+                                                                                     ng-class="ticker.fupanddown > 0 ? 'icon-arrowup': ticker.fupanddown == 0 ? '' : 'icon-arrowdown'"></i></b>
+                                    <b class="cnyprice price iscny text-primary">0<i class="iconfont"
+                                                                                     ng-class="ticker.fupanddown > 0 ? 'icon-arrowup': ticker.fupanddown == 0 ? '' : 'icon-arrowdown'"></i></b>
+
+                                </td>
+                                <td>
+                                    <span class="hightPrice nocny on" ng-bind="ticker.highestPrize24"></span>
+                                    <span class="cnyprice-high iscny">0</span>
+                                </td>
+                                <td>
+                                    <span class="lowPrice nocny on" ng-bind="ticker.lowestPrize24"></span>
+                                    <span class="cnyprice-low iscny">0</span>
+                                </td>
+                                <td><span class="riseRate"
+                                          ng-bind="(ticker.fupanddown > 0 ? '+': ticker.fupanddown == 0 ? '' : '-') + '' + (ticker.fupanddown || 0 | currency:'':2) + '%'"></span>
+                                </td>
+                                <td class="volume"><span ng-bind="ticker.volumn | currency:'':2"></span></td>
+                                <td>
+                                    <a class="kline"><i class="fa fa-line-chart fa-fw"></i></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bk-kTool pull-right">
+            <a onclick="toggleFoot()" roll="button" class="toggle-foot"></a>
+            <a onclick="toggleRight()" roll="button" class="toggle-right"></a>
+        </div>
+        <div class="bk-kUser pull-right">
+            <div class="nologin ng-hide" ng-show="loaded && !loginUser">
+                <a href="/user/login" target="_self" ng-bind="lang.login"></a> |
+                <a href="/user/register" target="_self" ng-bind="lang.register"></a> |
+                <a ng-href="/exchange#symbol=\{{selectedPair.fid}}" target="_self" ng-bind="lang.back"></a>
+            </div>
+            <div class="logined ng-hide" ng-show="loginUser">
+                <a target="_self" href="/finance/asset">
+                    <span ng-bind="lang.hello"></span>，<span id="M_userName" ng-bind="loginUser.nick"></span>&nbsp;&nbsp;<i
+                        id="M_userLevelIco"></i>
+                </a> |
+                <a href="javascript:void(0)" ng-click="logout()" target="_self" ng-bind="lang.exit"></a> |
+                <a ng-href="/exchange#symbol=\{{selectedPair.fid}}" target="_self" ng-bind="lang.back"></a>
+            </div>
+        </div>
+    </div>
+    <iframe ng-src="\{{klineUrl | asUrl}}" id="marketFrame" class="marketFrame" name="marketFrame" onload=""
+            frameborder="0" width="100%" style="height: 446px;" hspace="0" scrolling="no"></iframe>
+    <!--<div style="height: 164px"></div>-->
+    <div class="bk-kMarket" style="height:230px;">
+        <div class="bk-trans-form">
+            <div class="bk-table">
+                <div class="bk-cell list">
+                    <div class="bk-tabList" id="bkEntrustTab">
+                        <div class="bk-tabList-hd clearfix">
+                            <div class="btn-group bk-btn-group" role="group">
+                                <a class="btn active" role="button"><span ng-bind="lang.entrust"></span><span
+                                        style="display: none;">(<span id="limitEntrustNum">0</span>)</span></a>
+                            </div>
+                            <a class="pull-right" style="margin-top: 5px; color: #ff4b33" href="/finance/bill"
+                               target="_blank" role="button"><i class="fa fa-calendar fa-fw"></i><span
+                                    ng-bind="lang.more"></span></a>
+                        </div>
+                        <div class="bk-tabList-bd">
+                            <div class="bk-entrust">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th style=""><span ng-bind="lang.entrustTime"></span></th>
+                                        <th style="text-align:left;"><span ng-bind="lang.entrustPrice"></span>(<em
+                                                ng-bind="selectedPair.group"></em>})
+                                        </th>
+                                        <th style="text-align:left;"><span ng-bind="lang.entrustAmount"></span>(<em
+                                                ng-bind="selectedPair.fShortName"></em>)
+                                        </th>
+                                        <th style=""><span ng-bind="lang.entrustTotal"></span>(<em
+                                                ng-bind="selectedPair.group"></em>)
+                                        </th>
+                                        <th style=""><span ng-bind="lang.status"></span></th>
+                                        <th style="width:115px;"><span ng-bind="lang.oper"></span></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody ng-show="loginUser">
+
+                                    <tr ng-repeat="row in user.entrustList" class="\{{row[0] == 0 ? 'red' : ''}}">
+                                        <td ng-bind="row[4] | date:'yyyy-MM-dd HH:mm:ss'"></td>
+                                        <td style="text-align:left;"><span class="label text-second"
+                                                                           ng-bind="row[0] == 0 ? lang.buy : lang.sell"></span><span
+                                                class="bkNum text-second" ng-bind-html="row[1] | fixed: 4 | gg"></span>
+                                        </td>
+                                        <td style="text-align:left;">
+                                            <span class="text-second text-fhir" ng-bind="row[2] | fixed: 4 "></span>
+                                        </td>
+                                        <td align="center" ng-bind="row[1] * row[2] | fixed: 4 "></td>
+                                        <td align="center" ng-bind="row[5] | formatEntrustStatus"></td>
+                                        <td align="center">
+                                            <a class="cancelEntrust" href="javascript:void(0)"
+                                               ng-click="cancelOrder(row)" ng-bind="lang.cancel"></a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    <tbody ng-show="loaded && !loginUser">
+                                    <tr>
+                                        <td colspan="8">
+                                            <div class="bk-norecord"><p><i class="bk-ico info"></i><span
+                                                    ng-bind="lang.login1"></span> <a
+                                                    style="color:#ff4b33; margin:0 5px;" href="/user/login"
+                                                    ng-bind="lang.login"></a> <span ng-bind="lang.or"></span> <a
+                                                    style="color:#3dc18e; margin:0 5px;" href="/user/register"
+                                                    ng-bind="lang.register"></a> <span ng-bind="lang.login2"></span></p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bk-cell item">
+                    <div class="bk-buy-form">
+                        <form role="form" id="buyForm" class="form-horizontal" method="post" action=""
+                              autocomplete="off">
+                            <input type="hidden" name="buyType" id="buyType" value="0">
+                            <input type="hidden" name="moneyType" id="moneyType" value="">
+                            <input type="hidden" name="coinType" id="coinType" value="1">
+                            <div class="form-group has-feedback" style="padding-top:10px;">
+                                <label class="control-label" style="position:static;"><span
+                                        ng-bind="lang.usable"></span>：<b id="canUseMoney" class="text-primary"
+                                                                         ng-bind="user.rmbtotal || 0 | fixed: 4">--</b>
+                                    <em ng-bind="selectedPair.group"></em></label>
+                                <label class="control-label" style="position:static;"><span
+                                        ng-bind="lang.canBuy"></span>：<b id="canBuyCoin" class="text-gray"
+                                                                         ng-bind="(selectedPair.lastDealPrize !=0 && user.rmbtotal > 0) ? user.rmbtotal / (selectedPair.lastDealPrize || 1) : 0 | fixed: 4">--</b>
+                                    <em ng-bind="selectedPair.fShortName"></em></label>
+
+                            </div>
+                            <div id="buyDefaultForm">
+                                <div class="form-group has-feedback">
+                                    <label class="control-label" for="buyUnitPrice"><span
+                                            ng-bind="lang.buyPrice"></span><em
+                                            ng-bind="selectedPair.group"></em></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-second" id="buyUnitPrice"
+                                               autocomplete="off" ng-model="buyOrder.price"
+                                               ng-change="setTotalOrAmount('buyOrder')">
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label class="control-label" for="buyNumber"><span ng-bind="lang.buyNum"></span><em
+                                            ng-bind="selectedPair.fShortName"></em></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-second" id="buyNumber"
+                                               autocomplete="off" ng-model="buyOrder.amount"
+                                               ng-change="setTotalOrAmount('buyOrder')">
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback ng-hide" ng-show="user.needTradePasswd && loaded">
+                                    <label class="control-label" for="buyPwd" ng-bind="lang.safeword"></label>
+                                    <div class="input-group">
+                                        <input type="text" name="password" class="form-control form-second"
+                                               maxlength="6" minlength="6" id="buyPwd" autocomplete="off"
+                                               ng-model="tradePassword_Buy">
+                                    </div>
+                                </div>
+
+                                <div class="form-group has-feedback">
+                                    <label class="control-label" for="realBuyAccount" style="position:static;"><span
+                                            ng-bind="lang.expectTotal"></span>：<b class="text-primary"
+                                                                                  id="realBuyAccount"
+                                                                                  ng-bind="buyOrder.total || 0"></b> <em
+                                            ng-bind="selectedPair.group"></em></label>
+                                </div>
+                                <div class="form-group">
+                                    <button id="buyBtn" type="button" ng-click="createOrder('buy')"
+                                            data-loading-text="Loading..." class="btn btn-primary btn-block btn-hg">
+                                        <i class="bk-ico buycart"></i><span ng-bind="lang.buyNow"></span><em
+                                            ng-bind="'('+lang.fees+':' + buyFee *100 + '%)'"></em>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="bk-cell item">
+                    <div class="bk-sell-form">
+                        <form role="form" id="sellForm" class="form-horizontal" method="post" action=""
+                              autocomplete="off">
+                            <div class="form-group has-feedback" style="padding-top:10px;">
+                                <label class="control-label" style="position:static;"><span
+                                        ng-bind="lang.usable"></span>：<b id="canUseCoin" class="text-second"
+                                                                         ng-bind="user.virtotal || 0 | fixed: 4">--</b>
+                                    <em ng-bind="selectedPair.fShortName"></em></label>
+                                <label class="control-label" style="position:static;"><span
+                                        ng-bind="lang.canSell"></span>：<b id="canSellMoney" class="text-gray"
+                                                                          ng-bind="user.virtotal > 0 ? user.virtotal * (selectedPair.lastDealPrize || 1) : 0 | fixed: 4">--</b>
+                                    <em ng-bind="selectedPair.group"></em></label>
+
+                            </div>
+                            <div id="sellDefaultForm">
+                                <div class="form-group has-feedback">
+                                    <label class="control-label" for="sellUnitPrice"><span
+                                            ng-bind="lang.sellPrice"></span><em
+                                            ng-bind="selectedPair.group"></em></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-second" id="sellUnitPrice"
+                                               autocomplete="off" ng-model="sellOrder.price"
+                                               ng-change="setTotalOrAmount('sellOrder')" input-decimal-separator="8">
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label class="control-label" for="sellNumber"><span
+                                            ng-bind="lang.sellNum"></span><em
+                                            ng-bind="selectedPair.fShortName"></em></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-second" id="sellNumber"
+                                               autocomplete="off" ng-model="sellOrder.amount"
+                                               ng-change="setTotalOrAmount('sellOrder')" input-decimal-separator="8">
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback ng-hide" ng-show="user.needTradePasswd && loaded">
+                                    <label class="control-label" for="buyPwd2" ng-bind="lang.safeword"></label>
+                                    <div class="input-group">
+                                        <input type="text" name="password" class="form-control form-second"
+                                               maxlength="6" minlength="6" id="buyPwd2" autocomplete="off"
+                                               ng-model="tradePassword_Sell">
+                                    </div>
+                                </div>
+
+                                <div class="form-group has-feedback">
+                                    <label class="control-label" for="realSellAccount" style="position:static;"><span
+                                            ng-bind="lang.expectTotal"></span>：<b class="text-second"
+                                                                                  id="realSellAccount"
+                                                                                  ng-bind="sellOrder.total || 0"></b>
+                                        <em ng-bind="selectedPair.group"></em></label>
+                                </div>
+
+                                <div class="form-group">
+                                    <button id="sellBtn" type="button" ng-click="createOrder('sell')"
+                                            data-reset-text="<i class='bk-ico sellhand'></i><span ng-bind='lang.sellNow'></span>"
+                                            data-loading-text="Loading..." class="btn btn-second btn-block btn-hg">
+                                        <i class="bk-ico sellhand"></i><span ng-bind="lang.sellNow"></span><em
+                                            ng-bind="'('+lang.fees+':' + sellFee * 100 + '%)'"></em>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-well alert-dismissible Jua-showTip wrong"
+         ng-style="{'display': errorMessage ? 'block' : 'none'}" role="alert" id="JuaBox_6"
+         style="top: 0px; position: absolute; display: none"><p ng-bind-html="errorMessage | html"></p></div>
+
+    <script type="text/javascript">
+
+        function toggleFoot() {
+            $(".bk-kMarket").toggle();
+            var sHeight = $(window).height() - $(".bk-kHeader").height() - $(".bk-kMarket:visible").height() - 10;
+            $("#marketFrame").css("height", sHeight);
+            $(".toggle-foot").toggleClass("active");
+        }
+
+        function toggleRight() {
+            $(window.frames['marketFrame'].document.body).find("#trade_container").toggle();
+            $(window.frames['marketFrame'])[0].on_size();
+            $(".toggle-right").toggleClass("active");
+        }
+
+        function resetWin() {
+            var sHeight = $(window).height() - $(".bk-kHeader").height() - $(".bk-kMarket:visible").height() - 10;
+            $("#marketFrame").css("height", sHeight);
+        }
+        $(window).resize(resetWin);
+        resetWin()
+
+        setTimeout(function () {
+            imgScroll.rolling({
+                name: "topMenuPrice",
+                width: "150px",
+                height: "36px",
+                direction: "left",
+                speed: 20,
+                addcss: true
+            })
+        }, 2500)
+
+
+        $("input[name=password],input[name=confirmPwd]").focus(function () {
+            $(this).attr("type", "password");
+        });
+    </script>
+    <script src="{+resources+}/dist/js/util.js?v={{version}}"></script>
+    <script type="text/javascript" src="{+resources+}/dist/js/socket.io.min.js"></script>
+    <script type="text/javascript" src="{+resources+}/dist/js/language/{{lang}}.js?v={{version}}"></script>
+    <script type="text/javascript" src="{+resources+}/dist/js/ng-common.js?v={{version}}"></script>
+    <script type="text/javascript" src="{+resources+}/dist/js/official.js?v={{version}}"></script>
+</div>
+</body>
+</html>

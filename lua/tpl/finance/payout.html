@@ -1,0 +1,238 @@
+<!DOCTYPE HTML>
+<html ng-app="app" class="ng-scope" ng-controller="Ctrl">
+<head>
+    {(tpl/common/include.html)}
+    <title>{{param[lang..'_title']}}</title>
+    <link rel="stylesheet" href="{+resources+}/dist/css/nance/depositWithdrawal.css">
+    <link rel="stylesheet" href="{+resources+}/dist/css/nance/ct.css">
+    <style>
+
+    </style>
+</head>
+<div  class="ng-scope">
+    {(tpl/common/header.html)}
+</div>
+<div class="wrap account-tab">
+    <div class="container">
+        <div class="dw ng-scope" ng-controller="payoutController">
+            <div class="container">
+                <div class="dw-title ng-binding" ng-bind="lang.withdraw"></div>
+                <div class="dw-body f-cb">
+
+                    <div class="f-fl" style="min-height: 785px;">
+                        <div class="withdrawBox">
+
+                            <div class="asset-info">
+                                <div class="selectBox selectAsset" >
+                                    <div class="selectIpt" ng-click="showAssetss()">
+                                        <div class="curAssetInfo ng-scope">
+                                            <strong class="ng-binding" ng-bind="wallet.name"></strong>-<span class="ng-binding" ng-bind="wallet.allName"></span>
+                                        </div>
+                                    </div>
+                                    <i class="iconfont icon-downsj"></i>
+                                    <ul class="scrollStyle" style="display: none">
+                                        <li class="filterIpt">
+                                            <input type="text" placeholder="\{{lang.enterkey}}" ng-keyup="search($event)">
+                                        </li>
+                                        <li class="coinInfo ng-scope"
+                                            ng-repeat="asset in userAssets" ng-if="asset.isWithDraw"
+                                            ng-click="selectAsset(asset,$event)">
+                                            <strong class="ng-binding" ng-bind="asset.name"></strong>-<span class="ng-binding" ng-bind="asset.allName"></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div  class="">
+                                    <table class="curAsset">
+                                        <colgroup style="width:120px;"></colgroup>
+                                        <colgroup style="width:180px;"></colgroup>
+                                        <tbody>
+                                        <tr>
+                                            <th class="ng-binding" ng-bind="lang.entrustTotal">总额</th>
+                                            <td class="ng-binding" ng-bind="wallet.total*1 + wallet.frozen*1"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="ng-binding" ng-bind="lang.js.payout.frozen">下单冻结</th>
+                                            <td class="ng-binding" ng-bind="wallet.frozen"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="ng-binding" ng-bind="lang.js.payout.total">可用余额</th>
+                                            <td class="ng-binding" ng-bind="wallet.total"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="speBox account-tab" >
+                                        <form class="withdrawalForm ng-pristine ng-valid" id="withdrawalForm">
+                                            <div class="filed">
+                                                <div class="label"><strong class="ng-binding" ng-bind="shortname + lang.withdrawAddress'"> </strong></div>
+                                                <div class="selectBox" style="margin-bottom:24px;">
+                                                    <div ng-click="showaddresses()" style="width:477px">
+                                                        <input type="text"  disabled="disabled"   ng-model="withdrawAddress" placeholder="Select" >
+                                                    </div>
+                                                    <ul id="addresses" style="z-index: 1;display: none">
+                                                        <li class="addAddress ng-binding" style="color:#ff4b33"
+                                                            ng-click="addNewAddress($event)" ng-bind="lang.add">
+                                                        </li>
+                                                        <li class="addAddress ng-binding" ng-repeat="address in addresses" style="text-align: left" ng-click="selectAddress(address)">
+                                                            <span ng-bind="address.flag"></span> <span ng-bind="address.address"></span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="filed" style="margin-bottom:24px;">
+                                                <div class="label f-cb" style="margin-bottom: 7px">
+                                                    <strong class="ng-binding" ng-bind="lang.spread.amount"></strong>
+                                                    <span class="f-fr ng-binding" >\{{lang.min}}<strong class="ng-binding"><span ng-bind="params.min"></span><span ng-bind="shortname"></span></strong></span>
+                                                </div>
+                                                <div class="inputGroup">
+                                                    <input id="amount" type="text" ng-keyup="calcTotal()" ng-model="amount" style="width: 405px; height: 34px; border: 1px solid #e6e6e6; border-right: none;" class="ng-pristine ng-valid">
+                                                    <span class="unit ng-binding" ng-bind="shortname"></span>
+                                                    <div class="available">
+                                                        <label class="ng-binding" ng-bind="lang.js.payout.total"></label>
+                                                        <span class="ng-binding" ng-bind="wallet.total">0.00000000</span>
+
+                                                    </div>
+                                                    <a href="javascript:;" style="position:absolute;top: 30px;right:10px;color: #ff4b33;font-size:12px;text-decoration: underline;float:right;" ng-click="withdrawAll()"
+                                                       class="ng-binding" ng-bind="lang.payout.all"></a>
+                                                </div>
+                                            </div>
+
+                                            <div class="filed" style="margin-bottom:24px;">
+                                                <div class="label f-cb" style="margin-bottom: 7px">
+                                                    <strong class="ng-binding" ng-bind="lang.safeword"></strong>
+                                                </div>
+                                                <div class="inputGroup">
+                                                    <input type="text" name="password"  ng-model="safeWord">
+                                                </div>
+
+                                            </div>
+
+                                            <div class="filed">
+                                                <div class="label f-cb" style="margin-bottom: 7px">
+                                                    <strong class="ng-binding" ng-bind="lang.emailCode"></strong>
+                                                </div>
+                                                <div class="inputGroup">
+                                                    <input type="text" style="line-height: 32px;width: 288px;" ng-model="emailCode2" />
+                                                    <span id="code_btn" class="code_btn" data-cate="inner" ng-bind="lang.send"></span>
+                                                </div>
+                                            </div>
+                                            {% if user.googleBind then %}
+                                            <div class="filed" id="googlecode" style="margin-top:24px;">
+                                                <div class="label f-cb" style="margin-bottom: 7px">
+                                                    <strong class="ng-binding" ng-bind="lang.goo.t11"></strong>
+                                                </div>
+                                                <div class="inputGroup">
+                                                    <input type="text" style="line-height: 32px;" ng-model="googlecode" />
+                                                </div>
+                                            </div>
+                                            {% end %}
+                                            <div class="total f-cb ng-binding ng-scope" style="margin-bottom: 27px;margin-top:30px;">
+                                                \{{lang.fees}}: <strong><span ng-bind="params.feeAmount"></span>+<span ng-bind="params.feeRatio * 100"></span>%</strong>
+                                                <!--<span class="f-fr ng-binding">实际到账: <strong ng-bind="realAmount">0.00000000</strong></span>-->
+                                            </div>
+                                            <input type="button" value="\{{lang.submit}}" ng-click="bindWithdraw()" class="confirm btn btn-orange btn-block" id="btn-withdraw">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="f-fr" style="min-height: 785px;">
+                        <div class="lists deposit">
+                            <div class="lists-title ng-binding" ng-bind="lang.seest.withdrawre">
+
+                            </div>
+                            <ul class="lists-body">
+                                <li ng-repeat="log in rechargeLogs"  class="f-cb ng-scope"
+                                    ng-class="{true:'grey',false:''}[d.status==2]">
+                                    <div class="status">
+                                        <span ng-if="log.status == 1"  class="ng-binding" >等待审核</span>
+                                        <span ng-if="log.status == 2"  class="ng-binding yellow" >正在处理</span>
+                                        <span ng-if="log.status == 3"  class="ng-binding green" >提现成功</span>
+                                        <span ng-if="log.status == 4"  class="ng-binding gray" >用户撤销</span>
+                                    </div>
+                                    <div class="name ng-binding" ng-bind="log.name"></div>
+                                    <div class="amount ng-binding" ng-bind="log.amount"></div>
+                                    <div class="ng-binding" ng-bind="log.time | date:'yyyy-MM-dd HH:mm:ss'">
+                                    </div>
+                                    <table >
+                                        <tbody>
+                                        <tr>
+                                            <th class="ng-binding">地址:</th>
+                                            <td>
+                                                <a class="ng-binding ng-scope"  href="\{{log.url}}\{{log.in_address}}"  target="_blank" ng-bind="log.out_address"></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="ng-binding">Txid:</th>
+                                            <td class="ng-scope">
+                                                <a   href="\{{log.url}}\{{log.txid}}" target="_blank" class="ng-binding" ng-bind="log.txid">
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </li>
+                            </ul>
+                        </div>
+                        <nav class="pagination ng-hide" ng-show="rechargeLogs.length>0">
+                            <ul style="">
+                                <li  ng-repeat="num in all_pages" ng-click ="loadList(num)" ng-class="currency_page == num ? 'pagination-current': ''" >
+                                    <span ng-bind="num"></span>
+                                </li>
+
+                                <li  ng-click="loadList(currency_page+1)" ng-if = "totalPage > 1">
+                                    <span  style="font-size: 20px;line-height: 25px;">›</span>
+                                </li>
+                                <li ng-click=" loadList(totalPage)" ng-if = "totalPage > 1" ><span  style="font-size: 20px;line-height: 25px;">»</span>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="nodata ng-scope" ng-if="totalPage == 0">
+                            <img src="{+resources+}/dist/images/zups.png">
+                            <p class="ng-binding" ng-bind="lang.noRecord"></p>
+                        </div>
+                    </div>
+
+                    <div class="bk-body account-tab float_win bk-onekey dn" id="float_win" style="top: 323px; left: 26%; display: none;">
+                        <div class="bk-tabList">
+                            <div class="bk-tabList-hd clearfix">
+                                <div class="btn-group bk-btn-group" role="group">
+                                    <a class="btn active title" role="button"><span ng-bind="shortname"></span>\{{lang.withdrawAddress}}</a>
+                                </div>
+                            </div>
+                            <div class="bk-tabList-bd text-left clearfix addressform">
+                                <i class="iconfont close"></i>
+                                <form id="addForm"  method="post" autocomplete="off">
+                                    <div >
+                                        <label  ><span class="ng-binding" ng-bind="lang.addressName"></span>：</label>
+                                        <input type="text"  ng-model="address">
+                                    </div>
+                                    <div >
+                                        <label ><span  class="ng-binding" ng-bind="lang.addressFlag"></span>：</label>
+                                        <input type="text"   ng-model="addresstag">
+                                    </div>
+                                    <div >
+                                        <label ><span  class="ng-binding" ng-bind="lang.emailCode"></span>：</label>
+                                        <input type="text"  style="width: 165px" ng-model="emailcode">
+                                        <span data-cate="inner" class="code_btn" id="code_btn1" ng-bind="lang.send"></span>
+                                    </div>
+                                    <div >
+                                        <a style="" class="btn btn-primary confirm" href="javascript:void(0)" ng-click="confrmAddNewAddress()"><span class="ng-binding" ng-bind="lang.submit"></span></a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="shadow" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{+resources+}/dist/js/finance/payout.js?v={+versoion+}"></script>
+<!-- 底部 -->
+{(tpl/common/footer.html)}
+</body>
+</html>

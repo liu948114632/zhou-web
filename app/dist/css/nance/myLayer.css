@@ -1,0 +1,16 @@
+
+.layui-layer-dialog{background:#fff;}
+.layui-layer-dialog.layui-layer-msg,.layui-layer-dialog.layer-black-msg{padding:0;}
+.layui-layer-title{margin:0;background:#353535;font-size:14px;color:#fff;height:46px;line-height:46px;}
+.layui-layer-setwin .layui-layer-close2,.layui-layer-setwin .layui-layer-close2:hover{width:15px;height:15px;background:url(closeBtn.png)no-repeat;}
+.layui-layer-btn{padding-bottom:20px;}
+.layui-layer-btn a{display: inline-block; cursor: pointer; font-size: 14px;padding: 0px 12px;height:33px; line-height:32px;min-width:76px;text-align:center;border:1px solid #edeff2;}
+.layui-layer-btn .layui-layer-btn0{background:#e9b434;border-color:#e9b434;}
+.layui-layer-setwin .layui-layer-close1,.layui-layer-setwin .layui-layer-close1:hover{width:19px;height:19px;background:url('closeBtn1.png')no-repeat;}
+.layui-layer-btn .layui-layer-btn1{background:#fff;color:#666;}
+.layui-layer-dialog .layui-layer-content{color:#666;text-align:left;word-break:break-word;padding:40px 36px 20px;}
+.layui-layer-dialog .layui-layer-title{margin:-15px -15px 0;}
+.layui-layer-dialog .layui-layer-content .layui-layer-ico{top:18px;width: 27px;height: 27px;left: 24px}
+.layui-layer-dialog.layui-layer-msg .layui-layer-ico{top:18px;}
+.layui-layer-page .layui-layer-content{padding:0 30px;}
+.layui-layer-content.layui-layer-padding{padding:22px 20px 22px 59px!important;}

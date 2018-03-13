@@ -1,0 +1,17 @@
+<script>
+    var basePath = "{+ basePath +}";
+    var resources = "{+ resources +}";
+    var cdn = "{+ cdn +}";
+//    var cdn = "http://kst-exchange.oss-cn-hangzhou.aliyuncs.com/";
+</script>
+<script src="{+resources+}/dist/js/jquery/jquery-1.11.3.min.js?v=1.0.0"></script>
+<script src="{+resources+}/dist/js/jquery/jquery.form.js?v={{version}}"></script>
+<script src="{+resources+}/dist/js/jquery/jquery.cookie.js?v=1.0.0"></script>
+<script src="{+resources+}/dist/js/language/{{lang}}.js?v={{version}}"></script>
+<script>
+    angular.module('i18n', []).controller('Ctrl', ['$scope', function($scope){
+        $scope.lang = lang;
+    }]);
+</script>
+<script src="{+resources+}/dist/js/util.js?v=1.0.0"></script>
+<script src="{+resources+}/dist/js/common.js?v={{version}}"></script>

@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html ng-app="app" class="ng-scope" ng-controller="Ctrl">
+<head>
+    {(tpl/common/include.html)}
+    <title>{{param[lang..'_title']}}</title>
+    <link rel="stylesheet" href="{+resources+}/dist/css/nance/depositWithdrawal.css">
+    <link rel="stylesheet" href="{+resources+}/dist/css/nance/ct.css">
+    <style>
+        .pagination ul{
+            float: right;padding-right:15px
+        }
+        .pagination ul li{
+            background-color: #ccc;
+            color: #fff;
+            margin-right: 5px;
+        }
+        .inviteBanner a {
+            display: inline-block;
+            width: 100%;
+            min-width: 1200px;
+            height: 90px;
+        }
+        .pagination-current{
+            background-color: #ff4b33!important;
+        }
+    </style>
+</head>
+
+<body style="" class="ng-scope">
+
+
+<div class="ng-scope">
+    {(tpl/common/header.html)}
+</div>
+<!-- 主体内容 -->
+<div class="wrap">
+    <div class="container">
+        <div class="dw ng-scope" ng-controller="payinController">
+            <div class="container">
+                <div class="dw-title ng-binding" ng-bind="lang.recharge"></div>
+                <div class="dw-body f-cb">
+
+                    <div class="f-fl" style="min-height: 785px;">
+                        <div class="depositBox">
+                            <div class="asset-info">
+                                <div class="selectBox selectAsset" >
+                                    <div class="selectIpt" ng-click="showAssets()">
+                                        <div class="curAssetInfo ng-scope">
+                                            <strong class="ng-binding" ng-bind="wallet.name"></strong>-<span class="ng-binding" ng-bind="wallet.allName"></span>
+                                        </div>
+                                    </div>
+                                    <i class="iconfont icon-downsj" ng-click="showAssets()"></i>
+                                    <ul class="scrollStyle" style="display: none">
+                                        <li class="filterIpt">
+                                            <input type="text" placeholder="\{{lang.enterkey}}" ng-keyup="search($event)">
+                                        </li>
+                                        <li class="coinInfo ng-scope" ng-if="asset.isRecharge" ng-repeat="asset in userAssets" ng-click="selectAsset(asset,$event)">
+                                            <strong class="ng-binding" ng-bind="asset.name"></strong>-<span class="ng-binding" ng-bind="asset.allName"></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div  class="ng-scope">
+                                    <table class="curAsset">
+                                        <colgroup style="width:120px;"></colgroup>
+                                        <colgroup style="width:380px;"></colgroup>
+                                        <tbody>
+                                        <tr>
+                                            <th class="ng-binding" ng-bind="lang.entrustTotal"></th>
+                                            <td class="ng-binding" ng-bind="wallet.total*1 + wallet.frozen*1"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="ng-binding" ng-bind="lang.js.payout.frozen"></th>
+                                            <td class="ng-binding" ng-bind="wallet.frozen"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="ng-binding" ng-bind="lang.js.payout.total"></th>
+                                            <td class="ng-binding" ng-bind="wallet.total"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="speBox" >
+                                        <div class="importants">
+                                            <strong class="ng-binding" ng-bind="lang.seest.attention"></strong>
+                                            <ul>
+                                                <li  class="ng-binding ng-scope" ng-bind="lang.seest.other">
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div  class="ng-scope">
+                                            <div class="depositAddress">
+                                                <strong class="ng-binding">\{{shortname}} \{{lang.js.payin.address}}</strong>
+                                                <div class="chargeAddress text ng-binding" ng-bind="address">
+                                                </div>
+                                                <div class="f-cb" ng-show="ischarge">
+                                                   <span ng-click="copyAddress('contentTextarea','showMsg')"  class="btn btn-white btn-copy f-fl ng-binding ng-scope" >
+                                                       <i class="iconfont icon-copy"></i>
+                                                       <span ng-bind="lang.copy"></span>
+                                                   </span>
+                                                    <span  id="showMsg" class="btn btn-white btn-copy f-fr ng-binding ng-scope" style="display: none;border: 0px;background: transparent;color: green;float: none;margin-left: 130px;line-height: 18px;">
+                                                        \{{lang.copySuccess}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="padding:10px" id="addressQrcode"></div>
+                                    <textarea id="contentTextarea" style="    position: absolute;top: 0;left: 0;z-index: -1"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="f-fr" style="min-height: 785px;">
+                        <div class="lists deposit">
+                            <div ng-bind="lang.rechargedata" class="lists-title ng-binding">
+
+                            </div>
+                            <ul class="lists-body">
+                                <li ng-repeat="log in rechargeLogs" class="f-cb ng-scope"
+                                    ng-class="{true:'grey',false:''}[d.status==2]">
+                                    <div class="status">
+                                        <span ng-if="log.status ==3"  class="ng-binding yellow" ng-bind="lang.success"></span>
+                                        <span ng-if="log.status !=3"  class="ng-binding " ng-bind="lang.js.asset.pending"></span>
+                                    </div>
+                                    <div class="name ng-binding" ng-bind="log.name"></div>
+                                    <div class="amount ng-binding" ng-bind="log.amount"></div>
+                                    <div class="ng-binding" ng-bind="log.time | date:'yyyy-MM-dd HH:mm:ss'">
+                                    </div>
+                                    <table >
+                                        <tbody>
+                                        <tr>
+                                            <th class="ng-binding" ng-bind="lang.js.payin.address"></th>
+                                            <td>
+                                                <a class="ng-binding ng-scope"  href="\{{log.url}}\{{log.in_address}}"  target="_blank" ng-bind="log.in_address"></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="ng-binding">Txid:</th>
+                                            <td class="ng-scope">
+                                                <a   href="\{{log.url}}\{{log.txid}}" target="_blank" class="ng-binding" ng-bind="log.txid">
+                                            </a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </li>
+                            </ul>
+                        </div>
+                        <nav class="pagination ng-hide" ng-show="rechargeLogs.length > 0">
+                            <ul style="">
+                                <li  ng-repeat="num in all_pages" ng-click ="loadList(num)" ng-class="currency_page == num ? 'pagination-current': ''" >
+                                    <span ng-bind="num"></span>
+                                </li>
+
+                                <li  ng-click="loadList(currency_page+1)" ng-if = "totalPage > 1">
+                                    <span style="font-size: 20px;line-height: 25px;">›</span>
+                                </li>
+                                <li ng-click=" loadList(totalPage)" ng-if = "totalPage > 1" ><span style="font-size: 20px;line-height: 25px;">»</span>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="nodata ng-scope" ng-if="totalPage == 0">
+                            <img src="{+resources+}/dist/images/zups.png">
+                            <p class="ng-binding" ng-bind="lang.noRecord"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{+resources+}/dist/js/finance/payin.js?v={+versoion+}"></script>
+<script src="http://static.runoob.com/assets/qrcode/qrcode.min.js"></script>
+{(tpl/common/footer.html)}
+</body>
+</html>
+

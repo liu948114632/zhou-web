@@ -1,0 +1,379 @@
+<!DOCTYPE HTML>
+<html  class="ng-scope" ng-app = "app" ng-controller="Ctrl">
+<head>
+    {(tpl/common/include.html)}
+    <title>{{param[lang..'_title']}}</title>
+    <link rel="stylesheet" href="{+resources+}/dist/css/nance/depositWithdrawal.css">
+    <style>
+        .usercenter-subnav {
+            display: none;
+        }
+        .usercenter-subnav.cur {
+            display: block;
+        }
+        .inviteBanner a {
+            display: inline-block;
+            width: 100%;
+            min-width: 1200px;
+            height: 90px;
+            background: url(https://resource.binance.com/resources/img/activity/invite_rk_en.jpg) no-repeat center;
+        }
+        .inviteBanner a.inviteBanner_cn {
+            background: url(https://resource.binance.com/resources/img/activity/invite_rk_cn.jpg) no-repeat center;
+        }
+        .header{
+            background-color: transparent;
+        }
+    </style>
+    <link rel="stylesheet" media="all"
+          href="{+resources+}/dist/css/news.css" id="stylesheet">
+    <link rel="stylesheet" type="text/css"
+          href="{+resources+}/dist/css/news_list.css">
+    <script src="{+resources+}/dist/js/angular.min.js"></script>
+</head>
+<body style="" class="ng-scope" >
+{(tpl/common/news_header.html)}
+<!-- 主体内容 -->
+<div class="wrap">
+    <div class="container">
+        <style>
+            .openOrders {
+                margin-bottom: 45px;
+            }
+
+            .openOrders-title {
+                height: 70px;
+            }
+
+            .tradeHistory-export {
+                position: absolute;
+                top: 5px;
+                right: 0;
+            }
+
+            .tradeHistory-export > a {
+                font-size: 12px;
+                color: #666;
+                font-family: Arial;
+                text-decoration: underline;
+                position: static;
+            }
+
+            .tradeHistory-export > a:hover {
+                color: rgb(232, 179, 66)
+            }
+
+            .tradeHistory-export i {
+                color: #666;
+                font-size: 18px;
+                vertical-align: -3px;
+            }
+
+            .table.table-striped th, .table.table-striped td {
+                padding: 0 5px;
+            }
+
+            .filters {
+                margin-bottom: 7px;
+                position: relative;
+            }
+
+            .filters .filed {
+                float: left;
+                margin-right: 15px;
+            }
+
+            .filters .filed label {
+                line-height: 26px;
+                font-size: 12px;
+                color: #666;
+            }
+
+            .filters .filed input[type=text] {
+                display: inline-block;
+                width: 73px;
+                height: 24px;
+                line-height: 24px;
+                padding: 0 5px;
+                border: 1px solid #d4d4d4;
+                vertical-align: middle;
+            }
+
+            .filters .filed input[type=checkbox] {
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 3px;
+            }
+
+            .filters .filed .select {
+                display: inline-block;
+                vertical-align: middle;
+                position: relative;
+            }
+
+            .filters .filed .select .iconfont {
+                position: absolute;
+                right: 4px;
+                top: 5px;
+                font-size: 14px;
+                margin-right: 0;
+                color: #333;
+            }
+
+            .filters .filed .select ul {
+                box-sizing: border-box;
+                display: none;
+                position: absolute;
+                left: 0;
+                top: 25px;
+                width: 100%;
+                max-height: 140px;
+                background: #fff;
+                border: 1px solid #d4d4d4;
+
+            }
+
+            .filters .filed .select ul li {
+                line-height: 24px;
+                border-bottom: 1px solid #d4d4d4;
+                cursor: pointer;
+                padding: 0 5px;
+                font-size: 13px;
+                color: #333;
+            }
+
+            .filters .filed .select ul li:last-of-type {
+                border: none;
+            }
+
+            .filters .btn {
+                padding: 5px 10px;
+                font-size: 12px;
+                color: #333;
+                vertical-align: middle;
+                margin-right: 5px;
+                background: none;
+            }
+
+            .filters .date {
+                width: 108px !important;
+                background: url('/resources/img/date.png') no-repeat 97px center;
+                padding-right: 21px;
+            }
+
+            .exportBox {
+                padding: 25px 17px;
+            }
+
+            .exportBox > strong {
+                font-weight: normal;
+                font-size: 14px;
+                color: #333;
+                display: inline-block;
+                margin-bottom: 20px;
+            }
+
+            .exportBox ul {
+                overflow: hidden;
+            }
+
+            .exportBox ul li {
+                float: left;
+                margin-bottom: 12px;
+                margin-left: 93px;
+            }
+
+            .exportBox ul li:nth-child(odd) {
+                margin-left: 0;
+            }
+
+            .exportBox ul li label {
+                display: inline-block;
+                font-size: 12px;
+                color: #666;
+                min-width: 96px;
+            }
+
+            .exportBox ul li label input {
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 7px;
+            }
+
+            .exportBox .date {
+                display: inline-block;
+                width: 100%;
+                box-sizing: border-box;
+                height: 32px;
+                border: 1px solid #d4d4d4;
+                padding: 0 10px;
+                line-height: 32px;
+                text-align: center;
+                background: url('/resources/img/date.png') no-repeat 250px center;
+            }
+
+            .exportBox .date[disabled] {
+                cursor: not-allowed;
+                background: #f3f3f3;
+            }
+
+            .exportBox .btn {
+                margin-top: 20px;
+            }
+
+            #layui-laydate1 .layui-laydate-header, #layui-laydate2 .layui-laydate-header, #layui-laydate3 .layui-laydate-header {
+                background-color: #f8f8f8 !important;
+            }
+
+            .laydate-theme-molv .layui-laydate-header i, .laydate-theme-molv .layui-laydate-header span {
+                color: #333 !important;
+            }
+
+            .layui-laydate-header i {
+                font-size: 14px !important;
+            }
+
+            .layui-laydate-content td.laydate-selected, .layui-laydate-content td.laydate-selected:hover {
+                background-color: #f2f2f2 !important;
+            }
+
+            .layui-laydate-footer span:hover {
+                color: #ff4b33 !important
+            }
+
+            .footer  .footerT .footerTR a:hover {
+                text-decoration: none!important;
+            }
+        </style>
+        <div class="openOrders itemBox ng-scope" ng-controller="supportMineCtrl">
+            <div class="itemTitle ng-binding" ng-bind="lang.sup.ask"></div>
+            <table class="table table-striped" width="100%">
+                <colgroup style="width:110px;"></colgroup>
+                <colgroup style="width:55px;"></colgroup>
+                <colgroup style="width:130px;"></colgroup>
+                <colgroup style="width:120px;"></colgroup>
+                <colgroup style="width:150px;"></colgroup>
+                <colgroup style="width:55px;"></colgroup>
+                <colgroup style="width:150px;"></colgroup>
+                <colgroup style="width:50px;"></colgroup>
+                <colgroup style="width:100px;"></colgroup>
+                <tbody>
+                <tr>
+                    <th class="f-left ng-binding" ng-bind="lang.sup.date"></th>
+                    <th class="f-left ng-binding" ng-bind="lang.sup.type"></th>
+                    <th class="f-left ng-binding" ng-bind="lang.sup.email"></th>
+                    <th class="f-left ng-binding" ng-bind="lang.title"></th>
+                    <th class="f-left ng-binding" ng-bind="lang.sup.des"></th>
+                    <th class="f-left ng-binding" ng-bind="lang.sup.coin"></th>
+                    <th class="f-left ng-binding" ng-bind="lang.sup.address"></th>
+                    <th class="f-left ng-binding" ng-bind="lang.status"></th>
+                    <th class="f-left ng-binding" ng-bind="lang.operation"></th>
+                </tr>
+                <tr>
+                    <td colspan="12" style="padding:0;">
+                        <table width="100%"  class="listRepeat ng-scope" ng-repeat="ask in asks">
+                            <colgroup style="width:110px;"></colgroup>
+                            <colgroup style="width:55px;"></colgroup>
+                            <colgroup style="width:130px;"></colgroup>
+                            <colgroup style="width:120px;"></colgroup>
+                            <colgroup style="width:150px;"></colgroup>
+                            <colgroup style="width:55px;"></colgroup>
+                            <colgroup style="width:150px;"></colgroup>
+                            <colgroup style="width:50px;"></colgroup>
+                            <colgroup style="width:100px;"></colgroup>
+                            <tbody>
+                            <tr>
+                                <td class="f-left ng-binding" ng-bind="ask.createTime | date : 'yyyy-MM-dd HH:mm:ss' ">02-20 09:14:32</td>
+                                <td class="ng-binding" style="text-align: left">
+                                    <span ng-if = "ask.askType ==1" ng-bind="lang.sup.recharge"> </span>
+                                    <span ng-if = "ask.askType ==2" ng-bind="lang.sup.withdraw"> </span>
+                                    <span ng-if = "ask.askType ==3" ng-bind="lang.sup.other"> </span>
+                                </td>
+                                <td class="f-left ng-binding" ng-bind="ask.email"></td>
+                                <td class="f-left ng-binding" ng-bind="ask.title" title="\{{ask.title}}"> </td>
+                                <td class="f-left ng-binding" ng-bind="ask.content" title="\{{ask.content}}"></td>
+                                <td class="f-left ng-binding" ng-bind="ask.coinName"></td>
+                                <td class="f-left ng-binding" ng-bind="ask.address" style="text-align: left" title="\{{ask.address}}"></td>
+                                <td class="f-left ng-binding" ng-bind="ask.status ==0 ? lang.sup.noanswer:lang.sup.hasanswer " style="text-align: left">
+                                </td>
+                                <td class="f-left ng-binding"  style="text-align: left">
+                                    <span ng-click = "deleteAsk(ask.id)" style="color:#46a656;" ng-bind="lang.sup.del"></span>
+                                    &nbsp &nbsp &nbsp
+                                    <span ng-click = "detail(ask.id)" style="color:#46a656;" ng-bind="lang.sup.detail"></span>
+                                </td>
+                            </tr>
+                            <tr ng-if="current == ask.id">
+                                <td colspan="12" style="border:0;padding:0;"
+                                    class="showDetailList">
+                                    <div class="overflowScroll">
+                                        <table class="orderDetails" width="100%">
+                                            <colgroup style="width:30%;"></colgroup>
+                                            <colgroup style="width:70%;"></colgroup>
+                                            <tbody>
+                                            <tr>
+                                                <th class="f-left ng-binding" >TXID</th>
+                                                <th class="f-left ng-binding" ng-bind="lang.sup.answer"></th>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr ng-if="current == ask.id">
+                                <td colspan="12" style="padding:0;">
+                                <table width="100%"  class="listRepeat ng-scope" >
+                                    <colgroup style="width:29%;"></colgroup>
+                                    <colgroup style="width:69%;"></colgroup>
+                                    <tbody>
+                                    <tr>
+                                        <td class="f-left ng-binding" ng-bind="ask.txid " title="\{{ask.txid}}"></td>
+                                        <td class="f-left ng-binding" ng-bind="ask.answer" title="\{{ask.answer}}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- ngIf: total>rows -->
+            <!--<div class="pagination f-right ng-scope">-->
+                <!--<ul>&lt;!&ndash; ngIf: currentPage>1 &ndash;&gt;&lt;!&ndash; ngRepeat: n in pageNum  track by $index &ndash;&gt;-->
+                    <!--<li ><a href="javascript:;" class="ng-binding cur">1</a></li>-->
+                    <!--<li  class="ng-scope"><a  href="javascript:;">Next</a></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+
+            <nav class="pagination">
+                <ul>
+                    <li ng-if="totalPage >1" ng-class="currency_page == num? 'pagination-current':''"  ng-repeat="num in all_pages" ng-click ="loadList(num)">
+                        <span style="margin-top: -5px">\{{num}}</span>
+                    </li>
+
+                    <li class="pagination-next" ng-click=" loadList(currency_page+1)" ng-if = "totalPage != 1">
+                        ›
+                    </li>
+                    <li class="pagination-last" ng-click=" loadList(totalPage)" ng-if = "totalPage != 1" >»
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+</div>
+<!--<footer class="footer">-->
+    <!--<div class="footer-inner">-->
+        <!--<a title="主页" href="/hc/zh-cn">Bibox</a>-->
+    <!--</div>-->
+<!--</footer>-->
+
+{(tpl/common/footer.html)}
+<script src="{+resources+}/dist/js/support/mine.js?v={{version}}"></script>
+</body>
+
+</html>

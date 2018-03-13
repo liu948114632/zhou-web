@@ -1,0 +1,532 @@
+<!DOCTYPE HTML>
+<html ng-app="app" ng-controller="gCtrl">
+<head>
+    {(tpl/common/include.html)}
+    <title>{{param[lang..'_title']}}</title>
+    <style>
+        .productSymbol.no-info strong {
+            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .productSymbol.no-info font {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .productSymbol.no-info .info-box {
+            font-size: 14px;
+            color: #333;
+            padding-top: 2px !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .productSymbol.no-info .info-box i {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .productSymbol.no-info .info-box i.icon-infoicoShi:before {
+            vertical-align: top;
+        }
+
+        .productSymbol.has-info strong {
+            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .productSymbol.has-info font {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .productSymbol.has-info .info-box {
+            font-size: 14px;
+            color: #333;
+            padding-top: 2px !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .productSymbol.has-info .info-box i {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .productSymbol.has-info .info-box a i {
+            color: #ff4b33;
+        }
+
+        .productSymbol.has-info .info-box a i.icon-infoicoShi:before {
+            vertical-align: top;
+        }
+
+        .productSymbol.has-info .info-box a span {
+            color: #333;
+        }
+
+        .productSymbol.has-info .info-box a:hover i {
+            color: #ff4b33;
+            text-decoration: none;
+        }
+
+        .productSymbol.has-info .info-box a:hover span {
+            color: #333;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body  ng-controller="ExchangeCtrl" class="ng-hide" ng-show="allCoins">
+<div>
+    {(tpl/common/header.html)}
+</div>
+<div class="main">
+    <div class="container">
+        <div class="kline-para">
+            <div class="productSymbol">
+                <strong class="ng-binding">\{{selectedPair.fShortName}}</strong><font class="ng-binding" style="font-size:14px;color:#999;"> / \{{selectedPair.group}}</font>
+                <div class="info-box">
+                    <span class="ng-binding" style="font-size:16px;color:#999;">\{{selectedPair.fname}}</span>
+                </div>
+            </div>
+            <ul>
+                <li>
+                    <h4 class="ng-binding" ng-bind="lang.latest"></h4>
+                    <strong ng-class="recentDealList[0][0] - recentDealList[1][0] > 0? 'magenta': 'green'"
+                            class="ng-binding">\{{selectedPair.lastDealPrize}}</strong>
+                </li>
+                <li>
+                    <h4 class="ng-binding" ng-bind="lang.shake"></h4>
+                    <strong class="changeRate ng-binding"
+                            ng-class="{'magenta':selectedPair.fupanddown > 0,'green':selectedPair.fupanddown <= 0}">\{{selectedPair.fupanddown > 0 ? '+': ''}}\{{selectedPair.fupanddown | currency:"":2}} %</strong>
+                </li>
+                <li>
+                    <h4 class="ng-binding" ng-bind="lang.highest"></h4>
+                    <strong class="ng-binding" ng-bind="selectedPair.highestPrize24"></strong>
+                </li>
+                <li>
+                    <h4 class="ng-binding" ng-bind="lang.lowest"></h4>
+                    <strong class="ng-binding" ng-bind="selectedPair.lowestPrize24"></strong>
+                </li>
+                <li>
+                    <h4 class="ng-binding" ng-bind="lang.dealAmount"></h4>
+                    <strong class="ng-binding" ng-bind="selectedPair.volumn"></strong>
+                </li>
+            </ul>
+        </div>
+        <div class="main-body">
+            <div class="main-left">
+                <div class="depths">
+                    <table class="table">
+                        <colgroup style="width:30%"></colgroup>
+                        <colgroup style="width:30%"></colgroup>
+                        <colgroup style="width:40%"></colgroup>
+                        <tbody>
+                        <tr>
+                            <th class="f-left ng-binding" ng-bind="lang.price + '(' + selectedPair.group + ')'"></th>
+                            <th class="f-right ng-binding" ng-bind="lang.spread.amount + '(' + selectedPair.group + ')'"></th>
+                            <th class="f-right ng-binding" ng-bind="lang.entrustTotal + '(' + selectedPair.group + ')'"></th>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="depths-wrap scrollStyle">
+                        <table class="table askTable">
+                            <colgroup style="width:30%"></colgroup>
+                            <colgroup style="width:30%"></colgroup>
+                            <colgroup style="width:40%"></colgroup>
+                            <tbody>
+                            <tr ng-repeat="row in sellDepthList" ng-click="setBuy(row)" class="ng-scope">
+                                <td class="f-left green">
+                                    <span class="ng-binding ng-scope magenta"><span ng-bind="row[0] | fixed: 8"></span></span>
+                                </td>
+                                <td class="f-right"><span class="ng-binding" ng-bind-html="row[1] | fixed: 4 | gg"></span>
+                                </td>
+                                <td class="f-right "><span  ng-bind="row[1] * row[0] | fixed: 8" class="ng-binding">0</span>
+                                    <div class="zhuzhuang" ng-style="{'width': (row[1] / maxBuyCount * 100) + '%'}"></div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="newest">
+                        <strong ng-click="trade(currentProduct.close)"
+                                ng-class="recentDealList[0][0] - recentDealList[1][0] >0? 'magenta' :'green'"
+                                class="ng-binding">\{{recentDealList[0][0]}}
+                            <span class="iconfont ng-scope" ng-class="recentDealList[0][0] - recentDealList[1][0] >0? 'magenta icon-zhang' :'green icon-die'"
+                                style="font-weight:normal;vertical-align:top;font-size:14px;"></span>
+                        </strong>
+                    </div>
+                    <table class="table">
+                        <colgroup style="width:30%"></colgroup>
+                        <colgroup style="width:30%"></colgroup>
+                        <colgroup style="width:40%"></colgroup>
+                    </table>
+                    <div class="depths-wrap scrollStyle">
+                        <table class="table bidTable">
+                            <colgroup style="width:30%"></colgroup>
+                            <colgroup style="width:30%"></colgroup>
+                            <colgroup style="width:40%"></colgroup>
+                            <tbody>
+                            <tr ng-repeat="row in buyDepthList" ng-click="setSell(row)" class="ng-scope">
+                                <td class="f-left green">
+                                    <span class="ng-binding ng-scope"><span ng-bind="row[0] | fixed: 8"></span></span>
+                                </td>
+                                <td class="f-right"><span class="ng-binding" ng-bind-html="row[1] | fixed: 4 | gg"></span>
+                                </td>
+                                <td class="f-right "><span  ng-bind="row[1] * row[0] | fixed: 8" class="ng-binding">0</span>
+                                    <div class="zhuzhuang" ng-style="{'width': (row[1] / maxSellCount * 100) + '%'}"></div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-con" style="position: relative">
+                <div style="position: absolute; z-index:998; top:5px; text-decoration: underline; right:20px; font-size: 12px;">
+                    <a href="/exchange/official#symbol=\{{selectedPair.fid}}"  ng-bind="lang.klineExchange"></a>
+                </div>
+                <div class="overvies">
+                    <div id="kline-con">
+                        <iframe ng-src="\{{klineUrl | asUrl}}" id="marketFrame" class="marketFrame" name="marketFrame" onload=""
+                                frameborder="0" width="100%" style="height: 377px;" hspace="0" scrolling="no"></iframe>
+                    </div>
+                </div>
+                <div class="fee">
+                    <div ng-if="user.isLogin == 1" class="ng-scope">
+                        <label class="ng-binding" ng-bind="lang.buy_fee + '：'"></label><span class="ng-binding ng-scope">\{{buyFee * 100}} %</span> |
+                        <label class="ng-binding" ng-bind="lang.sell_fee + '：'"> </label><span  class="ng-binding ng-scope">\{{sellFee * 100}} %</span>
+                    </div>
+                </div>
+                <div class="orderforms f-cb" ng-init="orderType={'v':'limit'}">
+                    <div class="orderform-type">
+							<span ng-class="{true:'cur',false:''}[orderType.v=='limit']" ng-click="orderType.v='limit'"
+                                  class="ng-binding cur" ng-bind="lang.entrust">
+							</span>
+                    </div>
+                    <div class="orderform-main f-cb" ng-show="orderType.v=='limit'">
+                        <div class="f-fl">
+                            <div class="orderforms-hd">
+                                <div>
+                                    <label class="ng-binding"> \{{lang.buy + " "+ selectedPair.fShortName}}</label>
+                                    <span class="f-fr ng-binding">\{{selectedPair.group + lang.yue}}: \{{user.isLogin == 1 ? (user.rmbtotal || 0 | fixed: 4) : '--'}} </span>
+                                </div>
+                            </div>
+                            <form name="buyForm" ng-submit="buy_submit()" novalidate="" autocomplete="off"
+                                  class="ng-pristine ng-invalid ng-invalid-required">
+                                <div class="orderforms-inputs">
+                                    <div class="field f-cb">
+                                        <label class="ng-binding" ng-bind="lang.price + '：'"></label>
+                                        <div class="iptwrap leftBig">
+                                            <input type="text" name="buyPrice" id="buyUnitPrice"
+                                                   ng-change="setTotalOrAmount('buyOrder')"
+                                                   ng-model="buyOrder.price"
+                                                   input-decimal-separator="8"
+                                                   class="ng-pristine ng-valid ng-valid-required">
+                                            <span class="unit ng-binding">\{{selectedPair.group}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="field f-cb">
+                                        <label class="ng-binding" ng-bind="lang.spread.amount + '：'"></label>
+                                        <div class="iptwrap" ng-init="maxQuantity=false">
+                                            <input type="text" name="buyQuanity" id="buyNumber"
+                                                   input-decimal-separator="4"
+                                                   ng-model="buyOrder.amount"
+                                                   ng-change="setTotalOrAmount('buyOrder')"
+                                                   class="ng-pristine ng-invalid ng-invalid-required">
+                                            <span class="unit ng-binding">\{{selectedPair.fShortName}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="field percent  f-cb">
+                                        <label></label>
+                                        <div class="iptwrap"
+                                             ng-click="hideerror({target:'#buyQuanity'},'buyform-error')">
+                                            <span class="col"
+                                                  ng-click="orderPercent(0.25,'buy','limit')">25%</span><span
+                                                class="col" ng-click="orderPercent(0.5,'buy','limit')">50%</span><span
+                                                class="col" ng-click="orderPercent(0.75,'buy','limit')">75%</span><span
+                                                class="col" ng-click="orderPercent(1,'buy','limit')">100%</span>
+                                        </div>
+                                    </div>
+                                    <div class="field f-cb">
+                                        <label class="ng-binding" ng-bind="lang.cost + '：'"></label>
+                                        <div class="iptwrap money-wrap">
+                                             <span ng-bind="buyOrder.total || 0"
+                                                   class="ng-pristine ng-valid c_green"></span>
+                                            <span class="ng-binding">\{{selectedPair.group}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="orderforms-btn">
+                                    <div ng-if="user && user.isLogin != 1" class="logout ng-binding ng-scope"><a
+                                            href="/user/login"
+                                            class="ng-binding" ng-bind="lang.login"></a> or <a href="/user/register"
+                                                                            class="ng-binding" ng-bind="lang.register"></a>
+                                    </div>
+                                    <input type="submit" ng-click="createOrder('buy')" value=" \{{lang.buy + ' '  + selectedPair.fShortName}}" class="btn btn-block btn-buy ng-scope" ng-if="user && user.isLogin == 1">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="f-fr">
+                            <div class="orderforms-hd orderforms-hd-magenta">
+                                <div>
+                                    <label class="ng-binding"> \{{lang.sell + " " + selectedPair.group}}</label>
+                                    <span class="f-fr ng-binding">\{{selectedPair.fShortName + lang.yue}} : \{{user.isLogin == 1 ? (user.virtotal || 0 | fixed: 4) : '--'}} </span>
+                                </div>
+                            </div>
+                            <form name="sellForm" ng-submit="sell_submit()" autocomplete="off"
+                                  class="ng-pristine ng-valid">
+                                <div class="orderforms-inputs">
+                                    <div class="field f-cb">
+                                        <label class="ng-binding" ng-bind="lang.price + '：'"></label>
+                                        <div class="iptwrap leftBig">
+                                            <input type="text" name="sellPrice" id="sellUnitPrice"  ng-model="sellOrder.price" ng-change="setTotalOrAmount('sellOrder')" input-decimal-separator="8" class="ng-pristine ng-valid">
+                                            <span class="unit ng-binding">\{{selectedPair.group}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="field f-cb">
+                                        <label class="ng-binding" ng-bind="lang.spread.amount + ': '"></label>
+                                        <div class="iptwrap" >
+                                            <input type="text" name="sellQuanity" id="sellNumber"  ng-model="sellOrder.amount" ng-change="setTotalOrAmount('sellOrder')" input-decimal-separator="4" class="ng-pristine ng-valid">
+                                            <span class="unit ng-binding">\{{selectedPair.fShortName}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="field percent  f-cb">
+                                        <label></label>
+                                        <div class="iptwrap"
+                                             ng-click="hideerror({target:'#sellQuanity'},'sellform-error')">
+                                            <span class="col"
+                                                  ng-click="orderPercent(0.25,'sell','limit')">25%</span><span
+                                                class="col" ng-click="orderPercent(0.5,'sell','limit')">50%</span><span
+                                                class="col" ng-click="orderPercent(0.75,'sell','limit')">75%</span><span
+                                                class="col" ng-click="orderPercent(1,'sell','limit')">100%</span>
+                                        </div>
+                                    </div>
+                                    <div class="field f-cb">
+                                        <label class="ng-binding" ng-bind="lang.cost + ': '"></label>
+                                        <div class="iptwrap money-wrap">
+                                            <span ng-bind="sellOrder.total || 0"
+                                                  class="ng-pristine ng-valid c_red"></span>
+                                            <span class="ng-binding">\{{selectedPair.fShortName}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="orderforms-btn">
+                                    <div ng-if="user && user.isLogin != 1" class="logout ng-binding ng-scope"><a
+                                            href="/user/login"
+                                            class="ng-binding" ng-bind="lang.login"></a> or <a href="/user/register" class="ng-binding" ng-bind="lang.register"></a>
+                                    </div>
+                                    <input type="submit" value=" \{{lang.sell + ' ' + selectedPair.group}}" ng-click="createOrder('sell')" class="btn btn-block btn-sell ng-scope" ng-if="user && user.isLogin == 1">
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-aside" style="top:-28px">
+                <div data-v-40fb2a9f="" class="box-input-box" style="margin-bottom: 4px;  border: 1px solid #cccccc73;  border-bottom: 0;">
+                                            <span data-v-40fb2a9f="" class="box-input_prefix pd-l8"><div data-v-e893afaa="" data-v-40fb2a9f="" class="icon-my-search color-grey"></div>
+                                            </span> <span data-v-40fb2a9f="" class="box-input_suffix pd-r8" style="z-index: 1;"></span>
+                    <!----> <input data-v-40fb2a9f="" type="text" ng-model="searchInput" ng-keyup="search()"
+                                   class="box-input_input input__input_style js_input input_small box-input_input-undefined"
+                                   style="padding-left: 31px; padding-right: 30px; color:#aaa;outline: 0; border-width:0px 0px 1px">
+                </div>
+                <div class="depths" style="margin-bottom:-2px;">
+                    <div class="depthstitle f-cb">
+                        <ul class="tab-box" ng-init="curMarket=getQuoteAsset">
+                            <li class="f-fl" id="defaultStart"  ng-click="selectedGroup='like'"
+                                ng-class="{true:'active',false:''}[selectedGroup=='like']"><span
+                                    class="iconfont icon-xingxing activeTabDefault ng-binding" ng-bind="lang.store"></span></li>
+
+                            <li class="f-fr  f-nomargin" ng-repeat="(group, coins) in coinGroup" ng-click="changeGroup(group)"
+                                ng-class="selectedGroup == group ? 'active' : ''"
+                                ng-bind="group">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="market-box" style="margin-bottom: -51px">
+                        <ul class="market-t">
+                            <li>
+
+                            </li>
+                            <li ng-click="sortByKey('baseAsset')" class="ng-binding"><span ng-bind="lang.market"></span>
+                                <span ng-if="orderKey=='baseAsset'" class="ng-scope"><i class="iconfont icon-zhang" ng-class="{'icon-zhang':!orderDesc,'icon-die':orderDesc}"></i></span>
+                                </li>
+                            <li ng-click="sortByKey('close')" class="ng-binding" ng-bind="lang.latest">
+                                </li>
+                            <li ng-click="sortByKey('changeRate')"
+                                class="ng-binding ng-scope" ng-bind="lang.upDown"></li>
+                        </ul>
+                        <div class="market-con scrollStyle" ng-show="selectedGroup=='like'">
+                            <ul ng-repeat="ticker in collections"
+                                ng-class="selectedPair.fid == ticker.fid ? 'selectedPro' : ''"
+                                ng-click="setPair(ticker, 'like')"
+                                class="ng-scope">
+                                <li ng-click="favoriteFun($event, ticker)">
+                                    <span class="iconfont icon-xingxing activeTabDefault"
+                                        ng-class="ticker.pro? 'activeTxt': ''"></span></li>
+                                <li class="ng-binding">\{{ticker.fShortName}}/\{{ticker.group}}</li>
+                                <li ng-class="{'green':p.close>lastPrices[p.symbol],'magenta':p.close<lastPrices[p.symbol]}"
+                                    class="ng-binding">
+                                    \{{ticker.lastDealPrize | fixed: 8}}
+                                </li>
+                                <li class="ng-scope">
+                                    <span
+                                            ng-class="ticker.fupanddown > 0 ? 'magenta': ticker.fupanddown == 0 ? '' : 'green'"
+                                            class="ng-binding ng-scope">\{{ticker.fupanddown > 0 ? '+': ''}}\{{ticker.fupanddown || 0 | currency:'':2}}%</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="market-con scrollStyle" ng-show="selectedGroup!='like'">
+                            <ul ng-repeat="ticker in tickers"
+                                ng-class="selectedPair.fid == ticker.fid ? 'selectedPro' : ''"
+                                ng-click="setPair(ticker)"
+                                class="ng-scope">
+                                <li ng-click="favoriteFun($event, ticker)"><span
+                                        class="iconfont icon-xingxing activeTabDefault"
+                                        ng-class="ticker.pro? 'activeTxt': ''"></span></li>
+                                <li class="ng-binding">\{{ticker.fShortName}}/\{{ticker.group}}</li>
+                                <li ng-class="{'green':p.close>lastPrices[p.symbol],'magenta':p.close<lastPrices[p.symbol]}"
+                                    class="ng-binding">
+                                    \{{ticker.lastDealPrize | fixed: 8}}
+                                </li>
+                                <li class="ng-scope">
+                                    <span
+                                            ng-class="ticker.fupanddown > 0 ? 'magenta': ticker.fupanddown == 0 ? '' : 'green'"
+                                            class="ng-binding ng-scope">\{{ticker.fupanddown > 0 ? '+': ''}}\{{ticker.fupanddown || 0 | currency:'':2}}%</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="tradehistory">
+                    <div class="item-title" ng-init="tradesType={type:'marketTrades'}">
+                        <h3 class="ng-binding" ng-bind="lang.newDeal"></h3>
+                    </div>
+                    <div class="item-con" style="margin-top:1px;">
+                        <div style="height:306px;overflow-y:auto;" class="scrollStyle ng-scope">
+                            <table class="table">
+                                <colgroup style="width:30%"></colgroup>
+                                <colgroup style="width:30%"></colgroup>
+                                <colgroup style="width:40%"></colgroup>
+                                <tbody>
+                                <tr ng-repeat="row in recentDealList" class="ng-scope">
+                                    <td class="f-left ng-binding green"
+                                        ng-class="row[3] == 1 ? 'magenta' : 'green'" ng-bind="row[0] | fixed: 4">
+                                    </td>
+                                    <td class="f-right ng-binding" ng-bind-html="row[1] | fixed: 2 | gg"></td>
+                                    <td class="f-right ng-binding" ng-bind="row[2].substring(6)"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="userRecords f-cb">
+            <div class="userRecords-title">
+                <span class="cur ng-binding" ng-bind="lang.opneOrders"></span>
+                <a href="/finance/open" class="f-fr more ng-binding" ng-bind="lang.more"></a>
+            </div>
+            <div class="userRecords-main">
+                <div class="item-con">
+                    <table class="table table-striped">
+                        <colgroup style="width: 15%"></colgroup>
+                        <colgroup style="width: 15%"></colgroup>
+                        <colgroup style="width: 15%"></colgroup>
+                        <colgroup style="width: 15%"></colgroup>
+                        <colgroup style="width: 15%"></colgroup>
+                        <colgroup style="width: 15%"></colgroup>
+                        <colgroup style="width: 15%"></colgroup>
+                        <thead>
+                            <tr>
+                                <th class="f-left ng-binding" ng-bind="lang.entrustTime"></th>
+                                <th class="f-left ng-binding" ng-bind="lang.dealType"></th>
+                                <th class="f-left ng-binding" ng-bind="lang.entrustPrice"></th>
+                                <th class="f-left ng-binding" ng-bind="lang.entrustAmount"></th>
+                                <th class="f-left ng-binding" ng-bind="lang.entrustTotal"></th>
+                                <th class="f-left ng-binding" ng-bind="lang.status"></th>
+                                <th class="f-right ng-binding" ng-bind="lang.oper"></th>
+                            </tr>
+                        </thead>
+                        <thody>
+                            <tr ng-repeat="row in user.entrustList">
+                                <td class="f-left" ng-bind="row[4] | date: 'yyyy-MM-dd HH:mm:ss'"></td>
+                                <td class="f-left"><span ng-class="row[0] == 0? 'green': 'magenta'" ng-bind="row[0] == 0 ? lang.buy : lang.sell"></span></td>
+                                <td class="f-left" ng-bind-html="row[1] | fixed: 8 | gg"></td>
+                                <td class="f-left" ng-bind="row[2] | fixed: 4"></td>
+                                <td class="f-left" ng-bind="(row[1] * row[2]) | fixed: 4"></td>
+                                <td class="f-left" ng-bind="row[5] | formatEntrustStatus"></td>
+                                <td class="f-right"><input type="button" value="\{{lang.cancel}}" ng-click="cancelOrder(row)"  class="btn"></td>
+                            </tr>
+                        </thody>
+                    </table>
+                    <div class="noData ng-binding ng-scope" ng-if="user.isLogin != 1 || (!user.entrustList || !user.entrustList.length)" ng-bind="lang.noRecord"></div>
+                </div>
+            </div>
+        </div>
+        <div class="userRecords f-cb">
+            <div class="userRecords-title">
+                <span class="cur ng-binding" ng-bind="lang.orderHis"></span>
+                <a href="/finance/bill" class="f-fr more ng-binding" ng-bind="lang.more"></a>
+            </div>
+            <div class="userRecords-main">
+                <div class="item-con">
+                    <table class="table table-striped">
+                        <colgroup style="width: 20%"></colgroup>
+                        <colgroup style="width: 19%"></colgroup>
+                        <colgroup style="width: 18%"></colgroup>
+                        <colgroup style="width: 18%"></colgroup>
+                        <colgroup style="width: 18%"></colgroup>
+                        <colgroup style="width: 7%"></colgroup>
+                        <thead>
+                            <tr>
+                                <th class="f-left ng-binding" ng-bind="lang.entrustTime"></th>
+                                <th class="f-left ng-binding" ng-bind="lang.dealType"></th>
+                                <th class="f-left ng-binding" ng-bind="lang.entrustPrice"></th>
+                                <th class="f-left ng-binding" ng-bind="lang.entrustAmount"></th>
+                                <th class="f-left ng-binding" ng-bind="lang.entrustTotal"></th>
+                                <th class="f-right ng-binding" ng-bind="lang.status"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in user.entrustListLog">
+                                <td class="f-left" ng-bind="row[6] | date: 'yyyy-MM-dd HH:mm:ss'"></td>
+                                <td class="f-left"><span ng-class="row[0] == 0? 'green': 'magenta'" ng-bind="row[0] == 0 ? lang.buy : lang.sell"></span></td>
+                                <td class="f-left" ng-bind="row[1] | fixed: 8 "></td>
+                                <td class="f-left" ng-bind="row[2] | fixed: 4"></td>
+                                <td class="f-left" ng-bind="(row[1] * row[2]) | fixed: 4"></td>
+                                <td class="f-right" ng-bind="row[4] | formatEntrustStatus"></td>\{{row[5]}}
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="noData ng-binding ng-scope" ng-if="user.isLogin != 1 || (!user.entrustListLog || !user.entrustListLog.length)" ng-bind="lang.noRecord"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="float-win dn" id="password-box">
+    <h4><span ng-bind="lang.safeword"></span>
+        <i class="iconfont close">&#xe999;</i>
+    </h4>
+    <div class="content">
+        <input ng-change="judgePassword()" ng-class="passwordEmpty? 'error': ''" type="password" ng-model="tradePassword" autocomplete="off" />
+        <a href="javascript:void(0)" ng-click="passwordConfirm()" ng-bind="lang.confirm"></a>
+    </div>
+</div>
+{(tpl/common/footer.html)}
+<script src="{+resources+}/dist/js/socket.io.min.js"></script>
+<script src="{+resources+}/dist/js/ng-common.js?v={{version}}"></script>
+<script src="{+resources+}/dist/js/exchange.js?v={{version}}"></script>
+</body>
+</html>
