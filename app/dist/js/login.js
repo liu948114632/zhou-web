@@ -70,4 +70,53 @@
             }
         },"json");
     });
+
+
+    if ("WebSocket" in window)
+    {
+        console.log("您的浏览器支持 WebSocket!");
+
+        // 打开一个 web socket
+        var ws = new WebSocket("ws://47.97.219.235:8811");
+
+        ws.onopen = function()
+        {
+            ws.send("msgtype=ReqSmsCodeGenerate&em=948114632.com");
+            console.log("数据发送中...");
+        };
+
+        ws.onmessage = function (evt)
+        {
+            var received_msg = evt.data;
+            // console.log(unzip(received_msg));
+            console.log(received_msg);
+            console.log("数据已接收...");
+        };
+
+        ws.onclose = function()
+        {
+            console.log("连接已关闭...");
+        };
+    }
+
+    else
+    {
+        console.log("您的浏览器不支持 WebSocket!");
+    }
+
+    // function unzip(b64Data){
+    //     var strData     = atob(b64Data);
+    //     // Convert binary string to character-number array
+    //     var charData    = strData.split('').map(function(x){return x.charCodeAt(0);});
+    //     // Turn number array into byte-array
+    //     var binData     = new Uint8Array(charData);
+    //     // // unzip
+    //     var data        = pako.inflate(binData);
+    //     // Convert gunzipped byteArray back to ascii string:
+    //     strData     = String.fromCharCode.apply(null, new Uint16Array(data));
+    //     return strData;
+    // }
+
 })(jQuery);
+
+
