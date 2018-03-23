@@ -1,15 +1,16 @@
 var rootws;
 var rootresult;
-function login(callback) {
-    rootws = new WebSocket("ws://47.97.219.235:8811");
+function loginCommon(callback) {
+    rootws = new WebSocket(wsHost);
     rootws.onopen = function()
     {
-        ws.send("msgtype=ReqSyncRandomString");
+        rootws.send("msgtype=ReqSyncRandomString");
     };
     rootws.onmessage = function(event){
         var fr = new FileReader();
         fr.onload = function() {
-            rootresult = JSON.parse(this.rootresult);
+            rootresult = JSON.parse(this.result);
+            console.log(rootresult);
             if(rootresult.msgtype == "RspSyncRandomString"){
                 var time =  (new Date()).valueOf();
                 var val = "msgtype=ReqLogin&uid="+sessionStorage.getItem("uid")+"&ps=-1&td=20180101&TimeStamp="+time+"&RandomString="+rootresult.rs;
@@ -17,9 +18,9 @@ function login(callback) {
                 var sign = hash.toString();
                 var msg = val+"&Sign="+sign;
                 console.log(msg);
-                ws.send(msg);
+                rootws.send(msg);
             }
-            if(rootresult.msgtype == "ReqLogin"){
+            if(rootresult.msgtype == "RspLogin"){
                 if(rootresult.em == "正确"){
                     (callback && typeof(callback)==="function") && callback();
                 }
@@ -32,4 +33,5 @@ function login(callback) {
     {
         console.log("连接已关闭...");
     };
+
 }

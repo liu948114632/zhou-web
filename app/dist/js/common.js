@@ -110,7 +110,6 @@ var _handler = {
     $("form").find(".code_img").click(function(){
         $(this).attr("src", basePath + '/v1/servlet/ImageCode?' + new Date().getTime());
     });
-    console.log($.cookie("ver"))
     if(!isPC() && $.cookie("ver") == "pc"){
         $("#to_mobile").show();
     }
@@ -119,92 +118,92 @@ var _handler = {
     })
 
     var code_pending = false;
-    $("form").on("click",".code_btn",function(){
-        var $this = $(this);
-        var cate = $this.data('cate');
-        cate = cate ? cate : "shit";
-        var submit_state = $this.data(_const.SUBMIT_FLAG);
-        if(code_pending){
-            error_win(lang.pending);
-            return;
-        }
-        if(submit_state){
-            error_win(lang.codeTime + _const.CAPTCHA_SECONDS+"s");
-            return;
-        }
-        var url = '/v1/sendLoginCode';
-        if(cate == "inner"){
-            url = '/v1/account/sendCode';
-        }
-        var param = {};
-        var $form = $this.closest("form");
-        var img_code = $form.find(".img_code");
-        if(img_code.length > 0 || cate == "find" || cate.indexOf("bind")!=-1){
-            var name = $form.find(".name").val();
-            if(isEmpty(name)){
-                error_win(lang.accountEmpty);
-                return;
-            }
-            if(!isEmail(name)){
-                error_win(lang.emailFormatError);
-                return;
-            }
-           /* if($this.data('type') == 'mobile' && !isMobile(name)){
-                error_win(lang.phoneFormatError);
-                return;
-            }*/
-        }
-        if(img_code.length > 0){
-            var code = img_code.val();
-            if(isEmpty(code)){
-                error_win(lang.imageCodeEmpty);
-                return;
-            }
-            url = '/v1/sendRegCode';
-            param = {
-                code: code,
-                name: name
-            };
-        }
-        if(cate == "find"){
-            url = '/v1/sendFindCode';
-            param = {
-                name: name
-            };
-        }
-        code_pending = true;
-        $this.data(_const.SUBMIT_FLAG, true);
-        var id = $this.attr("id");
-        if(cate.indexOf('bind')!=-1){
-            url = '/v1/account/sendBindCode';
-            param['name'] = name;
-            if(cate == "bind_check"){
-                param['check'] = 1;
-            }
-        }
-        $.post(url, param, function(res){
-            $this.data(_const.SUBMIT_FLAG, false);
-            code_pending = false;
-            if(1 == res.code){
-                error_win(lang.illegal);
-            }else if(200 == res.code){
-                _handler.addTipsHandler(_const.EMAIL_CAPTCHA_KEY, id);
-                _handler.updateTipsSeconds(id, _const.CAPTCHA_SECONDS,1);
-            }else if(2 == res.code){
-                error_win(lang.noCorrectAccount);
-            } else if(3 == res.code){
-                error_win(lang.imageCodeErr);
-            }else if(4 == res.code){
-                error_win(lang.binded);
-            }else if(5 == res.code){
-                error_win(lang.noUse);
-            }else if(6 == res.code){
-                error_win(lang.forbid);
-            }else{
-                error_win(lang.error);
-            }
-        }, 'json');
-    });
+    // $("form").on("click",".code_btn",function(){
+    //     var $this = $(this);
+    //     var cate = $this.data('cate');
+    //     cate = cate ? cate : "shit";
+    //     var submit_state = $this.data(_const.SUBMIT_FLAG);
+    //     if(code_pending){
+    //         error_win(lang.pending);
+    //         return;
+    //     }
+    //     if(submit_state){
+    //         error_win(lang.codeTime + _const.CAPTCHA_SECONDS+"s");
+    //         return;
+    //     }
+    //     var url = '/v1/sendLoginCode';
+    //     if(cate == "inner"){
+    //         url = '/v1/account/sendCode';
+    //     }
+    //     var param = {};
+    //     var $form = $this.closest("form");
+    //     var img_code = $form.find(".img_code");
+    //     if(img_code.length > 0 || cate == "find" || cate.indexOf("bind")!=-1){
+    //         var name = $form.find(".name").val();
+    //         if(isEmpty(name)){
+    //             error_win(lang.accountEmpty);
+    //             return;
+    //         }
+    //         if(!isEmail(name)){
+    //             error_win(lang.emailFormatError);
+    //             return;
+    //         }
+    //        /* if($this.data('type') == 'mobile' && !isMobile(name)){
+    //             error_win(lang.phoneFormatError);
+    //             return;
+    //         }*/
+    //     }
+    //     if(img_code.length > 0){
+    //         var code = img_code.val();
+    //         if(isEmpty(code)){
+    //             error_win(lang.imageCodeEmpty);
+    //             return;
+    //         }
+    //         url = '/v1/sendRegCode';
+    //         param = {
+    //             code: code,
+    //             name: name
+    //         };
+    //     }
+    //     if(cate == "find"){
+    //         url = '/v1/sendFindCode';
+    //         param = {
+    //             name: name
+    //         };
+    //     }
+    //     code_pending = true;
+    //     $this.data(_const.SUBMIT_FLAG, true);
+    //     var id = $this.attr("id");
+    //     if(cate.indexOf('bind')!=-1){
+    //         url = '/v1/account/sendBindCode';
+    //         param['name'] = name;
+    //         if(cate == "bind_check"){
+    //             param['check'] = 1;
+    //         }
+    //     }
+    //     $.post(url, param, function(res){
+    //         $this.data(_const.SUBMIT_FLAG, false);
+    //         code_pending = false;
+    //         if(1 == res.code){
+    //             error_win(lang.illegal);
+    //         }else if(200 == res.code){
+    //             _handler.addTipsHandler(_const.EMAIL_CAPTCHA_KEY, id);
+    //             _handler.updateTipsSeconds(id, _const.CAPTCHA_SECONDS,1);
+    //         }else if(2 == res.code){
+    //             error_win(lang.noCorrectAccount);
+    //         } else if(3 == res.code){
+    //             error_win(lang.imageCodeErr);
+    //         }else if(4 == res.code){
+    //             error_win(lang.binded);
+    //         }else if(5 == res.code){
+    //             error_win(lang.noUse);
+    //         }else if(6 == res.code){
+    //             error_win(lang.forbid);
+    //         }else{
+    //             error_win(lang.error);
+    //         }
+    //     }, 'json');
+    // });
 
     $("input[name=password],input[name=confirmPwd]").focus(function(){
         $(this).attr("type","password");
@@ -273,7 +272,7 @@ var _handler = {
             }
         });
     }
-    getInfo();
+    // getInfo();
 
     $('.lang_box').hover(function(){
         $(this).find(".next").show();

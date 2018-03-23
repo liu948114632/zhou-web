@@ -138,7 +138,7 @@
     </style>
 <body style="">
 <!-- 主体内容 -->
-<div class="verifyLayout ng-scope" >
+<div class="verifyLayout ng-scope"  ng-controller="registerCtrl">
     <div class="main" style="height: 640px">
         <style>
             .btn.btn-grey {
@@ -160,46 +160,28 @@
                     </div>
                     <div class="filed">
                         <i class="iconfont">&#xe60b;</i>
-                        <input type="email" name="email" placeholder="邮箱"  id="name"
+                        <input type="text" name="email" placeholder="邮箱"  ng-model="name"
                                class="ipt fillemail ng-valid ng-valid-email ng-dirty name"
                                >
                     </div>
                     <div class="filed">
                         <i class="iconfont">&#xe623;</i>
-                        <input type="password" placeholder="密码"  id="pwd"
+                        <input type="password" placeholder="密码"  ng-model="password"
                                class="ipt pwd ng-pristine ng-valid" datatype="*" name="password">
-                    </div>
-                    <div class="filed" style="margin-top: -21px;margin-bottom: -14px;display: none" id="pwdStrength">
-                            <span ng-bind="lang.pwd1" style="font-size: 2px"></span>
                     </div>
                     <div class="filed">
                         <i class="iconfont">&#xe623;</i>
-                        <input type="password" placeholder="确认密码"  id="confirmPwd"
+                        <input type="password" placeholder="确认密码"  ng-model="confirmPwd"
                                class="ipt pwd ng-pristine ng-valid" datatype="*" >
                     </div>
                     <div class="filed">
-                        <i class="iconfont" style="font-size:14px;">&#xe69d;</i>
-                        <input type="text" placeholder="\{{lang.inviteCode}}"  id="inviteCode"
-                               class="ipt pwd ng-pristine ng-valid"  >
-                    </div>
-                    <div class="filed">
-                        <i class="iconfont" style="font-size:14px;">&#xe69d;</i>
-                        <input type="text" placeholder="图形验证码" style="width:214px;" id="imgCode"
-                               class="img_code ipt pwd ng-pristine ng-valid" datatype="*" >
-                        <img src="{{basePath}}/v1/servlet/ImageCode" style="" id="code_img" class="code_img" alt="\{{lang.refresh}}">
-                    </div>
-                    <div class="filed">
                         <i class="iconfont" style="font-size:16px;">&#xe6e8;</i>
-                        <input type="text" style="width:214px;" id="code" placeholder="邮箱验证码"
+                        <input type="text" style="width:214px;" id="code" ng-model="code" placeholder="邮箱验证码"
                                class="ipt pwd ng-pristine ng-valid">
-                        <span class="code_btn" id="code_btn" ng-bind="lang.send"></span>
-                    </div>
-                    <div style="margin-left: -97px;margin-top: -13px;margin-bottom: 12px;font-size: 14px;">
-                        <input type="checkbox" name="agreement" id="agreement" >
-                        <span ng-bind="lang.agree1"></span><a href="{{param['article_user']}}" target="_blank"><span ng-bind="lang.agree2"></span></a>
+                        <span class="code_btn" id="code_btn" ng-bind="lang.send" ng-click = "sendCode()"></span>
                     </div>
                     <div class="filed">
-                        <input type="submit" value="\{{lang.register}}" id="register-btn"  class="confirm btn btn-orange btn-block ">
+                        <input type="submit" ng-click ="register()" value="\{{lang.register}}"  class="confirm btn btn-orange btn-block ">
                     </div>
                     <div class="filde">
                         <p class="login-tip f-cb">

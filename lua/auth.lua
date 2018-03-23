@@ -2,9 +2,10 @@
 local session = require "session"
 
 local intercept_uri = {
-    '/account',
-    '/finance',
-    '/support',
+--    '/account',
+--    '/finance',
+--    '/support',
+--    '/*'
 }
 
 local logined_forbid_url = {

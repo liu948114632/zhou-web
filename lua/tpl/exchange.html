@@ -81,7 +81,7 @@
         }
     </style>
 </head>
-<body  ng-controller="ExchangeCtrl" class="ng-hide" ng-show="allCoins">
+<body  ng-controller="ExchangeCtrl"  >
 <div>
     {(tpl/common/header.html)}
 </div>
@@ -346,9 +346,9 @@
                                 ng-class="{true:'active',false:''}[selectedGroup=='like']"><span
                                     class="iconfont icon-xingxing activeTabDefault ng-binding" ng-bind="lang.store"></span></li>
 
-                            <li class="f-fr  f-nomargin" ng-repeat="(group, coins) in coinGroup" ng-click="changeGroup(group)"
-                                ng-class="selectedGroup == group ? 'active' : ''"
-                                ng-bind="group">
+                            <li class="f-fr  f-nomargin" ng-repeat="group in groups" ng-click="setMarket(group)"
+                                ng-class="selectedMarket == group ? 'active' : ''"
+                                ng-bind="group | uppercase">
                             </li>
                         </ul>
                     </div>
@@ -366,22 +366,22 @@
                                 class="ng-binding ng-scope" ng-bind="lang.upDown"></li>
                         </ul>
                         <div class="market-con scrollStyle" ng-show="selectedGroup=='like'">
-                            <ul ng-repeat="ticker in collections"
+                            <ul ng-repeat="ticker in markets[selectedMarket]"
                                 ng-class="selectedPair.fid == ticker.fid ? 'selectedPro' : ''"
                                 ng-click="setPair(ticker, 'like')"
                                 class="ng-scope">
                                 <li ng-click="favoriteFun($event, ticker)">
                                     <span class="iconfont icon-xingxing activeTabDefault"
                                         ng-class="ticker.pro? 'activeTxt': ''"></span></li>
-                                <li class="ng-binding">\{{ticker.fShortName}}/\{{ticker.group}}</li>
+                                <li class="ng-binding">\{{ticker.key}}</li>
                                 <li ng-class="{'green':p.close>lastPrices[p.symbol],'magenta':p.close<lastPrices[p.symbol]}"
                                     class="ng-binding">
-                                    \{{ticker.lastDealPrize | fixed: 8}}
+                                    \{{ticker.lsp | fixed: 8}}
                                 </li>
                                 <li class="ng-scope">
                                     <span
-                                            ng-class="ticker.fupanddown > 0 ? 'magenta': ticker.fupanddown == 0 ? '' : 'green'"
-                                            class="ng-binding ng-scope">\{{ticker.fupanddown > 0 ? '+': ''}}\{{ticker.fupanddown || 0 | currency:'':2}}%</span>
+                                            ng-class="ticker.up > 0 ? 'magenta': ticker.up == 0 ? '' : 'green'"
+                                            class="ng-binding ng-scope">\{{ticker.up > 0 ? '+': ''}}\{{ticker.up || 0 | currency:'':2}}%</span>
                                 </li>
                             </ul>
                         </div>
@@ -515,17 +515,16 @@
         </div>
     </div>
 </div>
-<div class="float-win dn" id="password-box">
-    <h4><span ng-bind="lang.safeword"></span>
-        <i class="iconfont close">&#xe999;</i>
-    </h4>
-    <div class="content">
-        <input ng-change="judgePassword()" ng-class="passwordEmpty? 'error': ''" type="password" ng-model="tradePassword" autocomplete="off" />
-        <a href="javascript:void(0)" ng-click="passwordConfirm()" ng-bind="lang.confirm"></a>
-    </div>
-</div>
+<!--<div class="float-win dn" id="password-box">-->
+    <!--<h4><span ng-bind="lang.safeword"></span>-->
+        <!--<i class="iconfont close">&#xe999;</i>-->
+    <!--</h4>-->
+    <!--<div class="content">-->
+        <!--<input ng-change="judgePassword()" ng-class="passwordEmpty? 'error': ''" type="password" ng-model="tradePassword" autocomplete="off" />-->
+        <!--<a href="javascript:void(0)" ng-click="passwordConfirm()" ng-bind="lang.confirm"></a>-->
+    <!--</div>-->
+<!--</div>-->
 {(tpl/common/footer.html)}
-<script src="{+resources+}/dist/js/socket.io.min.js"></script>
 <script src="{+resources+}/dist/js/ng-common.js?v={{version}}"></script>
 <script src="{+resources+}/dist/js/exchange.js?v={{version}}"></script>
 </body>

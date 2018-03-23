@@ -178,7 +178,6 @@
                             <div class="columns">
                                 <div class="column is-12-mobile is-6-tablet is-5-desktop hero-content">
                                     <div style="width:300px;position:relative;">
-                                        <img src="{+resources+}/dist/images/logo.png" alt="R">
                                         <h2 style="position:absolute; bottom: -5px;left: 90px;font-size:38px;" ng-bind="lang.an.t6"></h2>
                                     </div>
                                     <h2 style="font-size:38px;" ng-bind="lang.an.t5"></h2>
@@ -207,11 +206,11 @@
                         <div data-v-e893afaa="">
                             <div data-v-e893afaa="" class="home-table-header">
                                 <div data-v-e893afaa="" class="table-header-tab ts-16 color-666">
-                                    <span data-v-e893afaa="" class="item mg-r20" id="self"
-                                          ng-mouseenter="setMarketBySelf($event)" ng-bind="lang.my"></span>
-                                    <span data-v-e893afaa="" data-ng-repeat="market in markets" class="item mg-r20"
-                                          ng-class="selectedMarket == market ? 'active' : ''"
-                                          data-ng-mouseenter="setMarket($event,market)" ng-bind="market + lang.area"></span>
+                                    <!--<span data-v-e893afaa="" class="item mg-r20" id="self"-->
+                                          <!--ng-mouseenter="setMarketBySelf($event)" ng-bind="lang.my"></span>-->
+                                    <span data-v-e893afaa="" data-ng-repeat="group in groups" class="item mg-r20"
+                                          ng-class="selectedMarket == group ? 'active' : ''"
+                                          data-ng-mouseenter="setMarket(group)" ng-cloak="">\{{group | uppercase}} \{{lang.area}}</span>
                                 </div>
                                 <div data-v-e893afaa="" class="table-header-input">
                                     <div data-v-40fb2a9f="" data-v-e893afaa="" class="ts-14 newInput"
@@ -315,30 +314,29 @@
                                     <col data-v-e893afaa="" width="30">
                                 </colgroup>
                                 <tbody data-v-e893afaa="" class="ts-14">
-                                <tr data-v-e893afaa="" class="home-td color-333 ng-hide" ng-show="tickers.length > 0"
-                                    ng-repeat="ticker in tickers | orderBy : oderField :isDesc "
-                                    data-ng-click="setPair(ticker)"
+                                <tr data-v-e893afaa="" class="home-td color-333 ng-hide" ng-show="markets[selectedMarket].length > 0"
+                                    ng-repeat="ticker in markets[selectedMarket] "
                                     ng-class="ticker.fid == selectedPair.fid ? 'market-active':''">
-                                    <td data-id="\{{ticker.fid}}" data-v-e893afaa="" class="D collect-hover text-center ts-18"
+                                    <td data-id="\{{ticker.iid}}" data-v-e893afaa="" class="D collect-hover text-center ts-18"
                                         ng-click="selfSelect(ticker.fid)">
-                                        <i data-v-e893afaa="" class="icon-my-no-collect"
-                                           ng-class="ticker.self == '1' ? 'color-theme' : ''"></i>
+                                        <!--<i data-v-e893afaa="" class="icon-my-no-collect"-->
+                                           <!--ng-class="ticker.self == '1' ? 'color-theme' : ''"></i>-->
                                     </td>
                                     <td data-v-e893afaa="" class="D text-left" ng-click="trade(ticker.fid)">
-                                        <span data-v-e893afaa="" ng-bind="ticker.fname_sn"></span>
+                                        <span data-v-e893afaa="" ng-bind="ticker.key | uppercase"></span>
                                     </td>
                                     <td data-v-e893afaa="" class="D text-left" ng-click="trade(ticker.fid)">
-                                        <span data-v-e893afaa="" ng-bind="ticker.lastDealPrize | currency:'':8"></span>
+                                        <span data-v-e893afaa="" ng-bind="ticker.lsp | currency:'':8"></span>
                                         <!-- <span data-v-e893afaa="" class="color-minor"> / 4.62CNY</span>-->
                                     </td>
                                     <td data-v-e893afaa="" class="D text-left " ng-click="trade(ticker.fid)"
                                         ng-class="ticker.fupanddown > 0 ? 'color-rose' : 'color-fall'" ng-bind="\{{ticker.fupanddown || 0 | currency:'':2}} + '%'">
                                     </td>
-                                    <td data-v-e893afaa="" class="D" ng-click="trade(ticker.fid)" ng-bind="ticker.highestPrize24"></span></td>
-                                    <td data-v-e893afaa="" class="D" ng-click="trade(ticker.fid)" ng-bind="ticker.lowestPrize24"></td>
+                                    <td data-v-e893afaa="" class="D" ng-click="trade(ticker.fid)" ng-bind="ticker.hp"></span></td>
+                                    <td data-v-e893afaa="" class="D" ng-click="trade(ticker.fid)" ng-bind="ticker.lsp"></td>
                                     <td data-v-e893afaa="" class="D text-right" ng-click="trade(ticker.fid)" style="padding-right:8px;">
-                                        <span data-v-e893afaa="" ng-bind="ticker.volumn"></span>
-                                        <span data-v-e893afaa="" class="color-minor" ng-bind="ticker.fShortName"></span>
+                                        <span data-v-e893afaa="" ng-bind="ticker.v"></span>
+                                        <span data-v-e893afaa="" class="color-minor" ng-bind="selectedMarket | uppercase"></span>
                                     </td>
                                     <td ng-click="trade(ticker.fid)"></td>
                                 </tr>
@@ -356,7 +354,7 @@
         {(tpl/common/footer.html)}
     </div>
 </div>
-<div class="body-mark js_loading"><img class="loading" src="https://www.bibox.com/static/loading.gif"></div>
+<script src="{+resources+}/dist/js/wssocket.js?v={+version+}"></script>
 <script src="{+resources+}/dist/js/index.js?v={+versoion+}"></script>
 </body>
 </html>

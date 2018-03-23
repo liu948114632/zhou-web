@@ -1,112 +1,61 @@
-!(function(){
-    var app = angular.module('app', ['i18n']);
-
-    $("#inviteCode").attr("placeholder", lang.inviteCode).val($.cookie("intro") ? $.cookie("intro"):"");
-    $("#name").attr("placeholder", lang.email);
-    $("#code").attr("placeholder", lang.code);
-    $("#pwd").attr("placeholder", lang.setPwd);
-    $("#confirmPwd").attr("placeholder", lang.rePwd);
-    $("#imgCode").attr("placeholder", lang.imageCode);
-
-    $("input[name=password]").on({
-        focus: function () {
-            $("#pwdStrength").fadeIn()
-        }, blur: function () {
-            newcheckpwd($(this).val());
-        }
-    });
-
-    $("#confirmPwd").on({
-         blur: function () {
-            var confirmPwd = $("#confirmPwd").val();
-            var pwd = $("#pwd").val();
-            if(confirmPwd !=pwd){
-                error_win(lang.noSamePwd);
-                return;
+var app = angular.module('app', ['i18n']);
+app.controller('registerCtrl',function ($scope,$interval) {
+    // var ws = new WebSocket(wsHost);
+    var ws = new WebSocket("ws://47.97.219.235:8811");
+    ws.onopen = function() {
+    };
+    ws.onmessage = function(event){
+        var fr = new FileReader();
+        fr.onload = function() {
+            var result = JSON.parse(this.result);
+            console.log(result);
+            if(result.msgtype == "RspInvestorRegister"){
+               if(result.em == "正确"){
+                   success_win("注册成功",function () {
+                       location.href = '/user/login';
+                   })
+               }else {
+                   error_win("注册失败，"+result.em);
+               }
             }
-        }
-    });
-
-    function newcheckpwd(pwd) {
-        var level = getPwdStrength(pwd);
-        if (level < 2) {
-            error_win(lang.pwd.level1)
-            return;
-        }
-        $("#pwdStrength").fadeOut();
-    }
-
-    var pending = false;
-    $("#register-btn").click(function(){
-        var name = $("#name").val().trim();
-        var pwd = $("#pwd").val().trim();
-        var code = $("#code").val().trim();
-        var confirmPwd = $("#confirmPwd").val().trim();
-        var pwdLevel = $("#pwdLevel").val() * 1;
-        if($("#inviteCode").length > 0){
-            var inviteCode = $("#inviteCode").val().trim();
-        }else{
-            var inviteCode = "";
-        }
-        var agreement = $("#agreement");
-        if(pending){
-            error_win(lang.pending);
-            return;
-        }
-        if(isEmpty(name)){
-            error_win(lang.emptyAccount);
-            return;
-        }
-        if(!isEmail(name)){
-            error_win(lang.emailFormatError);
-            return;
-        }
-        if(pwdLevel < 40){
-            error_win(lang.pwd1);
-            return;
-        }
-        if(confirmPwd != pwd){
-            error_win(lang.noSamePwd);
-            return;
-        }
-        if(isEmpty(code)){
-            error_win(lang.codeEmptyTips);
-            return;
-        }
-        if(!isEmpty(inviteCode) && !intCheck(inviteCode)){
-            error_win(lang.inviteCodeTips);
-            return;
-        }
-        if(!agreement.prop('checked')){
-            error_win(lang.agree);
-            return;
-        }
-        var param = {
-            name: name,
-            pwd: pwd,
-            code: code
         };
-        if(!isEmpty(inviteCode)){
-            param['inviteCode'] = inviteCode;
+        fr.readAsText(event.data,'gbk');
+    };
+    ws.onclose = function() {
+        console.log("连接已关闭...");
+    };
+
+    $scope.sendCode = function () {
+        if(isEmpty($scope.name)){
+            error_win("邮箱或手机号不能为空");
+            return;
         }
-        pending = true;
-        $.post('/v1/register', param, function(data){
-            pending = false;
-            if (data.code == 2) {
-                error_win(lang.binded);
-            } else if (data.code == 200) {
-                success_win(lang.operationSuccess, function(){
-                    location.href = "/account/auth";
-                });
-            } else if (data.code == 100) {
-                error_win(lang.codeNotSendTips);
-            }  else if (data.code == 101) {
-                error_win(lang.codeFrequentTips);
-            }else if (data.code == 102) {
-                error_win(lang.codeErrorTips+data.data);
-            }else {
-                error_win(lang.error);
-            }
-        },"json");
-    });
-})(jQuery);
+        ws.send("msgtype=ReqSmsCodeGenerate&em="+$scope.name);
+    };
+
+    $scope.register = function(){
+        if(isEmpty($scope.password) ){
+            error_win("登录密码不能为空");
+            return;
+        }
+        if(isEmpty($scope.name) ){
+            error_win("邮箱或手机号不能为空");
+            return;
+        }
+        if(isEmpty($scope.code) ){
+            error_win("验证码不能为空");
+            return;
+        }
+        if($scope.password != $scope.confirmPwd){
+            error_win("两次密码不一样");
+            return;
+        }
+        ws.send("msgtype=ReqInvestorRegister&em="+$scope.name+"&p="+$scope.password+"&sc="+$scope.code);
+    };
+    $interval(function () {
+        ws.send("msgtype=HeartBeat");
+    },30000);
+
+
+});
+

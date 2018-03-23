@@ -150,7 +150,8 @@ function center_box(id){
         if (opt.success) {
             fn.success = opt.success;
         }
-        var url = opt.url.indexOf("upload")!=-1 ? opt.url : basePath + opt.url;
+        // var url = opt.url.indexOf("upload")!=-1 ? opt.url : basePath + opt.url;
+        var url = opt.url;
         var _opt = $.extend(opt, {
             url: url,
             success: function (data, textStatus,jqXHR) {

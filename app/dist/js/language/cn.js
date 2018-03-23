@@ -440,8 +440,8 @@ var lang = {
             noLimit:"无限制",
             min:"单笔最小可提现数量：",
             max:"单笔最大可提现数量：",
-            total:"可用余额：",
-            frozen:"冻结余额：",
+            total:"可用余额",
+            frozen:"冻结余额",
             all:"全部提现",
             add:"快速添加",
             address:"接收地址"

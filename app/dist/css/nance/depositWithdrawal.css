@@ -23,16 +23,16 @@
 .accountInfo-lists li .items>div .btn.cur,.accountInfo-lists li .items>div .btn:hover{background:#ff4b33;border-color:#ff4b33;color:#fff;}
 .accountInfo-lists li .items>div .btn.disabled{cursor:not-allowed;color:#ababab;}
 .accountInfo-lists li .items>div .btn.disabled:hover{background:none!important;border-color:#e5e7ea;}
-.accountInfo-lists li .items>div.coin{width: 117px;text-align:left;padding-left:20px;}
+.accountInfo-lists li .items>div.coin{width: 240px;text-align:left;padding-left:20px;}
 .accountInfo-lists li .items>div.coin img{vertical-align:middle;height:16px;margin:-4px 6px 0 0;}
 .accountInfo-lists li .items>div.fullName{width: 177px;}
 .accountInfo-lists li .items>div.fullName a,.accountInfo-lists li .items>div.fullName a:visited{color:#666;text-decoration:underline;}
 .accountInfo-lists li .items>div.fullName a:hover{color:#ff4b33;}
-.accountInfo-lists li .items>div.total{width: 197px;}
-.accountInfo-lists li .items>div.useable{width: 197px;}
-.accountInfo-lists li .items>div.locked{width: 197px;}
-.accountInfo-lists li .items>div.equalValue{width: 196px;}
-.accountInfo-lists li .items>div.action{width:290px;}
+.accountInfo-lists li .items>div.total{width: 300px;text-align: left!important}
+.accountInfo-lists li .items>div.useable{width: 300px;text-align: left!important}
+.accountInfo-lists li .items>div.locked{width: 300px;text-align: left!important}
+.accountInfo-lists li .items>div.equalValue{width: 300px;text-align: left!important}
+.accountInfo-lists li .items>div.action{width:300px;text-align: left!important}
 
 .accountInfo-lists li .items>div.action .enableTip{position:relative;display:inline-block;vertical-align:middle;cursor:pointer;}
 .accountInfo-lists li .items>div.action .enableTip .iconfont{color:#f00;margin-right:0;}

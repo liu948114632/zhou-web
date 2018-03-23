@@ -46,35 +46,31 @@
                                 <div class="selectBox selectAsset" >
                                     <div class="selectIpt" ng-click="showAssets()">
                                         <div class="curAssetInfo ng-scope">
-                                            <strong class="ng-binding" ng-bind="wallet.name"></strong>-<span class="ng-binding" ng-bind="wallet.allName"></span>
+                                            <strong class="ng-binding" ng-bind="id"></strong>
                                         </div>
                                     </div>
-                                    <i class="iconfont icon-downsj" ng-click="showAssets()"></i>
-                                    <ul class="scrollStyle" style="display: none">
-                                        <li class="filterIpt">
-                                            <input type="text" placeholder="\{{lang.enterkey}}" ng-keyup="search($event)">
-                                        </li>
-                                        <li class="coinInfo ng-scope" ng-if="asset.isRecharge" ng-repeat="asset in userAssets" ng-click="selectAsset(asset,$event)">
-                                            <strong class="ng-binding" ng-bind="asset.name"></strong>-<span class="ng-binding" ng-bind="asset.allName"></span>
-                                        </li>
-                                    </ul>
+                                    <!--<i class="iconfont icon-downsj" ng-click="showAssets()"></i>-->
+                                    <!--<ul class="scrollStyle" style="display: none">-->
+                                        <!--<li class="filterIpt">-->
+                                            <!--<input type="text" placeholder="\{{lang.enterkey}}" ng-keyup="search($event)">-->
+                                        <!--</li>-->
+                                        <!--<li class="coinInfo ng-scope" ng-if="asset.isRecharge" ng-repeat="asset in userAssets" ng-click="selectAsset(asset,$event)">-->
+                                            <!--<strong class="ng-binding" ng-bind="asset.name"></strong>-<span class="ng-binding" ng-bind="asset.allName"></span>-->
+                                        <!--</li>-->
+                                    <!--</ul>-->
                                 </div>
                                 <div  class="ng-scope">
-                                    <table class="curAsset">
+                                    <table class="curAsset" ng-cloak="">
                                         <colgroup style="width:120px;"></colgroup>
                                         <colgroup style="width:380px;"></colgroup>
                                         <tbody>
                                         <tr>
-                                            <th class="ng-binding" ng-bind="lang.entrustTotal"></th>
-                                            <td class="ng-binding" ng-bind="wallet.total*1 + wallet.frozen*1"></td>
-                                        </tr>
-                                        <tr>
                                             <th class="ng-binding" ng-bind="lang.js.payout.frozen"></th>
-                                            <td class="ng-binding" ng-bind="wallet.frozen"></td>
+                                            <td class="ng-binding">\{{wallet.fc == undefined? 0: wallet.fc}}</td>
                                         </tr>
                                         <tr>
                                             <th class="ng-binding" ng-bind="lang.js.payout.total"></th>
-                                            <td class="ng-binding" ng-bind="wallet.total"></td>
+                                            <td class="ng-binding" > \{{wallet.a == undefined? 0: wallet.a}}</td>
                                         </tr>
                                         </tbody>
                                     </table>

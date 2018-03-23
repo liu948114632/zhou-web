@@ -7,117 +7,43 @@ app.config(['$locationProvider', function($locationProvider) {
 }]);
 app.controller('payinController', ['$scope', '$http', '$location', '$interval',  function ($scope, $http, $location, $interval) {
     $scope.id = $location.search().id;
-    $scope.userAssets= [];
-    $scope.balancesTemp= [];
-    $scope.ischarge = false;
-    $scope.wallet = {
-        frozen: 0,
-        total: 0
-    }
-    function loadBalances() {
-        $http.get(basePath + '/v1/account/balances')
-            .then(function(res){
-                $scope.userAssets = res.data.data;
-                $scope.balancesTemp = res.data.data;
-                var arr = $scope.userAssets;
-                if(typeof($scope.id) != "undefined"){
-                    for(var i=0; i< arr.length; i++){
-                        if(arr[i].id == $scope.id){
-                            $scope.selectAsset(arr[i]);
-                        }
-                    }
-                }else {
-                    $scope.selectAsset(arr[0]);
-                }
-            })
-    }
-    $scope.search = function ($event) {
-        var content = $($($event.target)).val();
-        if(content == ""){
-            $scope.userAssets = $scope.balancesTemp;
-            return;
-        }
-        var arr = $scope.balancesTemp;
-        var temparr = [];
-        for(var i = 0; i < arr.length; i++){
-            var name = arr[i].name;
-            var allName = arr[i].allName;
-            if(name.toUpperCase().indexOf(content.toUpperCase()) > -1 || allName.toUpperCase().indexOf(content.toUpperCase()) > -1){
-                temparr.push(arr[i]);
+    $scope.wallet  = {};
+    var ws = new WebSocket(wsHost);
+    var result;
+    ws.onopen = function() {
+        ws.send("msgtype=ReqSyncRandomString");
+    };
+    ws.onmessage = function(event){
+        var fr = new FileReader();
+        fr.onload = function() {
+            result = JSON.parse(this.result);
+            if(result.msgtype == "RspSyncRandomString"){
+                var time =  (new Date()).valueOf();
+                var val = "msgtype=ReqLogin&uid="+sessionStorage.getItem("uid")+"&ps=-1&td=20180101&TimeStamp="+time+"&RandomString="+result.rs;
+                var hash = CryptoJS.HmacSHA256(val, sessionStorage.getItem("key"));
+                var sign = hash.toString();
+                var msg = val+"&Sign="+sign;
+                ws.send(msg);
+                return;
             }
-        }
-        $scope.userAssets = temparr;
-    }
-    $scope.selectAsset = function (wallet) {
-        $scope.wallet = wallet;
-        $(".scrollStyle").hide();
-        getCoinAddress(wallet.id,wallet.name);
-    }
-    $scope.showAssets = function () {
-        $(".scrollStyle").toggle();
-    }
-    function getCoinAddress(symbol,shortname) {
-        $scope.id = symbol;
-        $http.get(basePath+'/v1/account/getCoinAddress?create=1&symbol='+symbol)
-            .then(function(res){
-                $scope.shortname = shortname;
-                $scope.address = res.data.data;
-                $scope.ischarge = true;
-                if(res.data.code == 200 && $scope.address != ""){
-                    makeCode("addressQrcode",$scope.address,100,100);
+            if(result.msgtype == "RspLogin"){
+                if(result.em == "正确"){
+                    ws.send("msgtype=ReqQryTradingAccount&cid="+$scope.id+"&at=4");
+                    // ws.send("msgtype=ReqQryTradingAccount&at=4");
+                }else {
+                    error_win("登录失败，"+result.em);
                 }
-            })
-        $scope.totalPage= 0;
-        $scope.all_pages = [];
-        $scope.currency_page = 1;
-        $scope.loadList(1);
-    }
-    loadBalances();
-
-
-    function makeCode (boxId,content,width,height) {
-        $("#addressQrcode").html("");
-        new QRCode(document.getElementById(""+boxId), {
-            width : width,
-            height : height
-        }).makeCode(content);
-    }
-    $scope.copyAddress = function (textAreaId,msgDiv) {
-        var input = document.getElementById(""+textAreaId);
-        input.value = $scope.address;
-        input.select();
-        document.execCommand("copy");
-        $("#"+msgDiv).show();
-        setTimeout(function () {
-            $("#"+msgDiv).hide();
-        },2000);
-    }
-
-    var pageSize = 8;
-    $scope.totalPage= 0;
-    $scope.all_pages = [];
-    $scope.currency_page = 1;
-
-    $scope.loadList = function(page) {
-        if($scope.totalPage != 0 && $scope.totalPage != 1){
-            page = page>$scope.totalPage? $scope.totalPage : page;
-        }
-
-        $scope.all_pages = [];
-        $http.get(basePath+'/v1/account/coinIn?symbol='+$scope.id+"&page="+page+"&pageSize="+pageSize)
-            .then(function (res) {
-                $scope.rechargeLogs = res.data.data;
-                $scope.currency_page = page;
-                if (res.data.data.length === 0) {
-                    $scope.NoOrder = true;
-                    $scope.NewGroup = [];
-                } else {
-                    var all = res.data.totalCount/pageSize;
-                    $scope.totalPage = all >parseInt(all)? parseInt(all) +1: parseInt(all);
-                    for(var i =0; i<$scope.totalPage; i++){
-                        $scope.all_pages.push(i+1);
-                    }
-                }
-            })
-    }
+                return;
+            }
+            if(result.msgtype == "RspQryTradingAccount"){
+                $scope.wallet = result;
+                $scope.$apply();
+                return;
+            }
+        };
+        fr.readAsText(event.data,'gbk');
+    };
+    ws.onclose = function() {
+        console.log("连接已关闭...");
+    };
 }]);

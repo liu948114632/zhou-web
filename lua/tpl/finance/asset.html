@@ -10,7 +10,7 @@
 <div  class="ng-scope">
     {(tpl/common/header.html)}
 </div>
-<div class="wrap" >
+<div class="wrap" ng-controller="assetController">
     <div class="container">
         <style>
             .balance_search {
@@ -234,9 +234,7 @@
                 margin-top: 6px;
             }
         </style>
-        <div class="chargeWithdraw ng-scope" ng-controller="assetController">
-            <div class="alert ng-binding" id="showText" ng-bind="lang.seest.tip">
-
+        <div class="chargeWithdraw ng-scope" >
             </div>
             <div class="chargeWithdraw-title f-cb">
                 <h3 class="ng-binding" >
@@ -247,71 +245,52 @@
             </div>
 
             <div class="balance_search f-cb">
-                <div class="search_input f-fl">
+                <!--<div class="search_input f-fl">-->
 
-                    <input type="text" ng-keyup="search($event)" class="ng-pristine ng-valid">
-                    <i class="iconfont icon-sousuo"></i>
-                </div>
-                <div class="f-fl">
-                    <input type="checkbox" ng-model="hideAccount"   class="ng-pristine ng-valid" >
-                    <label class="ng-binding" ng-bind="lang.hidden">
-                    </label>
-                </div>
+                    <!--<input type="text" ng-keyup="search($event)" class="ng-pristine ng-valid">-->
+                    <!--<i class="iconfont icon-sousuo"></i>-->
+                <!--</div>-->
+                <!--<div class="f-fl">-->
+                    <!--<input type="checkbox" ng-model="hideAccount"   class="ng-pristine ng-valid" >-->
+                    <!--<label class="ng-binding" ng-bind="lang.hidden">-->
+                    <!--</label>-->
+                <!--</div>-->
             </div>
             <!--结束筛选  -->
             <ul class="accountInfo-lists">
                 <li class="th">
                     <div class="items f-cb">
-                        <div class="coin ng-binding" ng-click="sortByKey('asset')" ng-bind="lang.coin">
+                        <div class="coin ng-binding"  ng-bind="lang.coin">
                         </div>
-                        <div class="fullName ng-binding" ng-click="sortByKey('assetName')" ng-bind="lang.seest.name">
+                        <div class="useable f-right ng-binding"  ng-bind=" lang.js.payout.total">
                         </div>
-                        <div class="total f-right ng-binding" ng-click="sortByKey('total')" ng-bind="lang.entrustTotal">
-                        </div>
-                        <div class="useable f-right ng-binding" ng-click="sortByKey('free')" ng-bind=" lang.js.payout.total">
-                        </div>
-                        <div class="locked f-right ng-binding" ng-click="sortByKey('locked')" ng-bind=" lang.js.payout.frozen">
+                        <div class="locked f-right ng-binding"  ng-bind=" lang.js.payout.frozen">
                         </div>
                         <div class="action f-right"></div>
                     </div>
                 </li>
-                <li class="td ng-scope ng-hide"  ng-show="balances.length > 0" ng-repeat="wallet in balances | filter: func ">
+                <li   ng-repeat="w in items" ng-cloak="">
                     <div class="items f-cb">
                         <div class="coin ng-binding">
-                            <img  src="\{{wallet.url}}" ><span ng-bind="wallet.name"></span>
+                            <span ng-bind="w.cid | uppercase"></span>
                         </div>
-                        <div class="fullName" ng-bind="wallet.allName">
-                        </div>
-                        <div class="useable f-right ng-binding" ng-bind="wallet.total*1 + wallet.frozen*1"></div>
-                        <div class="locked f-right ng-binding" ng-bind="wallet.total"></div>
-                        <div class="equalValue f-right ng-binding" ng-bind="wallet.frozen"></div>
+                        <div class="locked f-right ng-binding" > \{{w.a == undefined?0 : w.a}}</div>
+                        <div class="equalValue f-right ng-binding">\{{w.fc == undefined?0 : w.fc}}</div>
                         <div class="action f-right">
-                            <a  href="/finance/payin?id=\{{wallet.id}}"  class="btn btn-deposit ng-binding ng-scope" ng-bind="lang.recharge"></a>
-                            <a href="/finance/payout?id=\{{wallet.id}}"  class="btn btn-withdraw ng-binding ng-scope" ng-bind="lang.withdraw"></a>
-                            <span class="btn trade-btn ng-binding" ng-click="goExchange(wallet.name)" ng-bind="lang.goExchange"></span>
+                            <a  href="/finance/payin?id=\{{w.cid}}"  class="btn btn-deposit ng-binding ng-scope" ng-bind="lang.recharge"></a>
+                            <a href="/finance/payout?id=\{{w.cid}}"  class="btn btn-withdraw ng-binding ng-scope" ng-bind="lang.withdraw"></a>
                         </div>
                     </div>
                 </li>
             </ul>
-
-            <!-- 当前币种交易市场 -->
-            <div class="tradeSymbol" id="tradeSymbol" ng-mouseleave="resetSymbols()">
-                <ul>
-                </ul>
-                <div class="noSymbols ng-binding ng-scope" ng-if="!assetSymbols.length">
-                    暂无交易市场
-                </div>
-            </div>
-
             <div ng-hide="init_load">
                 {(tpl/common/pending.html)}
             </div>
         </div>
     </div>
 </div>
+{(tpl/common/footer.html)}
 <script src="{+resources+}/dist/js/finance/asset.js?v={+versoion+}"></script>
-
-    {(tpl/common/footer.html)}
 
 </body>
 </html>
