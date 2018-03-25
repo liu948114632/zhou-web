@@ -386,22 +386,22 @@
                             </ul>
                         </div>
                         <div class="market-con scrollStyle" ng-show="selectedGroup!='like'">
-                            <ul ng-repeat="ticker in tickers"
+                            <ul ng-repeat="ticker in markets[selectedMarket]"
                                 ng-class="selectedPair.fid == ticker.fid ? 'selectedPro' : ''"
-                                ng-click="setPair(ticker)"
+                                ng-click="setPair(ticker, 'like')"
                                 class="ng-scope">
-                                <li ng-click="favoriteFun($event, ticker)"><span
-                                        class="iconfont icon-xingxing activeTabDefault"
-                                        ng-class="ticker.pro? 'activeTxt': ''"></span></li>
-                                <li class="ng-binding">\{{ticker.fShortName}}/\{{ticker.group}}</li>
+                                <li ng-click="favoriteFun($event, ticker)">
+                                    <span class="iconfont icon-xingxing activeTabDefault"
+                                          ng-class="ticker.pro? 'activeTxt': ''"></span></li>
+                                <li class="ng-binding">\{{ticker.key}}</li>
                                 <li ng-class="{'green':p.close>lastPrices[p.symbol],'magenta':p.close<lastPrices[p.symbol]}"
                                     class="ng-binding">
-                                    \{{ticker.lastDealPrize | fixed: 8}}
+                                    \{{ticker.lsp | fixed: 8}}
                                 </li>
                                 <li class="ng-scope">
                                     <span
-                                            ng-class="ticker.fupanddown > 0 ? 'magenta': ticker.fupanddown == 0 ? '' : 'green'"
-                                            class="ng-binding ng-scope">\{{ticker.fupanddown > 0 ? '+': ''}}\{{ticker.fupanddown || 0 | currency:'':2}}%</span>
+                                            ng-class="ticker.up > 0 ? 'magenta': ticker.up == 0 ? '' : 'green'"
+                                            class="ng-binding ng-scope">\{{ticker.up > 0 ? '+': ''}}\{{ticker.up || 0 | currency:'':2}}%</span>
                                 </li>
                             </ul>
                         </div>

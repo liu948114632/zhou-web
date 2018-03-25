@@ -140,40 +140,25 @@ function center_box(id){
 	});
 }
 
-(function ($) {
-    var _ajax = $.ajax;
-    $.ajax = function (opt) {
-        var fn = {
-            success: function (data, textStatus) {
-            }
-        };
-        if (opt.success) {
-            fn.success = opt.success;
-        }
-        // var url = opt.url.indexOf("upload")!=-1 ? opt.url : basePath + opt.url;
-        var url = opt.url;
-        var _opt = $.extend(opt, {
-            url: url,
-            success: function (data, textStatus,jqXHR) {
-                if ((typeof(data) == "string" && $.trim(data) == '{"code":401}') || (data && data.code == 401)) {
-                    location.href = "/user/login";
-                } else {
-                    fn.success(data, textStatus,jqXHR);
-                }
-            }
-        });
-        return _ajax(_opt);
-    };
-    $.getError = function (error, url, data, success) {
-        $.ajax({
-            url: url,
-            data: data,
-            success: success,
-            error: error,
-            dataType: "json"
-        });
-    };
-})(jQuery);
+function unzip(req) {
+    var uInt8Array = new Uint8Array(req);
+    var data        = pako.inflate(uInt8Array);
+    var strData     = String.fromCharCode.apply(null, new Uint16Array(data));
+    return strData;
+}
+
+function unzipBlob(req) {
+    var strData     = atob(req);
+    // Convert binary string to character-number array
+    var charData    = strData.split('').map(function(x){return x.charCodeAt(0);});
+    // Turn number array into byte-array
+    var binData     = new Uint8Array(charData);
+    // unzip
+    var data        = pako.inflate(binData);
+    // Convert gunzipped byteArray back to ascii string:
+    strData     = String.fromCharCode.apply(null, new Uint16Array(data));
+    return strData;
+}
 
 function tm_dialog(options){
     var width = 450;

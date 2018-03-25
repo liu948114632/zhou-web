@@ -372,59 +372,42 @@
         $scope.markets= {};
         $scope.groups = [];
         $scope.selectedMarket= "btc";
-        var ws = new WebSocket(wsHost);
-        var result;
-        ws.onopen = function() {
-            ws.send("msgtype=ReqSyncRandomString");
-        };
-        ws.onmessage = function(event){
-            var fr = new FileReader();
-            fr.onload = function() {
-                result = JSON.parse(this.result);
-                if(result.msgtype == "RspSyncRandomString"){
-                    var time =  (new Date()).valueOf();
-                    var val = "msgtype=ReqLogin&uid="+sessionStorage.getItem("uid")+"&ps=-1&td=20180101&TimeStamp="+time+"&RandomString="+result.rs;
-                    var hash = CryptoJS.HmacSHA256(val, sessionStorage.getItem("key"));
-                    var sign = hash.toString();
-                    var msg = val+"&Sign="+sign;
-                    ws.send(msg);
-                }
-                if(result.msgtype == "RspLogin"){
-                    if(result.em == "正确"){
-                        ws.send("msgtype=ReqQryDepthMarketData");
-                    }else {
-                        error_win("登录失败，"+result.em);
-                    }
-                }
-                if(result.msgtype == "RspQryDepthMarketData"){
-                    var group = result.iid.split('_')[1];
-                    var sp = result.pcp == undefined? 1 : result.pcp;
-                    result.up = (result.lsp == undefined? 1 :result.lsp - sp)/sp *100 ;
-                    result.key = result.iid.replace('_','/');
+        function loadMarkets() {
+            var time =  (new Date()).valueOf();
+            var val = "msgtype=ReqQryDepthMarketData&UserID=123"+"&TimeStamp="+time;
+            var hash = CryptoJS.HmacSHA256(val, "123");
+            var sign = hash.toString();
+            $http({
+                method:"POST",
+                url:"/api/v1",
+                data:val+"&Sign="+sign,
+                responseType :'arraybuffer'
+            }).then(function (res) {
+                var result = JSON.parse(unzip(res.data));
+                for(var i =0;i<result.length;i++){
+                    var group = result[i].iid.split('_')[1];
+                    var sp = result[i].pcp == undefined? 1 : result[i].pcp;
+                    result[i].up = (result[i].lsp == undefined? 1 :result[i].lsp - sp)/sp *100 ;
+                    result[i].key = result[i].iid.replace('_','/');
                     if($scope.markets[group] != undefined){
-                        deleteArray($scope.markets[group],result.iid);
-                        $scope.markets[group].push(result);
+                        deleteArray($scope.markets[group],result[i].iid);
+                        $scope.markets[group].push(result[i]);
                     }else {
                         $scope.markets[group]= [];
-                        $scope.markets[group].push(result);
+                        $scope.markets[group].push(result[i]);
                         $scope.groups.push(group);
                     }
-                    $scope.$apply();
                 }
-                console.log(result);
-            };
-            fr.readAsText(event.data,'gbk');
-        };
-        ws.onclose = function() {
-            console.log("连接已关闭...");
-        };
+
+            })
+        }
+        loadMarkets();
         $scope.setMarket = function (group) {
             $scope.selectedMarket= group;
-        }
-        $interval(function () {
-            // rootws.send("msgtype=HeartBeat");
-            ws.send("msgtype=ReqQryDepthMarketData");
-        },10000);
+        };
+        // $interval(function () {
+        //     loadMarkets();
+        // },7000);
 
         //删除数组中元素
         function deleteArray(arr,iid) {
