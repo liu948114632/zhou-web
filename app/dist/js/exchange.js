@@ -381,25 +381,31 @@
 
         function marketRefresh() {
             // msgtype=ReqQryDepth&iid=ltc_btc&pln=10&UserID=00001&TimeStamp=2112345678000
-            if ($scope.selectedPair) {
+            // if ($scope.selectedPair) {
                 var time =  (new Date()).valueOf();
 
-                var iid = $scope.selectedPair.iid;
-                var val = "msgtype=ReqQryDepth&iid="+$scope.selectedPair.iid+"&UserID=123"+"&TimeStamp="+time;
-                // var iid = "ltc_btc";
-                // var val = "msgtype=ReqQryDepth&iid=ltc_btc&pln=10&UserID=948114632@qq.com"+"&TimeStamp="+time;
+                // var iid = $scope.selectedPair.iid;
+                // var val = "msgtype=ReqQryDepth&iid="+$scope.selectedPair.iid+"&UserID=123"+"&TimeStamp="+time;
+                var iid = "ltc_btc";
+                var val = "msgtype=ReqQryDepth&iid=ltc_btc&pln=10&UserID=948114632@qq.com"+"&TimeStamp="+time;
                 var hash = CryptoJS.HmacSHA256(val, "123123");
                 var sign = hash.toString();
-                $.post("/api/v1",val+"&Sign="+sign,function (res) {
-                    var s = res.replace('"iid":'+iid+',',"");
+                $http({
+                    method:"POST",
+                    url:"/api/v1",
+                    data:val+"&Sign="+sign,
+                    responseType :'arraybuffer',
+                }).then(function (res) {
+                    var result = toGbk(res.data);
+                    var s = result.replace('"iid":'+iid+',',"");
                     var json_result = JSON.parse(s);
                     $scope.buyDepthList = json_result.bids;
                     $scope.sellDepthList = json_result.asks;
                     $scope.$apply();
-                },'html')
-            }
+                })
+            // }
         }
-        // marketRefresh();
+        marketRefresh();
 
         function recentLog() {
             // if ($scope.selectedPair) {
@@ -409,15 +415,6 @@
                 var val = "msgtype=ReqQryTrade&isid="+"ltc_btc"+"&UserID=948114632@qq.com"+"&TimeStamp="+time;
                 var hash = CryptoJS.HmacSHA256(val, "123123");
                 var sign = hash.toString();
-                // $.post("/api/v1",val+"&Sign="+sign,function (res) {
-                //     console.log(res)
-                //     unzip(res);
-                //     var s = res.replace('"iid":'+iid+',',"");
-                //     var json_result = JSON.parse(s);
-                //     $scope.recentDealList = result.recentDealList;
-                //     $scope.$apply();
-                // })
-
                 $http({
                     method:"POST",
                     url:"/api/v1",
@@ -425,18 +422,14 @@
                     responseType :'arraybuffer',
 
                 }).then(function (res) {
-                    console.log(res.data)
-                    // console.log(unzip(res.data))
-                    var uInt8Array = new Uint8Array(res.data);
-                    var uInt8Array = new (res.data);
-                    var data        = pako.inflate(uInt8Array);
-                    var strData     = String.fromCharCode.apply(null, new Uint16Array(data));
-                    console.log(strData);
+                    var dataView = new DataView(res.data);
+                    var decoder = new TextDecoder('gb2312');
+                    var decodedString = decoder.decode(dataView);
+                    console.info(decodedString);
                 })
             // }
         }
-        recentLog();
-
+        // recentLog();
         function autoMarketRefresh() {
             $interval(marketRefresh, 1000)
         }

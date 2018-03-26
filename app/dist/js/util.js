@@ -147,17 +147,10 @@ function unzip(req) {
     return strData;
 }
 
-function unzipBlob(req) {
-    var strData     = atob(req);
-    // Convert binary string to character-number array
-    var charData    = strData.split('').map(function(x){return x.charCodeAt(0);});
-    // Turn number array into byte-array
-    var binData     = new Uint8Array(charData);
-    // unzip
-    var data        = pako.inflate(binData);
-    // Convert gunzipped byteArray back to ascii string:
-    strData     = String.fromCharCode.apply(null, new Uint16Array(data));
-    return strData;
+function toGbk(data) {
+    var dataView = new DataView(data);
+    var decoder = new TextDecoder('gb2312');
+    return decoder.decode(dataView);
 }
 
 function tm_dialog(options){
