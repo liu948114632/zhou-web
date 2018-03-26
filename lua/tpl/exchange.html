@@ -88,8 +88,8 @@
 </div>
 <div class="main">
     <div class="container">
-        <div class="kline-para">
-            <div class="productSymbol" ng-cloak="">
+        <div class="kline-para" ng-cloak="">
+            <div class="productSymbol" >
                 <strong class="ng-binding">\{{selectedPair.iid.split('_')[0] | uppercase}}</strong>
                 <font class="ng-binding" style="font-size:14px;color:#999;">
                     / \{{selectedPair.iid.split('_')[1] | uppercase}}
@@ -204,11 +204,11 @@
                 </div>
                 <div class="fee">
                     <div ng-if="user.isLogin == 1" class="ng-scope">
-                        <label class="ng-binding" ng-bind="lang.buy_fee + '£º'"></label><span class="ng-binding ng-scope">\{{buyFee * 100}} %</span> |
-                        <label class="ng-binding" ng-bind="lang.sell_fee + '£º'"> </label><span  class="ng-binding ng-scope">\{{sellFee * 100}} %</span>
+                        <label class="ng-binding" ng-bind="lang.buy_fee + 'ï¼š'"></label><span class="ng-binding ng-scope">\{{buyFee * 100}} %</span> |
+                        <label class="ng-binding" ng-bind="lang.sell_fee + 'ï¼š'"> </label><span  class="ng-binding ng-scope">\{{sellFee * 100}} %</span>
                     </div>
                 </div>
-                <div class="orderforms f-cb" ng-init="orderType={'v':'limit'}">
+                <div class="orderforms f-cb" ng-init="orderType={'v':'limit'}" ng-cloak="">
                     <div class="orderform-type">
 							<span ng-class="{true:'cur',false:''}[orderType.v=='limit']" ng-click="orderType.v='limit'"
                                   class="ng-binding cur" ng-bind="lang.entrust">
@@ -226,7 +226,7 @@
                                   class="ng-pristine ng-invalid ng-invalid-required">
                                 <div class="orderforms-inputs">
                                     <div class="field f-cb">
-                                        <label class="ng-binding" ng-bind="lang.price + '£º'"></label>
+                                        <label class="ng-binding" ng-bind="lang.price + 'ï¼š'"></label>
                                         <div class="iptwrap leftBig">
                                             <input type="text" name="buyPrice" id="buyUnitPrice"
                                                    ng-change="setTotalOrAmount('buyOrder')"
@@ -237,7 +237,7 @@
                                         </div>
                                     </div>
                                     <div class="field f-cb">
-                                        <label class="ng-binding" ng-bind="lang.spread.amount + '£º'"></label>
+                                        <label class="ng-binding" ng-bind="lang.spread.amount + 'ï¼š'"></label>
                                         <div class="iptwrap" ng-init="maxQuantity=false">
                                             <input type="text" name="buyQuanity" id="buyNumber"
                                                    input-decimal-separator="4"
@@ -259,7 +259,7 @@
                                         </div>
                                     </div>
                                     <div class="field f-cb">
-                                        <label class="ng-binding" ng-bind="lang.cost + '£º'"></label>
+                                        <label class="ng-binding" ng-bind="lang.cost + 'ï¼š'"></label>
                                         <div class="iptwrap money-wrap">
                                              <span ng-bind="buyOrder.total || 0"
                                                    class="ng-pristine ng-valid c_green"></span>
@@ -288,7 +288,7 @@
                                   class="ng-pristine ng-valid">
                                 <div class="orderforms-inputs">
                                     <div class="field f-cb">
-                                        <label class="ng-binding" ng-bind="lang.price + '£º'"></label>
+                                        <label class="ng-binding" ng-bind="lang.price + 'ï¼š'"></label>
                                         <div class="iptwrap leftBig">
                                             <input type="text" name="sellPrice" id="sellUnitPrice"  ng-model="sellOrder.price" ng-change="setTotalOrAmount('sellOrder')" input-decimal-separator="8" class="ng-pristine ng-valid">
                                             <span class="unit ng-binding">\{{selectedPair.group}}</span>

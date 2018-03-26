@@ -422,7 +422,8 @@
                     method:"POST",
                     url:"/api/v1",
                     data:val+"&Sign="+sign,
-                    responseType :'arraybuffer'
+                    responseType :'arraybuffer',
+
                 }).then(function (res) {
                     console.log(res.data)
                     // console.log(unzip(res.data))
