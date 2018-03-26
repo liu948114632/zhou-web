@@ -13,13 +13,13 @@ angular.module('i18n', []).value(lang, lang).controller('gCtrl', ['$scope', '$in
 
 angular.configHttpProvider = function(app) {
     app.config(['$httpProvider', function($httpProvider){
-        $httpProvider.defaults.headers.post = {"Content-Type": "application/x-www-form-urlencoded"}
-        $httpProvider.defaults.transformRequest = function(obj) {
-            var str = [];
-            for (var p in obj) {
-                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-            }
-            return str.join("&");
-        }
+        // $httpProvider.defaults.headers.post = {"Content-Type": "application/x-www-form-urlencoded"}
+        // $httpProvider.defaults.transformRequest = function(obj) {
+        //     var str = [];
+        //     for (var p in obj) {
+        //         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        //     }
+        //     return str.join("&");
+        // }
     }])
 }

@@ -1,7 +1,8 @@
 <!DOCTYPE HTML>
-<html ng-app="app" ng-controller="gCtrl">
+<html ng-app="app" ng-controller="gCtrl" >
 <head>
     {(tpl/common/include.html)}
+    <!--<meta charset="gb2312"> &lt;!&ndash; for HTML5 &ndash;&gt;-->
     <title>{{param[lang..'_title']}}</title>
     <style>
         .productSymbol.no-info strong {
@@ -88,34 +89,37 @@
 <div class="main">
     <div class="container">
         <div class="kline-para">
-            <div class="productSymbol">
-                <strong class="ng-binding">\{{selectedPair.fShortName}}</strong><font class="ng-binding" style="font-size:14px;color:#999;"> / \{{selectedPair.group}}</font>
-                <div class="info-box">
-                    <span class="ng-binding" style="font-size:16px;color:#999;">\{{selectedPair.fname}}</span>
-                </div>
+            <div class="productSymbol" ng-cloak="">
+                <strong class="ng-binding">\{{selectedPair.iid.split('_')[0] | uppercase}}</strong>
+                <font class="ng-binding" style="font-size:14px;color:#999;">
+                    / \{{selectedPair.iid.split('_')[1] | uppercase}}
+                </font>
+                <!--<div class="info-box">-->
+                    <!--<span class="ng-binding" style="font-size:16px;color:#999;">\{{selectedPair.fname}}</span>-->
+                <!--</div>-->
             </div>
             <ul>
                 <li>
                     <h4 class="ng-binding" ng-bind="lang.latest"></h4>
                     <strong ng-class="recentDealList[0][0] - recentDealList[1][0] > 0? 'magenta': 'green'"
-                            class="ng-binding">\{{selectedPair.lastDealPrize}}</strong>
+                            class="ng-binding">\{{selectedPair.lsp}}</strong>
                 </li>
                 <li>
                     <h4 class="ng-binding" ng-bind="lang.shake"></h4>
                     <strong class="changeRate ng-binding"
-                            ng-class="{'magenta':selectedPair.fupanddown > 0,'green':selectedPair.fupanddown <= 0}">\{{selectedPair.fupanddown > 0 ? '+': ''}}\{{selectedPair.fupanddown | currency:"":2}} %</strong>
+                            ng-class="{'magenta':selectedPair.up > 0,'green':selectedPair.up <= 0}">\{{selectedPair.up > 0 ? '+': ''}}\{{selectedPair.up | currency:"":2}} %</strong>
                 </li>
                 <li>
                     <h4 class="ng-binding" ng-bind="lang.highest"></h4>
-                    <strong class="ng-binding" ng-bind="selectedPair.highestPrize24"></strong>
+                    <strong class="ng-binding" ng-bind="selectedPair.hp"></strong>
                 </li>
                 <li>
                     <h4 class="ng-binding" ng-bind="lang.lowest"></h4>
-                    <strong class="ng-binding" ng-bind="selectedPair.lowestPrize24"></strong>
+                    <strong class="ng-binding">\{{selectedPair.lp? selectedPair.lp :'0'}}</strong>
                 </li>
                 <li>
                     <h4 class="ng-binding" ng-bind="lang.dealAmount"></h4>
-                    <strong class="ng-binding" ng-bind="selectedPair.volumn"></strong>
+                    <strong class="ng-binding" ng-bind="selectedPair.v"></strong>
                 </li>
             </ul>
         </div>
@@ -140,7 +144,7 @@
                             <colgroup style="width:30%"></colgroup>
                             <colgroup style="width:40%"></colgroup>
                             <tbody>
-                            <tr ng-repeat="row in sellDepthList" ng-click="setBuy(row)" class="ng-scope">
+                            <tr ng-repeat="row in sellDepthList | orderBy : 'row[0]' : 'desc'" ng-click="setBuy(row)" class="ng-scope">
                                 <td class="f-left green">
                                     <span class="ng-binding ng-scope magenta"><span ng-bind="row[0] | fixed: 8"></span></span>
                                 </td>
@@ -156,7 +160,7 @@
                     <div class="newest">
                         <strong ng-click="trade(currentProduct.close)"
                                 ng-class="recentDealList[0][0] - recentDealList[1][0] >0? 'magenta' :'green'"
-                                class="ng-binding">\{{recentDealList[0][0]}}
+                                class="ng-binding" ng-cloak="">\{{selectedPair.lsp }}
                             <span class="iconfont ng-scope" ng-class="recentDealList[0][0] - recentDealList[1][0] >0? 'magenta icon-zhang' :'green icon-die'"
                                 style="font-weight:normal;vertical-align:top;font-size:14px;"></span>
                         </strong>
@@ -172,7 +176,7 @@
                             <colgroup style="width:30%"></colgroup>
                             <colgroup style="width:40%"></colgroup>
                             <tbody>
-                            <tr ng-repeat="row in buyDepthList" ng-click="setSell(row)" class="ng-scope">
+                            <tr ng-repeat="row in buyDepthList |orderBy :'+row[0]' " ng-click="setSell(row)" class="ng-scope">
                                 <td class="f-left green">
                                     <span class="ng-binding ng-scope"><span ng-bind="row[0] | fixed: 8"></span></span>
                                 </td>
@@ -200,8 +204,8 @@
                 </div>
                 <div class="fee">
                     <div ng-if="user.isLogin == 1" class="ng-scope">
-                        <label class="ng-binding" ng-bind="lang.buy_fee + '锛�'"></label><span class="ng-binding ng-scope">\{{buyFee * 100}} %</span> |
-                        <label class="ng-binding" ng-bind="lang.sell_fee + '锛�'"> </label><span  class="ng-binding ng-scope">\{{sellFee * 100}} %</span>
+                        <label class="ng-binding" ng-bind="lang.buy_fee + '：'"></label><span class="ng-binding ng-scope">\{{buyFee * 100}} %</span> |
+                        <label class="ng-binding" ng-bind="lang.sell_fee + '：'"> </label><span  class="ng-binding ng-scope">\{{sellFee * 100}} %</span>
                     </div>
                 </div>
                 <div class="orderforms f-cb" ng-init="orderType={'v':'limit'}">
@@ -222,7 +226,7 @@
                                   class="ng-pristine ng-invalid ng-invalid-required">
                                 <div class="orderforms-inputs">
                                     <div class="field f-cb">
-                                        <label class="ng-binding" ng-bind="lang.price + '锛�'"></label>
+                                        <label class="ng-binding" ng-bind="lang.price + '：'"></label>
                                         <div class="iptwrap leftBig">
                                             <input type="text" name="buyPrice" id="buyUnitPrice"
                                                    ng-change="setTotalOrAmount('buyOrder')"
@@ -233,7 +237,7 @@
                                         </div>
                                     </div>
                                     <div class="field f-cb">
-                                        <label class="ng-binding" ng-bind="lang.spread.amount + '锛�'"></label>
+                                        <label class="ng-binding" ng-bind="lang.spread.amount + '：'"></label>
                                         <div class="iptwrap" ng-init="maxQuantity=false">
                                             <input type="text" name="buyQuanity" id="buyNumber"
                                                    input-decimal-separator="4"
@@ -255,7 +259,7 @@
                                         </div>
                                     </div>
                                     <div class="field f-cb">
-                                        <label class="ng-binding" ng-bind="lang.cost + '锛�'"></label>
+                                        <label class="ng-binding" ng-bind="lang.cost + '：'"></label>
                                         <div class="iptwrap money-wrap">
                                              <span ng-bind="buyOrder.total || 0"
                                                    class="ng-pristine ng-valid c_green"></span>
@@ -284,7 +288,7 @@
                                   class="ng-pristine ng-valid">
                                 <div class="orderforms-inputs">
                                     <div class="field f-cb">
-                                        <label class="ng-binding" ng-bind="lang.price + '锛�'"></label>
+                                        <label class="ng-binding" ng-bind="lang.price + '：'"></label>
                                         <div class="iptwrap leftBig">
                                             <input type="text" name="sellPrice" id="sellUnitPrice"  ng-model="sellOrder.price" ng-change="setTotalOrAmount('sellOrder')" input-decimal-separator="8" class="ng-pristine ng-valid">
                                             <span class="unit ng-binding">\{{selectedPair.group}}</span>
@@ -332,53 +336,55 @@
             </div>
 
             <div class="main-aside" style="top:-28px">
-                <div data-v-40fb2a9f="" class="box-input-box" style="margin-bottom: 4px;  border: 1px solid #cccccc73;  border-bottom: 0;">
-                                            <span data-v-40fb2a9f="" class="box-input_prefix pd-l8"><div data-v-e893afaa="" data-v-40fb2a9f="" class="icon-my-search color-grey"></div>
-                                            </span> <span data-v-40fb2a9f="" class="box-input_suffix pd-r8" style="z-index: 1;"></span>
-                    <!----> <input data-v-40fb2a9f="" type="text" ng-model="searchInput" ng-keyup="search()"
-                                   class="box-input_input input__input_style js_input input_small box-input_input-undefined"
-                                   style="padding-left: 31px; padding-right: 30px; color:#aaa;outline: 0; border-width:0px 0px 1px">
-                </div>
-                <div class="depths" style="margin-bottom:-2px;">
+                <!--<div data-v-40fb2a9f="" class="box-input-box" style="margin-bottom: 4px;  border: 1px solid #cccccc73;  border-bottom: 0;">-->
+                                            <!--<span data-v-40fb2a9f="" class="box-input_prefix pd-l8"><div data-v-e893afaa="" data-v-40fb2a9f="" class="icon-my-search color-grey"></div>-->
+                                            <!--</span> <span data-v-40fb2a9f="" class="box-input_suffix pd-r8" style="z-index: 1;"></span>-->
+                    <!--&lt;!&ndash;&ndash;&gt; <input data-v-40fb2a9f="" type="text" ng-model="searchInput" ng-keyup="search()"-->
+                                   <!--class="box-input_input input__input_style js_input input_small box-input_input-undefined"-->
+                                   <!--style="padding-left: 31px; padding-right: 30px; color:#aaa;outline: 0; border-width:0px 0px 1px">-->
+                <!--</div>-->
+                <div class="depths" style="margin-bottom:-2px;margin-top: 29px">
                     <div class="depthstitle f-cb">
                         <ul class="tab-box" ng-init="curMarket=getQuoteAsset">
                             <li class="f-fl" id="defaultStart"  ng-click="selectedGroup='like'"
-                                ng-class="{true:'active',false:''}[selectedGroup=='like']"><span
-                                    class="iconfont icon-xingxing activeTabDefault ng-binding" ng-bind="lang.store"></span></li>
+                                ng-class="{true:'active',false:''}[selectedGroup=='like']">
+                                <!--<span class="iconfont icon-xingxing activeTabDefault ng-binding" ng-bind="lang.store"></span>-->
+                            </li>
 
-                            <li class="f-fr  f-nomargin" ng-repeat="group in groups" ng-click="setMarket(group)"
-                                ng-class="selectedMarket == group ? 'active' : ''"
+                            <li class="f-fr  f-nomargin" ng-repeat="(group, coins) in coinGroup" ng-click="changeGroup(group)"
+                                ng-class="selectedGroup == group ? 'active' : ''"
                                 ng-bind="group | uppercase">
                             </li>
                         </ul>
                     </div>
-                    <div class="market-box" style="margin-bottom: -51px">
+                    <div class="market-box" ng-cloak="" style="margin-bottom: -51px">
                         <ul class="market-t">
-                            <li>
+                            <!--<li>-->
 
-                            </li>
-                            <li ng-click="sortByKey('baseAsset')" class="ng-binding"><span ng-bind="lang.market"></span>
+                            <!--</li>-->
+                            <li ng-click="sortByKey('baseAsset')" class="ng-binding" style="width: 32%"><span ng-bind="lang.market"></span>
                                 <span ng-if="orderKey=='baseAsset'" class="ng-scope"><i class="iconfont icon-zhang" ng-class="{'icon-zhang':!orderDesc,'icon-die':orderDesc}"></i></span>
                                 </li>
-                            <li ng-click="sortByKey('close')" class="ng-binding" ng-bind="lang.latest">
+                            <li ng-click="sortByKey('close')" style="width: 36%" class="ng-binding" ng-bind="lang.latest">
                                 </li>
                             <li ng-click="sortByKey('changeRate')"
-                                class="ng-binding ng-scope" ng-bind="lang.upDown"></li>
+                                class="ng-binding ng-scope" style="width: 32%" ng-bind="lang.upDown"></li>
                         </ul>
                         <div class="market-con scrollStyle" ng-show="selectedGroup=='like'">
-                            <ul ng-repeat="ticker in markets[selectedMarket]"
-                                ng-class="selectedPair.fid == ticker.fid ? 'selectedPro' : ''"
+                            <ul ng-repeat="ticker in tickers"
+                                ng-class="selectedPair.iid == ticker.iid ? 'selectedPro' : ''"
                                 ng-click="setPair(ticker, 'like')"
                                 class="ng-scope">
-                                <li ng-click="favoriteFun($event, ticker)">
-                                    <span class="iconfont icon-xingxing activeTabDefault"
-                                        ng-class="ticker.pro? 'activeTxt': ''"></span></li>
-                                <li class="ng-binding">\{{ticker.key}}</li>
+                                <!--<li ng-click="favoriteFun($event, ticker)">-->
+                                    <!--&lt;!&ndash;<span class="iconfont icon-xingxing activeTabDefault"&ndash;&gt;-->
+                                        <!--&lt;!&ndash;ng-class="ticker.pro? 'activeTxt': ''"></span>&ndash;&gt;-->
+                                <!--</li>-->
+                                <li class="ng-binding" style="width: 32%">\{{ticker.key}}</li>
                                 <li ng-class="{'green':p.close>lastPrices[p.symbol],'magenta':p.close<lastPrices[p.symbol]}"
-                                    class="ng-binding">
-                                    \{{ticker.lsp | fixed: 8}}
+                                    class="ng-binding" style="width: 36%;text-align: center">
+                                    \{{ticker.lsp ?ticker.lsp:0 | number: 6}}
                                 </li>
-                                <li class="ng-scope">
+                                <li class="ng-scope" style="width: 32%">
                                     <span
                                             ng-class="ticker.up > 0 ? 'magenta': ticker.up == 0 ? '' : 'green'"
                                             class="ng-binding ng-scope">\{{ticker.up > 0 ? '+': ''}}\{{ticker.up || 0 | currency:'':2}}%</span>
@@ -386,19 +392,21 @@
                             </ul>
                         </div>
                         <div class="market-con scrollStyle" ng-show="selectedGroup!='like'">
-                            <ul ng-repeat="ticker in markets[selectedMarket]"
-                                ng-class="selectedPair.fid == ticker.fid ? 'selectedPro' : ''"
+                            <ul ng-repeat="ticker in tickers"
+                                ng-class="selectedPair.iid == ticker.iid ? 'selectedPro' : ''"
                                 ng-click="setPair(ticker, 'like')"
                                 class="ng-scope">
-                                <li ng-click="favoriteFun($event, ticker)">
-                                    <span class="iconfont icon-xingxing activeTabDefault"
-                                          ng-class="ticker.pro? 'activeTxt': ''"></span></li>
-                                <li class="ng-binding">\{{ticker.key}}</li>
-                                <li ng-class="{'green':p.close>lastPrices[p.symbol],'magenta':p.close<lastPrices[p.symbol]}"
+                                <!--<li ng-click="favoriteFun($event, ticker)">-->
+                                    <!--&lt;!&ndash;<span class="iconfont icon-xingxing activeTabDefault"&ndash;&gt;-->
+                                          <!--&lt;!&ndash;ng-class="ticker.pro? 'activeTxt': ''">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                                <!--</li>-->
+                                <li class="ng-binding" style="width:32%">\{{ticker.key | uppercase}}</li>
+                                <li style="width: 36%;text-align: center" ng-class="{'green':p.close>lastPrices[p.symbol],'magenta':p.close<lastPrices[p.symbol]}"
                                     class="ng-binding">
-                                    \{{ticker.lsp | fixed: 8}}
+                                    \{{ticker.lsp ?ticker.lsp:0 | number: 6}}
                                 </li>
-                                <li class="ng-scope">
+                                <li class="ng-scope" style="width: 32%">
                                     <span
                                             ng-class="ticker.up > 0 ? 'magenta': ticker.up == 0 ? '' : 'green'"
                                             class="ng-binding ng-scope">\{{ticker.up > 0 ? '+': ''}}\{{ticker.up || 0 | currency:'':2}}%</span>

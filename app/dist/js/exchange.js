@@ -345,6 +345,15 @@
         $scope.orderTab = 'current';
         $scope.collections = [];
         // $scope.orderTab = 'history'
+        $scope.showDepthChart = function() {
+            $scope.klineTab = 2
+            loadScript('/js/depth-chart.js', function(){
+                // console.log(Highcharts);
+                $.getJSON('/api/v2/market/depthData', {symbol: $scope.selectedPair.fid}, function(data){
+                    window.renderDepthChart(data)
+                })
+            })
+        }
 
         $scope.$watch('buyDepthList', function(list){
             if (list) {
@@ -369,67 +378,77 @@
                 $scope.maxSellCount = maxSellCount
             }
         })
-        $scope.markets= {};
-        $scope.groups = [];
-        $scope.selectedMarket= "btc";
-        function loadMarkets() {
-            var time =  (new Date()).valueOf();
-            var val = "msgtype=ReqQryDepthMarketData&UserID=123"+"&TimeStamp="+time;
-            var hash = CryptoJS.HmacSHA256(val, "123");
-            var sign = hash.toString();
-            $http({
-                method:"POST",
-                url:"/api/v1",
-                data:val+"&Sign="+sign,
-                responseType :'arraybuffer'
-            }).then(function (res) {
-                var result = JSON.parse(unzip(res.data));
-                for(var i =0;i<result.length;i++){
-                    var group = result[i].iid.split('_')[1];
-                    var sp = result[i].pcp == undefined? 1 : result[i].pcp;
-                    result[i].up = (result[i].lsp == undefined? 1 :result[i].lsp - sp)/sp *100 ;
-                    result[i].key = result[i].iid.replace('_','/');
-                    if($scope.markets[group] != undefined){
-                        deleteArray($scope.markets[group],result[i].iid);
-                        $scope.markets[group].push(result[i]);
-                    }else {
-                        $scope.markets[group]= [];
-                        $scope.markets[group].push(result[i]);
-                        $scope.groups.push(group);
-                    }
-                }
-
-            })
-        }
-        loadMarkets();
-        $scope.setMarket = function (group) {
-            $scope.selectedMarket= group;
-        };
-        // $interval(function () {
-        //     loadMarkets();
-        // },7000);
-
-        //删除数组中元素
-        function deleteArray(arr,iid) {
-            for (var i = 0; i < arr.length; i++){
-                if(arr[i].iid == iid ){
-                    arr.splice(i,1);
-                    break;
-                }
-            }
-        }
 
         function marketRefresh() {
+            // msgtype=ReqQryDepth&iid=ltc_btc&pln=10&UserID=00001&TimeStamp=2112345678000
             if ($scope.selectedPair) {
-                $http.get('/api/v2/market/marketRefresh?deep=4&symbol=' + $scope.selectedPair.fid + '&t=' + new Date().getTime())
-                    .then(function(res) {
-                        $scope.buyDepthList = res.data.buyDepthList
-                        $scope.sellDepthList = res.data.sellDepthList.reverse()
-                        $scope.recentDealList = res.data.recentDealList
-                    })
+                var time =  (new Date()).valueOf();
+
+                var iid = $scope.selectedPair.iid;
+                var val = "msgtype=ReqQryDepth&iid="+$scope.selectedPair.iid+"&UserID=123"+"&TimeStamp="+time;
+                // var iid = "ltc_btc";
+                // var val = "msgtype=ReqQryDepth&iid=ltc_btc&pln=10&UserID=948114632@qq.com"+"&TimeStamp="+time;
+                var hash = CryptoJS.HmacSHA256(val, "123123");
+                var sign = hash.toString();
+                $.post("/api/v1",val+"&Sign="+sign,function (res) {
+                    var s = res.replace('"iid":'+iid+',',"");
+                    var json_result = JSON.parse(s);
+                    $scope.buyDepthList = json_result.bids;
+                    $scope.sellDepthList = json_result.asks;
+                    $scope.$apply();
+                },'html')
             }
         }
+        // marketRefresh();
 
+        function recentLog() {
+            // if ($scope.selectedPair) {
+                var time =  (new Date()).valueOf();
+                //msgtype=ReqQryTrade&isid=ltc_btc&osid=1&UserID=00001&TimeStamp=2112345678000
+                // var val = "msgtype=ReqQryDepth&iid="+$scope.selectedPair.iid+"&UserID=123"+"&TimeStamp="+time;
+                var val = "msgtype=ReqQryTrade&isid="+"ltc_btc"+"&UserID=948114632@qq.com"+"&TimeStamp="+time;
+                var hash = CryptoJS.HmacSHA256(val, "123123");
+                var sign = hash.toString();
+                // $.post("/api/v1",val+"&Sign="+sign,function (res) {
+                //     console.log(res)
+                //     unzip(res);
+                //     var s = res.replace('"iid":'+iid+',',"");
+                //     var json_result = JSON.parse(s);
+                //     $scope.recentDealList = result.recentDealList;
+                //     $scope.$apply();
+                // })
+
+                $http({
+                    method:"POST",
+                    url:"/api/v1",
+                    data:val+"&Sign="+sign,
+                    responseType :'arraybuffer'
+                }).then(function (res) {
+                    console.log(res.data)
+                    // console.log(unzip(res.data))
+                    var uInt8Array = new Uint8Array(res.data);
+                    var uInt8Array = new (res.data);
+                    var data        = pako.inflate(uInt8Array);
+                    var strData     = String.fromCharCode.apply(null, new Uint16Array(data));
+                    console.log(strData);
+                })
+            // }
+        }
+        recentLog();
+
+        function autoMarketRefresh() {
+            $interval(marketRefresh, 1000)
+        }
+
+        function checkLogin(type) {
+            if (!$scope.user || $scope.user.isLogin != 1) {
+                setErrorMessage(type, lang.signIn, function(){
+                    location.href = "/user/login"
+                });
+                return false
+            }
+            return true
+        }
 
         function checkOrder(type) {
             var order = $scope[type + 'Order'];
@@ -444,12 +463,74 @@
             return true
         }
 
-        // var errMsgTimer = null
         function setErrorMessage(type, msg, fn) {
             if (msg) {
                 error_win(msg, fn)
             }
         }
+
+        function loadTicker() {
+            $http.get('/api/v2/market/real?symbol=' + $scope.selectedPair.fid)
+                .then(function(res){
+
+                })
+
+        }
+
+        function loadBalances() {
+            $http.get('/api/v1/account/balances')
+                .then(function(res){
+                    $scope.balances = res.data.data
+                })
+        }
+
+        function loadCoins() {
+            var time =  (new Date()).valueOf();
+            var val = "msgtype=ReqQryDepthMarketData&UserID=123"+"&TimeStamp="+time;
+            var hash = CryptoJS.HmacSHA256(val, "123");
+            var sign = hash.toString();
+            $http({
+                method:"POST",
+                url:"/api/v1",
+                data:val+"&Sign="+sign,
+                responseType :'arraybuffer'
+            }).then(function(res){
+                    $scope.allCoins = JSON.parse(unzip(res.data));
+                    var tickers = $scope.allCoins;
+                    var current = null;
+                    var coinGroup = {};
+                    var param = location.hash.match(new RegExp(".*" + 'symbol' + "=([^\&]*)(\&?)","i"));
+                    var symbol = param && !isNaN(param[1]) ? param[1] : tickers[0].iid;
+
+                    for (var i = 0; i < tickers.length; i++) {
+                        var ticker = tickers[i];
+                        var sp = ticker.pcp == undefined? 1 : ticker.pcp;
+                        ticker.up = (ticker.lsp == undefined? 1 :ticker.lsp - sp)/sp *100 ;
+                        ticker.key = ticker.iid.replace('_','/');
+                        current = i == 0? ticker: current;
+                        var group = ticker.iid.split('_')[1];
+                        if (coinGroup[group] === undefined) {
+                            coinGroup[group] = []
+                        }
+                        coinGroup[group].push(ticker);
+                        if (ticker.iid == symbol) {
+                            current = ticker
+                        }
+                    }
+                    if (current) {
+                        var current_group = current.iid.split('_')[1];
+                        $scope.setPair(current);
+                        $scope.tickers = coinGroup[current_group];
+                        $scope.coinGroup = coinGroup
+                    }
+                })
+        }
+
+        $scope.changeGroup = function(group) {
+            $scope.selectedGroup = group
+            $scope.tickers = $scope.coinGroup[group]
+        }
+
 
         $scope.refreshTicker = function(ticker, flag){
             for(var i = 0; i < $scope.coinGroup[ticker.group].length; i++){
@@ -476,19 +557,33 @@
             if($scope.selectedPair == ticker){
                 return
             }
-            location.hash = 'symbol=' + ticker.fid;
+            location.hash = 'symbol=' + ticker.iid;
             $scope.selectedPair = ticker
             $scope.buyOrder = {price: '', amount: '', total: ''}
             $scope.sellOrder = {price: '', amount: '', total: ''}
-            refreshUserInfo();
             marketRefresh();
-            loadFee()
             $scope.klineUrl = '/exchange/kline-white?symbol=' + ticker.fid + '&name=' + ticker.fShortName + '/' + ticker.group
-            document.title = ticker.fShortName + ' / ' + ticker.group
+
+            document.title = ticker.key;
             if(!isCollection){
-                $scope.selectedGroup = ticker.group
+                $scope.selectedGroup = ticker.iid.split('_')[1];
             }
         };
+
+
+        $scope.judgePassword  = function(){
+            $scope.passwordEmpty = false;
+        }
+
+        $scope.passwordConfirm = function() {
+            if(isEmpty($scope.tradePassword)){
+                $scope.passwordEmpty = true;
+                return;
+            }
+            $("#tm_yy, #password-box").hide();
+            $scope.data.tradePwd = $scope.tradePassword
+            $scope.trade($scope.data.type);
+        }
 
         $scope.createOrder = function(type) {
             setErrorMessage(type, null)
@@ -525,6 +620,7 @@
                         } else {
                             $scope.user.needTradePasswd = false;
                             $scope.buyOrder = {price: '', amount: '', total: ''}
+                            // refreshUserInfo();
                         }
                     })
             } else if (type === 'sell' & !$scope.selling) {
@@ -553,11 +649,13 @@
             var order  = $scope[type]
             var price = order.price || 0;
             var amount = order.amount || 0;
-                order.total = (parseFloat(price) * parseFloat(amount)).toFixed(4).trimRight("0");
-                if (order.total.slice(-1) == ".") {
-                    order.total = order.total.trimRight(".")
-                }
-                $scope[type] = order
+            //if (amount !== 0) {
+            order.total = (parseFloat(price) * parseFloat(amount)).toFixed(4).trimRight("0");
+            if (order.total.slice(-1) == ".") {
+                order.total = order.total.trimRight(".")
+            }
+            $scope[type] = order
+            //}
         };
 
         $scope.orderPercent = function(percent, type){
@@ -575,6 +673,10 @@
         }
 
         $scope.setTotalOrAmount = function(type) {
+            // var order  = $scope[type]
+            // if (order.total && !order.amount) {
+            //     $scope.setAmount(type);
+            // }
             $scope.setTotal(type);
         }
 
@@ -588,6 +690,20 @@
             $scope.sellOrder.amount = (buy[1] * 1).toFixed(8)
             $scope.setTotal('sellOrder')
         }
+
+        // loadCoins()
+
+        // loadBalances()
+
+        // autoRefreshUserInfo();
+        //
+        // autoMarketRefresh();
+
+        // refreshUserInfo();
+        //
+        // marketRefresh();
+        // loadTicker();
+
 
     }]);
 
