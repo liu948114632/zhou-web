@@ -29,8 +29,7 @@ function _M.payin()
 end
 
 function _M.payout()
-    local user = session.get();
-    template.render("tpl/finance/payout.html", {funds = 'active', payout = 'on', user = user})
+    template.render("tpl/finance/payout.html", {funds = 'active', payout = 'on'})
 end
 
 return _M

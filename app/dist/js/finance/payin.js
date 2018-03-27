@@ -8,42 +8,55 @@ app.config(['$locationProvider', function($locationProvider) {
 app.controller('payinController', ['$scope', '$http', '$location', '$interval',  function ($scope, $http, $location, $interval) {
     $scope.id = $location.search().id;
     $scope.wallet  = {};
-    var ws = new WebSocket(wsHost);
-    var result;
-    ws.onopen = function() {
-        ws.send("msgtype=ReqSyncRandomString");
-    };
-    ws.onmessage = function(event){
-        var fr = new FileReader();
-        fr.onload = function() {
-            result = JSON.parse(this.result);
-            if(result.msgtype == "RspSyncRandomString"){
-                var time =  (new Date()).valueOf();
-                var val = "msgtype=ReqLogin&uid="+sessionStorage.getItem("uid")+"&ps=-1&td=20180101&TimeStamp="+time+"&RandomString="+result.rs;
-                var hash = CryptoJS.HmacSHA256(val, sessionStorage.getItem("key"));
-                var sign = hash.toString();
-                var msg = val+"&Sign="+sign;
-                ws.send(msg);
-                return;
+    function getAsset() {
+        var time =  (new Date()).valueOf();
+        var val = "msgtype=ReqQryTradingAccount&cid="+$scope.id +"&UserID=111@qq.com"+"&TimeStamp="+time;
+        var hash = CryptoJS.HmacSHA256(val, "123123");
+        var sign = hash.toString();
+        $http({
+            method:"POST",
+            url:"/api/v1",
+            data:val+"&Sign="+sign,
+            responseType :'arraybuffer',
+        }).then(function (res) {
+            $scope.wallet = JSON.parse(toGbk(res.data));
+        })
+    }
+    // msgtype=ReqQryDepositAddress&cid=BTC&UserID=00001&TimeStamp=2112345678000&
+    function getAddress() {
+        var time =  (new Date()).valueOf();
+        var val = "msgtype=ReqQryDepositAddress&cid="+$scope.id +"&UserID=111@qq.com"+"&TimeStamp="+time;
+        var hash = CryptoJS.HmacSHA256(val, "123123");
+        var sign = hash.toString();
+        $http({
+            method:"POST",
+            url:"/api/v1",
+            data:val+"&Sign="+sign,
+            responseType :'arraybuffer',
+        }).then(function (res) {
+            var result = JSON.parse(toGbk(res.data));
+            if(isEmpty(result.da)){
+                applyAddress();
             }
-            if(result.msgtype == "RspLogin"){
-                if(result.em == "正确"){
-                    ws.send("msgtype=ReqQryTradingAccount&cid="+$scope.id+"&at=4");
-                    // ws.send("msgtype=ReqQryTradingAccount&at=4");
-                }else {
-                    error_win("登录失败，"+result.em);
-                }
-                return;
-            }
-            if(result.msgtype == "RspQryTradingAccount"){
-                $scope.wallet = result;
-                $scope.$apply();
-                return;
-            }
-        };
-        fr.readAsText(event.data,'gbk');
-    };
-    ws.onclose = function() {
-        console.log("连接已关闭...");
-    };
+        })
+    }
+    //msgtype=ReqTransferInsert&iid=00001&tlid=1&tt=0&cid=BTC&at=4&UserID=00001&TimeStamp=2112345678000
+    function applyAddress() {
+        var time =  (new Date()).valueOf();
+        var val = "msgtype=ReqTransferInsert&iid=111@qq.com&tt=0&cid="+$scope.id +"&at=4&UserID=111@qq.com"+"&TimeStamp="+time;
+        var hash = CryptoJS.HmacSHA256(val, "123123");
+        var sign = hash.toString();
+        $http({
+            method:"POST",
+            url:"/api/v1",
+            data:val+"&Sign="+sign,
+            responseType :'arraybuffer',
+        }).then(function (res) {
+            var result = JSON.parse(toGbk(res.data));
+            console.log(result);
+        })
+    }
+    getAsset();
+    getAddress();
+
 }]);

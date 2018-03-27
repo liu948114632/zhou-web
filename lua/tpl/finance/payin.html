@@ -59,18 +59,18 @@
                                         <!--</li>-->
                                     <!--</ul>-->
                                 </div>
-                                <div  class="ng-scope">
+                                <div  class="ng-scope" ng-cloak="">
                                     <table class="curAsset" ng-cloak="">
                                         <colgroup style="width:120px;"></colgroup>
                                         <colgroup style="width:380px;"></colgroup>
                                         <tbody>
                                         <tr>
                                             <th class="ng-binding" ng-bind="lang.js.payout.frozen"></th>
-                                            <td class="ng-binding">\{{wallet.fc == undefined? 0: wallet.fc}}</td>
+                                            <td class="ng-binding">\{{wallet.fc ? wallet.fc: '' | number : 6}}</td>
                                         </tr>
                                         <tr>
                                             <th class="ng-binding" ng-bind="lang.js.payout.total"></th>
-                                            <td class="ng-binding" > \{{wallet.a == undefined? 0: wallet.a}}</td>
+                                            <td class="ng-binding" > \{{wallet.a ? wallet.a: '' | number : 6}}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -84,7 +84,7 @@
                                         </div>
                                         <div  class="ng-scope">
                                             <div class="depositAddress">
-                                                <strong class="ng-binding">\{{shortname}} \{{lang.js.payin.address}}</strong>
+                                                <strong class="ng-binding">\{{id}} \{{lang.js.payin.address}}</strong>
                                                 <div class="chargeAddress text ng-binding" ng-bind="address">
                                                 </div>
                                                 <div class="f-cb" ng-show="ischarge">

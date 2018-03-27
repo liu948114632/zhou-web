@@ -198,7 +198,8 @@
                 </div>
                 <div class="overvies">
                     <div id="kline-con">
-                        <iframe ng-src="\{{klineUrl | asUrl}}" id="marketFrame" class="marketFrame" name="marketFrame" onload=""
+                        <!--<iframe ng-src="\{{klineUrl | asUrl}}" id="marketFrame" class="marketFrame" name="marketFrame" onload=""-->
+                        <iframe  id="marketFrame" class="marketFrame" name="marketFrame" onload=""
                                 frameborder="0" width="100%" style="height: 377px;" hspace="0" scrolling="no"></iframe>
                     </div>
                 </div>
@@ -214,12 +215,12 @@
                                   class="ng-binding cur" ng-bind="lang.entrust">
 							</span>
                     </div>
-                    <div class="orderform-main f-cb" ng-show="orderType.v=='limit'">
+                    <div class="orderform-main f-cb" ng-show="orderType.v=='limit'" ng-cloak="">
                         <div class="f-fl">
                             <div class="orderforms-hd">
                                 <div>
-                                    <label class="ng-binding"> \{{lang.buy + " "+ selectedPair.fShortName}}</label>
-                                    <span class="f-fr ng-binding">\{{selectedPair.group + lang.yue}}: \{{user.isLogin == 1 ? (user.rmbtotal || 0 | fixed: 4) : '--'}} </span>
+                                    <label class="ng-binding"> \{{lang.buy + " "+ selectedPair.iid.split("_")[0] | uppercase}}</label>
+                                    <span class="f-fr ng-binding">\{{selectedPair.iid.split("_")[1] |uppercase }}\{{lang.yue}}：\{{groupMoney ? (groupMoney | fixed: 4) : '--'}} </span>
                                 </div>
                             </div>
                             <form name="buyForm" ng-submit="buy_submit()" novalidate="" autocomplete="off"
@@ -273,15 +274,15 @@
                                             class="ng-binding" ng-bind="lang.login"></a> or <a href="/user/register"
                                                                             class="ng-binding" ng-bind="lang.register"></a>
                                     </div>
-                                    <input type="submit" ng-click="createOrder('buy')" value=" \{{lang.buy + ' '  + selectedPair.fShortName}}" class="btn btn-block btn-buy ng-scope" ng-if="user && user.isLogin == 1">
+                                    <input type="submit" ng-click="createOrder('buy')" value=" \{{lang.buy + ' '  + selectedPair.fShortName}}" class="btn btn-block btn-buy ng-scope" >
                                 </div>
                             </form>
                         </div>
                         <div class="f-fr">
                             <div class="orderforms-hd orderforms-hd-magenta">
                                 <div>
-                                    <label class="ng-binding"> \{{lang.sell + " " + selectedPair.group}}</label>
-                                    <span class="f-fr ng-binding">\{{selectedPair.fShortName + lang.yue}} : \{{user.isLogin == 1 ? (user.virtotal || 0 | fixed: 4) : '--'}} </span>
+                                    <label class="ng-binding"> \{{lang.sell + " " + selectedPair.iid.split("_")[0] | uppercase}}</label>
+                                    <span class="f-fr ng-binding">\{{selectedPair.iid.split("_")[0] | uppercase }}\{{lang.yue}}：\{{keyMoney ? (keyMoney | fixed: 4) : '--'}} </span>
                                 </div>
                             </div>
                             <form name="sellForm" ng-submit="sell_submit()" autocomplete="off"
@@ -326,7 +327,7 @@
                                             href="/user/login"
                                             class="ng-binding" ng-bind="lang.login"></a> or <a href="/user/register" class="ng-binding" ng-bind="lang.register"></a>
                                     </div>
-                                    <input type="submit" value=" \{{lang.sell + ' ' + selectedPair.group}}" ng-click="createOrder('sell')" class="btn btn-block btn-sell ng-scope" ng-if="user && user.isLogin == 1">
+                                    <input type="submit" value=" \{{lang.sell + ' ' + selectedPair.group}}" ng-click="createOrder('sell')" class="btn btn-block btn-sell ng-scope" >
                                 </div>
 
                             </form>
@@ -467,18 +468,18 @@
                             </tr>
                         </thead>
                         <thody>
-                            <tr ng-repeat="row in user.entrustList">
-                                <td class="f-left" ng-bind="row[4] | date: 'yyyy-MM-dd HH:mm:ss'"></td>
-                                <td class="f-left"><span ng-class="row[0] == 0? 'green': 'magenta'" ng-bind="row[0] == 0 ? lang.buy : lang.sell"></span></td>
-                                <td class="f-left" ng-bind-html="row[1] | fixed: 8 | gg"></td>
-                                <td class="f-left" ng-bind="row[2] | fixed: 4"></td>
-                                <td class="f-left" ng-bind="(row[1] * row[2]) | fixed: 4"></td>
-                                <td class="f-left" ng-bind="row[5] | formatEntrustStatus"></td>
+                            <tr ng-repeat="row in entrustList | orderBy :row.id : 'desc'">
+                                <td class="f-left" ng-bind="row.it | date: 'yyyy-MM-dd HH:mm:ss'"></td>
+                                <td class="f-left"><span ng-class="row.d== 0? 'green': 'magenta'" ng-bind="row.d == 0 ? lang.buy : lang.sell"></span></td>
+                                <td class="f-left" ng-bind-html="row.lp | fixed: 8 | gg"></td>
+                                <td class="f-left" ng-bind="row.vto | fixed: 4"></td>
+                                <td class="f-left" ng-bind="(row.lp * row.vto) | fixed: 4"></td>
+                                <td class="f-left" ng-bind="row.os | formatEntrustStatus"></td>
                                 <td class="f-right"><input type="button" value="\{{lang.cancel}}" ng-click="cancelOrder(row)"  class="btn"></td>
                             </tr>
                         </thody>
                     </table>
-                    <div class="noData ng-binding ng-scope" ng-if="user.isLogin != 1 || (!user.entrustList || !user.entrustList.length)" ng-bind="lang.noRecord"></div>
+                    <div class="noData ng-binding ng-scope" ng-if="(!entrustList || !entrustList.length)" ng-bind="lang.noRecord"></div>
                 </div>
             </div>
         </div>
@@ -507,17 +508,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="row in user.entrustListLog">
-                                <td class="f-left" ng-bind="row[6] | date: 'yyyy-MM-dd HH:mm:ss'"></td>
-                                <td class="f-left"><span ng-class="row[0] == 0? 'green': 'magenta'" ng-bind="row[0] == 0 ? lang.buy : lang.sell"></span></td>
-                                <td class="f-left" ng-bind="row[1] | fixed: 8 "></td>
-                                <td class="f-left" ng-bind="row[2] | fixed: 4"></td>
-                                <td class="f-left" ng-bind="(row[1] * row[2]) | fixed: 4"></td>
-                                <td class="f-right" ng-bind="row[4] | formatEntrustStatus"></td>\{{row[5]}}
+                            <tr ng-repeat="row in entrustListLog |orderBy :row.id : 'desc'">
+                                <td class="f-left" ng-bind="row.it | date: 'yyyy-MM-dd HH:mm:ss'"></td>
+                                <td class="f-left"><span ng-class="row.d == 0? 'green': 'magenta'" ng-bind="row.d == 0 ? lang.buy : lang.sell"></span></td>
+                                <td class="f-left" ng-bind="row.lp | fixed: 8 "></td>
+                                <td class="f-left" ng-bind="row.vto | fixed: 4"></td>
+                                <td class="f-left" ng-bind="(row.lp * row.vto) | fixed: 4"></td>
+                                <td class="f-right" ng-bind="row.os | formatEntrustStatus"></td>
                             </tr>
                         </tbody>
                     </table>
-                    <div class="noData ng-binding ng-scope" ng-if="user.isLogin != 1 || (!user.entrustListLog || !user.entrustListLog.length)" ng-bind="lang.noRecord"></div>
+                    <div class="noData ng-binding ng-scope" ng-if="(!entrustListLog || !entrustListLog.length)" ng-bind="lang.noRecord"></div>
                 </div>
             </div>
         </div>

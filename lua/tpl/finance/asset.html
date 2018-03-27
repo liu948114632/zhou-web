@@ -266,6 +266,15 @@
                         </div>
                         <div class="locked f-right ng-binding"  ng-bind=" lang.js.payout.frozen">
                         </div>
+                        <div class="locked f-right ng-binding"  >
+                            今日充值
+                        </div>
+                        <div class="locked f-right ng-binding" >
+                            今日提现
+                        </div>
+                        <div class="locked f-right ng-binding"  >
+                            手续费
+                        </div>
                         <div class="action f-right"></div>
                     </div>
                 </li>
@@ -274,8 +283,11 @@
                         <div class="coin ng-binding">
                             <span ng-bind="w.cid | uppercase"></span>
                         </div>
-                        <div class="locked f-right ng-binding" > \{{w.a == undefined?0 : w.a}}</div>
+                        <div class="locked f-right ng-binding" > \{{w.a == undefined?0 : w.a | number :8}}</div>
                         <div class="equalValue f-right ng-binding">\{{w.fc == undefined?0 : w.fc}}</div>
+                        <div class="equalValue f-right ng-binding">\{{w.d == undefined?0 : w.d}}</div>
+                        <div class="equalValue f-right ng-binding">\{{w.w == undefined?0 : w.w}}</div>
+                        <div class="equalValue f-right ng-binding">\{{w.c == undefined?0 : w.c| number :8}}</div>
                         <div class="action f-right">
                             <a  href="/finance/payin?id=\{{w.cid}}"  class="btn btn-deposit ng-binding ng-scope" ng-bind="lang.recharge"></a>
                             <a href="/finance/payout?id=\{{w.cid}}"  class="btn btn-withdraw ng-binding ng-scope" ng-bind="lang.withdraw"></a>

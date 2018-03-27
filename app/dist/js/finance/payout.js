@@ -17,173 +17,21 @@ app.controller('payoutController', ['$scope', '$http', '$location', '$interval',
         total:0
     };
     $scope.realAmount = 0;
-    $scope.wallet = {
-        frozen:0,
-        total:0
-    };
-    $scope.shortname = "--"
-    function loadBalances() {
-        $http.get(basePath + '/v1/account/balances')
-            .then(function(res){
-                $scope.userAssets = res.data.data;
-                $scope.balancesTemp = res.data.data;
-                var arr = $scope.userAssets;
-                if(typeof($scope.id) != "undefined"){
-                    for(var i=0; i< arr.length; i++){
-                        if(arr[i].id == $scope.id){
-                            $scope.selectAsset(arr[i]);
-                        }
-                    }
-                }else {
-                    $scope.selectAsset(arr[0]);
-                }
-            })
+    function getAsset() {
+        var time =  (new Date()).valueOf();
+        var val = "msgtype=ReqQryTradingAccount&cid="+$scope.id +"&UserID=111@qq.com"+"&TimeStamp="+time;
+        var hash = CryptoJS.HmacSHA256(val, "123123");
+        var sign = hash.toString();
+        $http({
+            method:"POST",
+            url:"/api/v1",
+            data:val+"&Sign="+sign,
+            responseType :'arraybuffer',
+        }).then(function (res) {
+            $scope.wallet = JSON.parse(toGbk(res.data));
+        })
     }
-    $scope.search = function ($event) {
-        var content = $($($event.target)).val();
-        if(content == ""){
-            $scope.userAssets = $scope.balancesTemp;
-            return;
-        }
-        var arr = $scope.balancesTemp;
-        var temparr = [];
-        for(var i = 0; i < arr.length; i++){
-            var name = arr[i].name;
-            var allName = arr[i].allName;
-            if(name.toUpperCase().indexOf(content.toUpperCase()) > -1 || allName.toUpperCase().indexOf(content.toUpperCase()) > -1){
-                temparr.push(arr[i]);
-            }
-        }
-        $scope.userAssets = temparr;
-    }
-    $scope.selectAsset = function (wallet) {
-        $scope.wallet = wallet;
-        $scope.id = wallet.id;
-        $(".scrollStyle").hide();
-        $scope.shortname = wallet.name;
-        getAddressByCoin();
-        getParamsByCoin();
-        $scope.loadList(1);
-    }
-    $scope.showAssetss = function () {
-        $(".scrollStyle").toggle();
-    }
-
-    loadBalances();
-
-    var pageSize = 8;
-    $scope.totalPage= 0;
-    $scope.all_pages = [];
-    $scope.currency_page = 1;
-
-    $scope.loadList = function(page) {
-        if($scope.totalPage != 0 && $scope.totalPage != 1){
-            page = page>$scope.totalPage? $scope.totalPage : page;
-        }
-
-        $scope.all_pages = [];
-        $http.get(basePath+'/v1/account/coinOut?symbol='+$scope.id+"&page="+page+"&pageSize="+pageSize)
-            .then(function (res) {
-                $scope.rechargeLogs = res.data.data;
-                $scope.currency_page = page;
-                if (res.data.data.length === 0) {
-                    $scope.NoOrder = true;
-                    $scope.NewGroup = [];
-                } else {
-                    var all = res.data.totalCount/pageSize;
-                    $scope.totalPage = all >parseInt(all)? parseInt(all) +1: parseInt(all);
-                    for(var i =0; i<$scope.totalPage; i++){
-                        $scope.all_pages.push(i+1);
-                    }
-                }
-            })
-    }
-    $scope.addNewAddress = function ($event) {
-        $("#addresses").hide();
-        center_box("float_win");
-        $("#shadow, #float_win").show();
-    }
-    $scope.showaddresses = function () {
-        $("#addresses").toggle();
-    }
-    $scope.confrmAddNewAddress = function () {
-        if(isPending){
-            error_win(lang.pending);
-            return;
-        }
-        var address = $scope.address;
-        var addresstag = $scope.addresstag;
-        var emailcode = $scope.emailcode;
-        if(isEmpty(address)){
-            error_win(lang.noempty);
-            return;
-        }
-        if(isEmpty(addresstag)){
-            error_win(lang.noempty);
-            return;
-        }
-        if(isEmpty(emailcode)){
-            error_win(lang.noempty);
-            return;
-        }
-
-        var data = {
-            address:address,
-            flag:addresstag,
-            id:$scope.id,
-            code:emailcode
-        }
-        isPending = true;
-        $http.post(basePath+"/v1/account/addAddress",$.param(data), {headers :{'Content-Type' :'application/x-www-form-urlencoded' }})
-            .then(function(res){
-                isPending = false;
-                var data = res.data
-                if(res.data.code == 200){
-                    success_win(lang.operationSuccess);
-                }else if (data.code == 100) {
-                    error_win(lang.codeNotSendTips);
-                }  else if (data.code == 101) {
-                    error_win(lang.codeFrequentTips);
-                }else if (data.code == 102) {
-                    error_win(lang.codeErrorTips+data.data);
-                }else {
-                    error_win(lang.error);
-                }
-            })
-    }
-
-    function getAddressByCoin() {
-        $http.get(basePath + '/v1/account/getAddressByCoin?id='+$scope.id)
-            .then(function(res){
-                $scope.addresses = res.data.data;
-            })
-    }
-
-    $scope.selectAddress = function (row) {
-        $scope.withdrawAddress = row.address;
-        $("#addresses").toggle();
-    }
-
-    function getParamsByCoin() {
-        $http.get(basePath + '/v1/account/getParamsByCoin?id='+$scope.id)
-            .then(function(res){
-                var param = res.data.data;
-                $scope.wallet.total = param.total;
-                $scope.wallet.frozen = param.frozen;
-                $scope.params = param;
-            })
-    }
-    $scope.calcTotal = function () {
-        var amount = $("#amount").val().replace(/(^\s+)|(\s+$)/g, "");
-        if(!isNumber(amount) || amount >1000000000){
-            return;
-        }
-        $scope.realAmount = amount - (amount * $scope.params.feeRatio) - $scope.params.feeAmount;
-    }
-    $scope.withdrawAll = function () {
-        $("#amount").val($scope.params.total);
-        $scope.realAmount = $scope.params.total - ( $scope.params.total * $scope.params.feeRatio) - $scope.params.feeAmount;
-    }
+    getAsset();
 
     var isPending = false;
     $scope.bindWithdraw = function () {

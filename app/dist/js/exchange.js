@@ -164,7 +164,7 @@
 
     app.filter('formatEntrustStatus', [function(){
         return function(status){
-            var texts = ['', lang.deal1, lang.deal2, lang.deal3, lang.deal4]
+            var texts = [lang.deal3, lang.deal2, '', lang.deal1, '',lang.deal4]
             return texts[status]
         }
     }])
@@ -344,6 +344,8 @@
         $scope.marketFilterDirection = false;
         $scope.orderTab = 'current';
         $scope.collections = [];
+        $scope.entrustList = [];
+        $scope.entrustListLog = [];
         // $scope.orderTab = 'history'
         $scope.showDepthChart = function() {
             $scope.klineTab = 2
@@ -380,14 +382,10 @@
         })
 
         function marketRefresh() {
-            // msgtype=ReqQryDepth&iid=ltc_btc&pln=10&UserID=00001&TimeStamp=2112345678000
-            // if ($scope.selectedPair) {
+            if ($scope.selectedPair) {
                 var time =  (new Date()).valueOf();
-
-                // var iid = $scope.selectedPair.iid;
-                // var val = "msgtype=ReqQryDepth&iid="+$scope.selectedPair.iid+"&UserID=123"+"&TimeStamp="+time;
-                var iid = "ltc_btc";
-                var val = "msgtype=ReqQryDepth&iid=ltc_btc&pln=10&UserID=948114632@qq.com"+"&TimeStamp="+time;
+                var iid = $scope.selectedPair.iid;
+                var val = "msgtype=ReqQryDepth&iid="+$scope.selectedPair.iid+"&UserID=123"+"&TimeStamp="+time;
                 var hash = CryptoJS.HmacSHA256(val, "123123");
                 var sign = hash.toString();
                 $http({
@@ -401,12 +399,9 @@
                     var json_result = JSON.parse(s);
                     $scope.buyDepthList = json_result.bids;
                     $scope.sellDepthList = json_result.asks;
-                    $scope.$apply();
                 })
-            // }
+            }
         }
-        marketRefresh();
-
         function recentLog() {
             // if ($scope.selectedPair) {
                 var time =  (new Date()).valueOf();
@@ -430,20 +425,33 @@
             // }
         }
         // recentLog();
-        function autoMarketRefresh() {
-            $interval(marketRefresh, 1000)
-        }
-
-        function checkLogin(type) {
-            if (!$scope.user || $scope.user.isLogin != 1) {
-                setErrorMessage(type, lang.signIn, function(){
-                    location.href = "/user/login"
-                });
-                return false
+        //msgtype=ReqQryOrder&isid=ltc_btc&osid=1&UserID=00001&TimeStamp=2112345678000
+        function getOrders() {
+            if ($scope.selectedPair) {
+                $scope.entrustList = [];
+                $scope.entrustListLog = [];
+                var time =  (new Date()).valueOf();
+                var val = "msgtype=ReqQryOrder&isid="+$scope.selectedPair.iid+"&UserID=111@qq.com"+"&TimeStamp="+time;
+                var hash = CryptoJS.HmacSHA256(val, "123123");
+                var sign = hash.toString();
+                $http({
+                    method:"POST",
+                    url:"/api/v1",
+                    data:val+"&Sign="+sign,
+                    responseType :'arraybuffer',
+                }).then(function (res) {
+                    var result = toGbk(res.data);
+                    var orders = JSON.parse(result);
+                    for(var i =0; i<orders.length; i++){
+                        if(orders[i]['os'] == 1 || orders[i]['os'] == 3){
+                            $scope.entrustList.push(orders[i]);
+                        }else {
+                            $scope.entrustListLog.push(orders[i]);
+                        }
+                    }
+                })
             }
-            return true
         }
-
         function checkOrder(type) {
             var order = $scope[type + 'Order'];
             if (!order.amount || order.amount <= 0) {
@@ -463,19 +471,35 @@
             }
         }
 
-        function loadTicker() {
-            $http.get('/api/v2/market/real?symbol=' + $scope.selectedPair.fid)
-                .then(function(res){
 
-                })
-
-        }
-
+        //msgtype=ReqQryTradingAccount&cid=BTC&at=4&UserID=00001&TimeStamp=2112345678000
         function loadBalances() {
-            $http.get('/api/v1/account/balances')
-                .then(function(res){
-                    $scope.balances = res.data.data
-                })
+            if ($scope.selectedPair) {
+                var group = $scope.selectedPair.iid.split("_")[1].toUpperCase();
+                $scope.rootKey =  $scope.selectedPair.iid.split("_")[0].toUpperCase();
+                getMoney(group);
+                getMoney($scope.rootKey);
+            }
+        }
+        function getMoney(cid) {
+            var time =  (new Date()).valueOf();
+            var val = "msgtype=ReqQryTradingAccount&cid="+cid+"&UserID=111@qq.com"+"&TimeStamp="+time;
+            // var val = "msgtype=ReqQryTradingAccount&UserID=111@qq.com"+"&TimeStamp="+time;
+            var hash = CryptoJS.HmacSHA256(val, "123123");
+            var sign = hash.toString();
+            $http({
+                method:"POST",
+                url:"/api/v1",
+                data:val+"&Sign="+sign,
+                responseType :'arraybuffer',
+            }).then(function (res) {
+                var result = JSON.parse(toGbk(res.data));
+                if(result.cid == $scope.rootKey){
+                    $scope.keyMoney = result.a;
+                }else {
+                    $scope.groupMoney = result.a;
+                }
+            })
         }
 
         function loadCoins() {
@@ -485,11 +509,14 @@
             var sign = hash.toString();
             $http({
                 method:"POST",
+                // url:"http://47.97.219.235:8814"+"/api/v1",
                 url:"/api/v1",
                 data:val+"&Sign="+sign,
-                responseType :'arraybuffer'
+                responseType :'arraybuffer',
+                header:{}
             }).then(function(res){
-                    $scope.allCoins = JSON.parse(unzip(res.data));
+                    // $scope.allCoins = JSON.parse(unzip(res.data));
+                    $scope.allCoins = JSON.parse(toGbk(res.data));
                     var tickers = $scope.allCoins;
                     var current = null;
                     var coinGroup = {};
@@ -556,6 +583,8 @@
             $scope.buyOrder = {price: '', amount: '', total: ''}
             $scope.sellOrder = {price: '', amount: '', total: ''}
             marketRefresh();
+            getOrders();
+            loadBalances();
             $scope.klineUrl = '/exchange/kline-white?symbol=' + ticker.fid + '&name=' + ticker.fShortName + '/' + ticker.group
 
             document.title = ticker.key;
@@ -564,115 +593,85 @@
             }
         };
 
-
-        $scope.judgePassword  = function(){
-            $scope.passwordEmpty = false;
-        }
-
-        $scope.passwordConfirm = function() {
-            if(isEmpty($scope.tradePassword)){
-                $scope.passwordEmpty = true;
-                return;
-            }
-            $("#tm_yy, #password-box").hide();
-            $scope.data.tradePwd = $scope.tradePassword
-            $scope.trade($scope.data.type);
-        }
-
         $scope.createOrder = function(type) {
-            setErrorMessage(type, null)
-            if (!checkLogin(type) || !checkOrder(type)) {
+            if (!checkOrder(type)) {
                 return
             }
-
             var order = $scope[type + 'Order']
             $scope.data = {
-                symbol: $scope.selectedPair.fid,
+                symbol: $scope.selectedPair.iid,
                 tradeAmount: order.amount,
                 tradeCnyPrice: order.price,
                 type: type
             };
-
-            if($scope.user.needTradePasswd){
-                center_box('password-box');
-                $("#password-box").show();
-                $("#tm_yy").show();
-                return;
+            var time =  (new Date()).valueOf();
+            var order_type = 0;
+            if(type == "sell"){
+                order_type =1;
             }
-            $scope.trade(type);
-        }
+            var val = " msgtype=ReqOrderInsert&iid="+"111@qq.com"+"&isid="+$scope.selectedPair.iid+"&olid=1&opt=2&d="+order_type+"&lp="+order.price+"&vto="+order.amount+"&UserID="+"111@qq.com"+"&TimeStamp="+time;
+            var hash = CryptoJS.HmacSHA256(val, "123123");
+            var sign = hash.toString();
+            $http({
+                method:"POST",
+                url:"/api/v1",
+                data:val+"&Sign="+sign,
+                responseType :'arraybuffer'
+            }).then(function (res) {
+                var dataView = new DataView(res.data);
+                var decoder = new TextDecoder('gb2312');
+                var result = decoder.decode(dataView);
+                if(order_type == 0){
+                    $scope.buyOrder = {price: '', amount: '', total: ''}
+                    getMoney($scope.selectedPair.iid.split("_")[1].toUpperCase());
+                }else {
+                    $scope.sellOrder = {price: '', amount: '', total: ''}
+                    getMoney($scope.selectedPair.iid.split("_")[0].toUpperCase());
+                }
+                getOrders();
+            })
+        };
 
-        $scope.trade = function(type) {
-            if (type === 'buy' && !$scope.buying) {
-                $scope.buying = true
-                $http.post('/api/v2/market/buyBtcSubmit', $scope.data)
-                    .then(function(res){
-                        $scope.buying = false;
-                        var resText = res.data.value ? res.data.value : "";
-                        if (res.data.resultCode !== 0) {
-                            setErrorMessage(type, WARN_TEXT[res.data.resultCode] + resText)
-                        } else {
-                            $scope.user.needTradePasswd = false;
-                            $scope.buyOrder = {price: '', amount: '', total: ''}
-                            // refreshUserInfo();
-                        }
-                    })
-            } else if (type === 'sell' & !$scope.selling) {
-                $scope.selling = true
-                $http.post('/api/v2/market/sellBtcSubmit', $scope.data)
-                    .then(function(res){
-                        $scope.selling = false;
-                        var resText = res.data.value ? res.data.value : "";
-                        if (res.data.resultCode !== 0) {
-                            setErrorMessage(type, WARN_TEXT[res.data.resultCode] + resText)
-                        } else {
-                            $scope.user.needTradePasswd = false;
-                            $scope.sellOrder = {price: '', amount: '', total: ''}
-                            // refreshUserInfo();
-                        }
-                    })
-            }
-        }
 
+        //msgtype=ReqOrderAction&alid=2&osid=1&af=0&UserID=00001&TimeStamp=2112345678000
         $scope.cancelOrder = function(order) {
-            $http.post('/api/v2/market/cancelEntrust', {id: order[3]})
-                .then(refreshUserInfo)
+            var time =  (new Date()).valueOf();
+            var val = "msgtype=ReqOrderAction&osid="+order.osid+"&UserID=111@qq.com"+"&TimeStamp="+time;
+            var hash = CryptoJS.HmacSHA256(val, "123123");
+            var sign = hash.toString();
+            $http({
+                method:"POST",
+                url:"/api/v1",
+                data:val+"&Sign="+sign,
+                responseType :'arraybuffer',
+            }).then(function (res) {
+                getOrders();
+                // var result = toGbk(res.data);
+                // var s = JSON.parse(result);
+                // console.log(s);
+            })
         }
 
-        $scope.setTotal = function(type) {
+        $scope.orderPercent = function(percent, type){
+            var money = type == "sell" ? toDecimal2($scope.keyMoney || 0, 4) : toDecimal2($scope.groupMoney || 0, 4);
+            var price = $scope[type+"Order"].price;
+            if(isEmpty(price)){
+                $scope[type+"Order"].price = $scope.selectedPair.lsp? $scope.selectedPair.lsp : '1';
+            }
+            $scope[type+"Order"].amount = percent * money /$scope[type+"Order"].price;
+            $scope.setTotalOrAmount(type+"Order");
+        }
+
+        $scope.setTotalOrAmount = function(type) {
             var order  = $scope[type]
             var price = order.price || 0;
             var amount = order.amount || 0;
-            //if (amount !== 0) {
             order.total = (parseFloat(price) * parseFloat(amount)).toFixed(4).trimRight("0");
             if (order.total.slice(-1) == ".") {
                 order.total = order.total.trimRight(".")
             }
             $scope[type] = order
-            //}
         };
-
-        $scope.orderPercent = function(percent, type){
-            var money = type == "sell" ? toDecimal2($scope.user.virtotal || 0, 4) : toDecimal2($scope.user.rmbtotal || 0, 4);
-            $scope[type+"Order"].amount = percent * money;
-            $scope.setTotalOrAmount(type+"Order");
-        }
-
-        $scope.setAmount = function(type) {
-            var order  = $scope[type]
-            var price = order.price || 0;
-            var total = order.total || 0;
-            var amount = parseFloat(total) / (parseFloat(price || 0));
-            $scope[type].amount = isFinite(amount) ? amount.toString().exp() : 0;
-        }
-
-        $scope.setTotalOrAmount = function(type) {
-            // var order  = $scope[type]
-            // if (order.total && !order.amount) {
-            //     $scope.setAmount(type);
-            // }
-            $scope.setTotal(type);
-        }
 
         $scope.setBuy = function(sell) {
             $scope.buyOrder.price = sell[0]
@@ -685,7 +684,8 @@
             $scope.setTotal('sellOrder')
         }
 
-        // loadCoins()
+        loadCoins();
+        // $interval(marketRefresh,2000);
 
         // loadBalances()
 

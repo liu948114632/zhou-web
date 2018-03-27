@@ -11,7 +11,7 @@ var GLOBAL_VAR = {
     TimeOutId: null,
     button_down: false,
     init: false,
-    url: "/api/v2/market/period"
+    url: "/api/v1"
 };
 GLOBAL_VAR.periodMap = {
     "01w": "1week",
@@ -8416,7 +8416,7 @@ function getklinedataWebsocket() {
     //     }
     // }
 }
-
+//msgtype=ReqQryKLine&iid=ltc_btc&klt=1&sns=1&sne=300&UserID=00001&TimeStamp=2112345678000&
 function getklinedataAjax() {
     GLOBAL_VAR.G_HTTP_REQUEST = $.ajax({
         type: "get",
@@ -8472,23 +8472,6 @@ function getklinedataAjax() {
             }
 
             if (GLOBAL_VAR.G_HTTP_REQUEST) {
-                // if (this.time != GLOBAL_VAR.time_type || this.market != GLOBAL_VAR.market_from) {
-                //     GLOBAL_VAR.TimeOutId = setTimeout(RequestData, 1000);
-                //     console.log(1);
-                //     return
-                // }
-                // if (!json || !json.datas || !json.datas.data[0] || json.datas.data[0].length == 0) {
-                //     $(".bk-animationload").fadeOut();
-                //     console.log(2);
-                //     return
-                // }
-                // if (!json.isSuc) {
-                //     console.log(3);
-                //     alert(json.des);
-                //     kline.refreshPage(json.datas.ecode == 101 ? null : GLOBAL_VAR.market_from);
-                //     return
-                // }
-                // console.log(4);
                 GLOBAL_VAR.market_from_name = json.datas.marketName;
                 var chart = ChartManager.getInstance().getChart();
                 chart._contract_unit = json.datas.contractUnit;
@@ -8500,19 +8483,9 @@ function getklinedataAjax() {
                 GLOBAL_VAR.KLineData = eval(json.datas.data);
                 try {
                     if (!GLOBAL_VAR.chartMgr.updateData("frame0.k0", GLOBAL_VAR.KLineData)) {
-                        // console.log(5);
-                        // GLOBAL_VAR.requestParam = setHttpRequestParam(GLOBAL_VAR.market_from, GLOBAL_VAR.time_type, GLOBAL_VAR.limit, null);
-                        // GLOBAL_VAR.TimeOutId = setTimeout(RequestData, 1000);
-                        // return
                     }
                     clear_refresh_counter()
                 } catch (err) {
-                    // if (err == "data error") {
-                    //     console.log(6);
-                    //     GLOBAL_VAR.requestParam = setHttpRequestParam(GLOBAL_VAR.market_from, GLOBAL_VAR.time_type, GLOBAL_VAR.limit, null);
-                    //     GLOBAL_VAR.TimeOutId = setTimeout(RequestData, 1000);
-                    //     return
-                    // }
                 }
                 // console.log(7);
                 GLOBAL_VAR.TimeOutId = setTimeout(TwoSecondThread, 1000 * 10);
