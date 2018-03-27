@@ -494,7 +494,7 @@
                 responseType :'arraybuffer',
             }).then(function (res) {
                 var result = JSON.parse(toGbk(res.data));
-                if(result.cid == $scope.rootKey){
+                if(cid == $scope.rootKey){
                     $scope.keyMoney = result.a;
                 }else {
                     $scope.groupMoney = result.a;
@@ -697,6 +697,25 @@
         //
         // marketRefresh();
         // loadTicker();
+
+        function getkline(cid) {
+//        msgtype=ReqQryKLine&iid=ltc_btc&klt=1&sns=1&sne=300&UserID=00001&TimeStamp=2112345678000&
+                    var time =  (new Date()).valueOf();
+                    var val = "msgtype=ReqQryKLine&iid=ltc_btc&klt=1&UserID=111@qq.com"+"&TimeStamp="+time;
+                    // var val = "msgtype=ReqQryTradingAccount&UserID=111@qq.com"+"&TimeStamp="+time;
+                    var hash = CryptoJS.HmacSHA256(val, "123123");
+                    var sign = hash.toString();
+                    $http({
+                        method:"POST",
+                        url:"/api/v1",
+                        data:val+"&Sign="+sign,
+                        responseType :'arraybuffer',
+                    }).then(function (res) {
+                        var result = JSON.parse(toGbk(res.data));
+                        console.log(result);
+                    })
+                }
+               getkline();
 
 
     }]);

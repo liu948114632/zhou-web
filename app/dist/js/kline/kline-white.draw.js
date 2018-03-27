@@ -8416,39 +8416,73 @@ function getklinedataWebsocket() {
     //     }
     // }
 }
-//msgtype=ReqQryKLine&iid=ltc_btc&klt=1&sns=1&sne=300&UserID=00001&TimeStamp=2112345678000&
+function deCode(data){
+    var dataView = new DataView(data);
+    var decoder = new TextDecoder('gb2312');
+    return decoder.decode(dataView);
+    }
 function getklinedataAjax() {
+//msgtype=ReqQryKLine&iid=ltc_btc&klt=1&sns=1&sne=300&UserID=00001&TimeStamp=2112345678000
+    var time =  (new Date()).valueOf();
+    var val = "msgtype=ReqQryKLine&iid=ltc_btc&klt=1&UserID=111"+"&TimeStamp="+time;
+    var hash = CryptoJS.HmacSHA256(val, "123123");
+    var sign = hash.toString();
     GLOBAL_VAR.G_HTTP_REQUEST = $.ajax({
-        type: "get",
+//        type: "get",
+//        // url: '/dist/json/period.json',
+//        url: GLOBAL_VAR.url,
+//        dataType: "json",
+//        data: GLOBAL_VAR.requestParam,
+//        timeout: 30000,
+//        created: Date.now(),
+//        beforeSend: function () {
+//            this.time = GLOBAL_VAR.time_type;
+//            this.market = GLOBAL_VAR.market_from
+//        },
+        type: "post",
         // url: '/dist/json/period.json',
         url: GLOBAL_VAR.url,
-        dataType: "json",
-        data: GLOBAL_VAR.requestParam,
+        dataType: "arraybuffer",
+        contentType:"text/json;charset=UTF-8",
+//        data: GLOBAL_VAR.requestParam ,
+        data: val+"&Sign="+sign ,
         timeout: 30000,
         created: Date.now(),
         beforeSend: function () {
             this.time = GLOBAL_VAR.time_type;
             this.market = GLOBAL_VAR.market_from
         },
-        success: function (data) {
+        success: function (res) {
             // todo mark1
+            console.log("23123132");
+            var data = JSON.parse(deCode(res.data));
+//            var data = toGbk(res.data);
+            console.log(data);
 
             var newData = []
             var timeKey = {}
             //[时间,开,高,低,收,量] new
             //[时间,开,收,高,低,量] old
             for (var i = 0; i < data.length; i++) {
-                data[i].splice(1, 2);
-                data[i][0] = data[i][0] * 1000
-                var shou = data[i][2]
-                var di = data[i][4]
-                var gao = data[i][3]
-                data[i][2] = gao
-                data[i][3] = di
-                data[i][4] = shou
+//                data[i].splice(1, 2);
+//                data[i][0] = data[i][0] * 1000
+//                var shou = data[i][2]
+//                var di = data[i][4]
+//                var gao = data[i][3]
+//                data[i][2] = gao
+//                data[i][3] = di
+//                data[i][4] = shou
+                var row = [];
+                row[0] = data[i]['t'];
+                row[1] = data[i]['op'];
+                row[2] = data[i]['hp'];
+                row[3] = data[i]['lp'];
+                row[4] = data[i]['cp'];
+                row[5] = data[i]['v'];
 
                 if (!timeKey[data[i][0]]) {
-                    newData.push(data[i])
+//                    newData.push(data[i])
+                    newData.push(row)
                     timeKey[data[i][0]] = true
                 }
             }

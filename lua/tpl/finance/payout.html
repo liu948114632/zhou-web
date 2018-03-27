@@ -72,7 +72,7 @@
                                                 </div>
                                                 <div class="inputGroup">
                                                     <input id="amount" type="text" ng-keyup="calcTotal()" ng-model="amount" style="width: 405px; height: 34px; border: 1px solid #e6e6e6; border-right: none;" class="ng-pristine ng-valid">
-                                                    <span class="unit ng-binding" ng-bind="shortname"></span>
+                                                    <span class="unit ng-binding" ng-bind="id"></span>
                                                     <div class="available">
                                                         <label class="ng-binding" ng-bind="lang.js.payout.total"></label>
                                                         <span class="ng-binding" ng-bind="wallet.a | number : 4">0.00000000</span>
@@ -83,30 +83,30 @@
                                                 </div>
                                             </div>
 
-                                            <div class="filed" style="margin-bottom:24px;">
-                                                <div class="label f-cb" style="margin-bottom: 7px">
-                                                    <strong class="ng-binding" ng-bind="lang.safeword"></strong>
-                                                </div>
-                                                <div class="inputGroup">
-                                                    <input type="text" name="password"  ng-model="safeWord">
-                                                </div>
+                                            <!--<div class="filed" style="margin-bottom:24px;">-->
+                                                <!--<div class="label f-cb" style="margin-bottom: 7px">-->
+                                                    <!--<strong class="ng-binding" ng-bind="lang.safeword"></strong>-->
+                                                <!--</div>-->
+                                                <!--<div class="inputGroup">-->
+                                                    <!--<input type="text" name="password"  ng-model="safeWord">-->
+                                                <!--</div>-->
 
-                                            </div>
+                                            <!--</div>-->
 
                                             <div class="filed">
                                                 <div class="label f-cb" style="margin-bottom: 7px">
                                                     <strong class="ng-binding" ng-bind="lang.emailCode"></strong>
                                                 </div>
                                                 <div class="inputGroup">
-                                                    <input type="text" style="line-height: 32px;width: 288px;" ng-model="emailCode2" />
-                                                    <span id="code_btn" class="code_btn" data-cate="inner" ng-bind="lang.send"></span>
+                                                    <input type="text" style="line-height: 32px;width: 288px;" ng-model="code" />
+                                                    <span id="code_btn" class="code_btn" ng-click = "sendCode()" data-cate="inner" ng-bind="lang.send"></span>
                                                 </div>
                                             </div>
-                                            <div class="total f-cb ng-binding ng-scope" style="margin-bottom: 27px;margin-top:30px;">
-                                                \{{lang.fees}}: <strong><span ng-bind="params.feeAmount"></span>+<span ng-bind="params.feeRatio * 100"></span>%</strong>
-                                                <!--<span class="f-fr ng-binding">实际到账: <strong ng-bind="realAmount">0.00000000</strong></span>-->
-                                            </div>
-                                            <input type="button" value="\{{lang.submit}}" ng-click="bindWithdraw()" class="confirm btn btn-orange btn-block" id="btn-withdraw">
+                                            <!--<div class="total f-cb ng-binding ng-scope" style="margin-bottom: 27px;margin-top:30px;">-->
+                                                <!--\{{lang.fees}}: <strong><span ng-bind="params.feeAmount"></span>+<span ng-bind="params.feeRatio * 100"></span>%</strong>-->
+                                                <!--&lt;!&ndash;<span class="f-fr ng-binding">实际到账: <strong ng-bind="realAmount">0.00000000</strong></span>&ndash;&gt;-->
+                                            <!--</div>-->
+                                            <input style="margin-top:20px;" type="button" value="\{{lang.submit}}" ng-click="bindWithdraw()" class="confirm btn btn-orange btn-block" id="btn-withdraw">
                                         </form>
                                     </div>
                                 </div>

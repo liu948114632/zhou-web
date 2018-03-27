@@ -47,19 +47,19 @@
         }
 
         function getDepth() {
-            var symbol = kline.symbol;
-            var url = DOMAIN_TRANS + "/api/v2/market/marketRefresh?symbol=" + symbol + "&&depth=4";
-            $http.get(url).then(function(res){
-                $scope.depth = {
-                    asks: res.data.sellDepthList.reverse(),
-                    bids: res.data.buyDepthList,
-                    tradeLogs: res.data.recentDealList
-                }
-                updateDepth()
-            })
+//            var symbol = kline.symbol;
+//            var url = DOMAIN_TRANS + "/api/v2/market/marketRefresh?symbol=" + symbol + "&&depth=4";
+//            $http.get(url).then(function(res){
+//                $scope.depth = {
+//                    asks: res.data.sellDepthList.reverse(),
+//                    bids: res.data.buyDepthList,
+//                    tradeLogs: res.data.recentDealList
+//                }
+//                updateDepth()
+//            })
         }
 
-        getDepth()
+//        getDepth()
 
         function updateDepth() {
             _set_current_depth({

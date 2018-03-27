@@ -424,14 +424,14 @@
         }
 
         function marketRefresh() {
-            if ($scope.selectedPair) {
-                $http.get('/api/v2/market/marketRefresh?deep=4&symbol=' + $scope.selectedPair.fid + '&t=' + new Date().getTime())
-                    .then(function(res) {
-                        $scope.buyDepthList = res.data.buyDepthList
-                        $scope.sellDepthList = res.data.sellDepthList.reverse()
-                        $scope.recentDealList = res.data.recentDealList
-                    })
-            }
+//            if ($scope.selectedPair) {
+//                $http.get('/api/v2/market/marketRefresh?deep=4&symbol=' + $scope.selectedPair.fid + '&t=' + new Date().getTime())
+//                    .then(function(res) {
+//                        $scope.buyDepthList = res.data.buyDepthList
+//                        $scope.sellDepthList = res.data.sellDepthList.reverse()
+//                        $scope.recentDealList = res.data.recentDealList
+//                    })
+//            }
         }
 
         function loadFee() {

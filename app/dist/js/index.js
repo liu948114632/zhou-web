@@ -14,7 +14,7 @@ app.controller('indexController', ['$scope', '$http', '$interval',  function ($s
             data:val+"&Sign="+sign,
             responseType :'arraybuffer'
         }).then(function (res) {
-            var result = JSON.parse(unzip(res.data));
+            var result = JSON.parse(toGbk(res.data));
             for(var i =0;i<result.length;i++){
                 var group = result[i].iid.split('_')[1];
                 var sp = result[i].pcp == undefined? 1 : result[i].pcp;
