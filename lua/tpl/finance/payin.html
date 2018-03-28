@@ -27,6 +27,11 @@
 </head>
 
 <body style="" class="ng-scope">
+<script>
+    if(sessionStorage.getItem("uid") == null){
+        location.href = "/user/login";
+    }
+</script>
 
 
 <div class="ng-scope">

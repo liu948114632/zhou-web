@@ -6,7 +6,11 @@
     <link rel="stylesheet" href="{+resources+}/dist/css/nance/depositWithdrawal.css">
 </head>
 <body style="" class="ng-scope">
-
+<script>
+    if(sessionStorage.getItem("uid") == null){
+        location.href = "/user/login";
+    }
+</script>
 <div  class="ng-scope">
     {(tpl/common/header.html)}
 </div>
@@ -245,16 +249,16 @@
             </div>
 
             <div class="balance_search f-cb">
-                <!--<div class="search_input f-fl">-->
+                <div class="search_input f-fl">
 
-                    <!--<input type="text" ng-keyup="search($event)" class="ng-pristine ng-valid">-->
-                    <!--<i class="iconfont icon-sousuo"></i>-->
-                <!--</div>-->
-                <!--<div class="f-fl">-->
-                    <!--<input type="checkbox" ng-model="hideAccount"   class="ng-pristine ng-valid" >-->
-                    <!--<label class="ng-binding" ng-bind="lang.hidden">-->
-                    <!--</label>-->
-                <!--</div>-->
+                    <input type="text" ng-model = "keyword" ng-keyup="search($event)" class="ng-pristine ng-valid">
+                    <i class="iconfont icon-sousuo"></i>
+                </div>
+                <div class="f-fl">
+                    <input type="checkbox" ng-model="hideAccount"   class="ng-pristine ng-valid" >
+                    <label class="ng-binding" ng-bind="lang.hidden">
+                    </label>
+                </div>
             </div>
             <!--结束筛选  -->
             <ul class="accountInfo-lists">
@@ -278,7 +282,7 @@
                         <div class="action f-right"></div>
                     </div>
                 </li>
-                <li   ng-repeat="w in items" ng-cloak="">
+                <li   ng-repeat="w in items | filter : func" ng-cloak="">
                     <div class="items f-cb">
                         <div class="coin ng-binding">
                             <span ng-bind="w.cid | uppercase"></span>

@@ -139,7 +139,7 @@
 <body style="">
 <!-- 主体内容 -->
 <div class="verifyLayout ng-scope"  ng-controller="registerCtrl">
-    <div class="main" style="height: 640px">
+    <div class="main" style="height: 520px">
         <style>
             .btn.btn-grey {
                 line-height: 44px;
@@ -152,11 +152,11 @@
 
             <div class="f-prz formWrapLR">
                 <form class="loginReg-form ng-valid ng-dirty" id="login-form">
-                    <h3 class="LRtitle"><span class="ng-binding">\{{lang.register}}BILAXY</span></h3>
+                    <h3 class="LRtitle"><span class="ng-binding" ng-cloak="">\{{lang.register}}</span></h3>
                     <div class="importantInfo">
                         <p class="ng-binding"><i class="iconfont" style="color:#3bc451; line-height:20px;">&#xe6e8;</i>
                             <span ng-bind="lang.con"></span>
-                            <strong>https://www.bilaxy.com</strong></p>
+                            <strong ng-cloak="">\{{host}}</strong></p>
                     </div>
                     <div class="filed">
                         <i class="iconfont">&#xe60b;</i>
@@ -178,7 +178,7 @@
                         <i class="iconfont" style="font-size:16px;">&#xe6e8;</i>
                         <input type="text" style="width:214px;" id="code" ng-model="code" placeholder="邮箱验证码"
                                class="ipt pwd ng-pristine ng-valid">
-                        <span class="code_btn" id="code_btn" ng-bind="lang.send" ng-click = "sendCode()"></span>
+                        <span class="code_btn" id="code_btn"  ng-click = "sendCode()" ng-cloak="">\{{tip}}</span>
                     </div>
                     <div class="filed">
                         <input type="submit" ng-click ="register()" value="\{{lang.register}}"  class="confirm btn btn-orange btn-block ">

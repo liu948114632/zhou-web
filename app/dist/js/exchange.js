@@ -517,12 +517,12 @@
                     var current = null;
                     var coinGroup = {};
                     var param = location.hash.match(new RegExp(".*" + 'symbol' + "=([^\&]*)(\&?)","i"));
-                    var symbol = param && !isNaN(param[1]) ? param[1] : tickers[0].iid;
+                    var symbol = param && !isEmpty(param[1]) ? param[1] : tickers[0].iid;
 
                     for (var i = 0; i < tickers.length; i++) {
                         var ticker = tickers[i];
-                        var sp = ticker.pcp == undefined? 1 : ticker.pcp;
-                        ticker.up = (ticker.lsp == undefined? 1 :ticker.lsp - sp)/sp *100 ;
+                        var sp = ticker.pcp ? ticker.pcp : 1;
+                        ticker.up = (ticker.lsp ? ticker.lsp : 1 - sp)/sp *100 ;
                         ticker.key = ticker.iid.replace('_','/');
                         current = i == 0? ticker: current;
                         var group = ticker.iid.split('_')[1];
@@ -678,21 +678,84 @@
         };
 
         $scope.setBuy = function(sell) {
-            $scope.buyOrder.price = sell[0]
+            $scope.buyOrder.price = sell[0];
             $scope.sellOrder.price = sell[0]
             // $scope.buyOrder.amount = (sell[1] * 1).toFixed(8)
             // $scope.setTotalOrAmount('buyOrder')
         }
         $scope.setSell = function(buy) {
-            $scope.sellOrder.price = buy[0]
+            $scope.sellOrder.price = buy[0];
             $scope.buyOrder.price = buy[0]
             // $scope.sellOrder.amount = (buy[1] * 1).toFixed(8)
             // $scope.setTotalOrAmount('sellOrder')
         }
+        $scope.search = function(res){
+            if(isEmpty($scope.keyword)){
+                return res;
+            }else {
+                var key = res.key.split("/")[0];
+                if(key.toUpperCase().indexOf($scope.keyword.toUpperCase()) > -1){
+                    return res;
+                }
+            }
+        };
 
         loadCoins();
-        // $interval(marketRefresh,2000);
+        $interval(marketRefresh,5000);
+        $interval(recentLog,5000);
+        $interval(getOrders,10000);
+        function getCoins() {
+            var time =  (new Date()).valueOf();
+            var val = "msgtype=ReqQryDepthMarketData&UserID=123"+"&TimeStamp="+time;
+            var hash = CryptoJS.HmacSHA256(val, "123");
+            var sign = hash.toString();
+            $http({
+                method:"POST",
+                url:"/api/v1",
+                data:val+"&Sign="+sign,
+                responseType :'arraybuffer',
+                header:{}
+            }).then(function(res){
+                $scope.allCoins = JSON.parse(toGbk(res.data));
+                var tickers = $scope.allCoins;
+                var coinGroup = {};
+                for (var i = 0; i < tickers.length; i++) {
+                    var ticker = tickers[i];
+                    var sp = ticker.pcp ? ticker.pcp : 1;
+                    ticker.up = (ticker.lsp ? ticker.lsp : 1 - sp)/sp *100 ;
+                    ticker.key = ticker.iid.replace('_','/');
+                    var group = ticker.iid.split('_')[1];
+                    if (coinGroup[group] === undefined) {
+                        coinGroup[group] = []
+                    }
+                    coinGroup[group].push(ticker);
+                }
+                var ns  = $(".f-fr.f-nomargin.ng-binding.ng-scope.active").text();
+                $scope.tickers = coinGroup[ns.toLowerCase()];
+            })
+        }
+        $interval(getCoins,10000);
+        function getReal() {
+            var time =  (new Date()).valueOf();
+            var val = "msgtype=ReqQryDepthMarketData&iid="+$scope.selectedPair.iid+"&UserID=123"+"&TimeStamp="+time;
+            var hash = CryptoJS.HmacSHA256(val, "123");
+            var sign = hash.toString();
+            $http({
+                method:"POST",
+                url:"/api/v1",
+                data:val+"&Sign="+sign,
+                responseType :'arraybuffer',
+                header:{}
+            }).then(function(res){
 
+                var ticker  = JSON.parse(toGbk(res.data));
+                var sp = ticker.pcp ? ticker.pcp : 1;
+                ticker.up = (ticker.lsp ? ticker.lsp : 1 - sp)/sp *100 ;
+                ticker.key = ticker.iid.replace('_','/');
+                $scope.selectedPair = ticker;
+            })
+        }
+        $interval(getReal,5000);
         // loadBalances()
 
         // autoRefreshUserInfo();

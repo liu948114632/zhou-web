@@ -83,6 +83,11 @@
     </style>
 </head>
 <body  ng-controller="ExchangeCtrl"  >
+<script>
+    if(sessionStorage.getItem("uid") == null){
+        location.href = "/user/login";
+    }
+</script>
 <div>
     {(tpl/common/header.html)}
 </div>
@@ -102,16 +107,16 @@
                 <li>
                     <h4 class="ng-binding" ng-bind="lang.latest"></h4>
                     <strong ng-class="recentDealList[0][0] - recentDealList[1][0] > 0? 'magenta': 'green'"
-                            class="ng-binding">\{{selectedPair.lsp}}</strong>
+                            class="ng-binding">\{{selectedPair.lsp || 0}}</strong>
                 </li>
                 <li>
                     <h4 class="ng-binding" ng-bind="lang.shake"></h4>
                     <strong class="changeRate ng-binding"
-                            ng-class="{'magenta':selectedPair.up > 0,'green':selectedPair.up <= 0}">\{{selectedPair.up > 0 ? '+': ''}}\{{selectedPair.up | currency:"":2}} %</strong>
+                            ng-class="{'magenta':selectedPair.up > 0,'green':selectedPair.up <= 0}">\{{selectedPair.up > 0 ? '+': ''}}\{{selectedPair.up ? selectedPair.up : 0 | number: 2}} %</strong>
                 </li>
                 <li>
                     <h4 class="ng-binding" ng-bind="lang.highest"></h4>
-                    <strong class="ng-binding" ng-bind="selectedPair.hp"></strong>
+                    <strong class="ng-binding" ng-bind="selectedPair.hp || 0"></strong>
                 </li>
                 <li>
                     <h4 class="ng-binding" ng-bind="lang.lowest"></h4>
@@ -119,7 +124,7 @@
                 </li>
                 <li>
                     <h4 class="ng-binding" ng-bind="lang.dealAmount"></h4>
-                    <strong class="ng-binding" ng-bind="selectedPair.v"></strong>
+                    <strong class="ng-binding" ng-bind="selectedPair.v || 0"></strong>
                 </li>
             </ul>
         </div>
@@ -336,14 +341,14 @@
             </div>
 
             <div class="main-aside" style="top:-28px">
-                <!--<div data-v-40fb2a9f="" class="box-input-box" style="margin-bottom: 4px;  border: 1px solid #cccccc73;  border-bottom: 0;">-->
-                                            <!--<span data-v-40fb2a9f="" class="box-input_prefix pd-l8"><div data-v-e893afaa="" data-v-40fb2a9f="" class="icon-my-search color-grey"></div>-->
-                                            <!--</span> <span data-v-40fb2a9f="" class="box-input_suffix pd-r8" style="z-index: 1;"></span>-->
-                    <!--&lt;!&ndash;&ndash;&gt; <input data-v-40fb2a9f="" type="text" ng-model="searchInput" ng-keyup="search()"-->
-                                   <!--class="box-input_input input__input_style js_input input_small box-input_input-undefined"-->
-                                   <!--style="padding-left: 31px; padding-right: 30px; color:#aaa;outline: 0; border-width:0px 0px 1px">-->
-                <!--</div>-->
-                <div class="depths" style="margin-bottom:-2px;margin-top: 29px">
+                <div data-v-40fb2a9f="" class="box-input-box" style="margin-bottom: 4px;  border: 1px solid #cccccc73;  border-bottom: 0;">
+                                            <span data-v-40fb2a9f="" class="box-input_prefix pd-l8"><div data-v-e893afaa="" data-v-40fb2a9f="" class="icon-my-search color-grey"></div>
+                                            </span> <span data-v-40fb2a9f="" class="box-input_suffix pd-r8" style="z-index: 1;"></span>
+                     <input data-v-40fb2a9f="" type="text" ng-model="keyword"
+                                   class="box-input_input input__input_style js_input input_small box-input_input-undefined"
+                                   style="padding-left: 31px; padding-right: 30px; color:#aaa;outline: 0; border-width:0px 0px 1px">
+                </div>
+                <div class="depths" style="margin-bottom:-2px;">
                     <div class="depthstitle f-cb">
                         <ul class="tab-box" ng-init="curMarket=getQuoteAsset">
                             <li class="f-fl" id="defaultStart"  ng-click="selectedGroup='like'"
@@ -371,7 +376,7 @@
                                 class="ng-binding ng-scope" style="width: 32%" ng-bind="lang.upDown"></li>
                         </ul>
                         <div class="market-con scrollStyle" ng-show="selectedGroup=='like'">
-                            <ul ng-repeat="ticker in tickers"
+                            <ul ng-repeat="ticker in tickers | filter : search"
                                 ng-class="selectedPair.iid == ticker.iid ? 'selectedPro' : ''"
                                 ng-click="setPair(ticker, 'like')"
                                 class="ng-scope">
@@ -392,7 +397,7 @@
                             </ul>
                         </div>
                         <div class="market-con scrollStyle" ng-show="selectedGroup!='like'">
-                            <ul ng-repeat="ticker in tickers"
+                            <ul ng-repeat="ticker in tickers | filter : search"
                                 ng-class="selectedPair.iid == ticker.iid ? 'selectedPro' : ''"
                                 ng-click="setPair(ticker, 'like')"
                                 class="ng-scope">

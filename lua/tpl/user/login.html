@@ -154,11 +154,11 @@
 
             <div class="f-prz formWrapLR">
                 <form class="loginReg-form ng-valid ng-dirty" id="login-form">
-                    <h3 class="LRtitle"><span class="ng-binding" ng-bind="lang.login + 'BILAXY'"></span></h3>
+                    <h3 class="LRtitle"><span class="ng-binding" ng-bind="lang.login "></span></h3>
                     <div class="importantInfo">
                         <p class="ng-binding"><i class="iconfont" style="color:#3bc451; line-height:20px;">&#xe6e8;</i>
                             <span ng-bind="lang.con"></span>
-                            <strong>https://www.bilaxy.com</strong></p>
+                            <strong ng-cloak="">\{{host}}</strong></p>
                     </div>
                     <div class="filed">
                         <i class="iconfont">&#xe60b;</i>
@@ -177,8 +177,8 @@
 
                     <div class="filde">
                         <p class="login-tip f-cb">
-                            <a href="/user/forget" class="yellow f-fl ng-binding" style="float: left" ng-bind="lang.forget"></a>
-                            <a href="/" class="yellow f-fl ng-binding" style="float: right" ng-bind="lang.backhome "></a>
+                            <!--<a href="/user/forget" class="yellow f-fl ng-binding" style="float: left" ng-bind="lang.forget"></a>-->
+                            <a href="/" class="yellow f-fl ng-binding" style="float: left" ng-bind="lang.backhome "></a>
                         </p>
                     </div>
                 </form>

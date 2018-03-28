@@ -9,6 +9,11 @@
 
     </style>
 </head>
+<script>
+    if(sessionStorage.getItem("uid") == null){
+        location.href = "/user/login";
+    }
+</script>
 <div  class="ng-scope">
     {(tpl/common/header.html)}
 </div>

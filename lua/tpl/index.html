@@ -221,8 +221,7 @@
                                                     class="icon-my-search color-grey"></div>
                                             </span> <span data-v-40fb2a9f="" class="box-input_suffix pd-r8"
                                                           style="z-index: 1;"></span>
-                                            <!----> <input data-v-40fb2a9f="" type="text" id="searchInput"
-                                                           ng-keyup="search()"
+                                            <!----> <input data-v-40fb2a9f="" type="text" ng-model = "keyword"
                                                            class="box-input_input input__input_style js_input input_small box-input_input-undefined"
                                                           id="search-input" style="padding-left: 8px; padding-right: 30px; color:#aaa;outline: 0; border-width:0px 0px 1px">
                                         </div>
@@ -246,14 +245,14 @@
                                 <tr data-v-e893afaa="" class="home-th">
                                     <th data-v-e893afaa="" class="H text-left"></th>
                                     <th data-v-e893afaa="" class="H text-left link-hover"
-                                        ng-click="orderByClick('fname_sn')"><span
+                                        ng-click="orderByClick('key')"><span
                                             data-v-e893afaa="" ng-bind="lang.market"></span>
                                         <span data-v-0b1c0182="" data-v-e893afaa="" class="box-icon-sort box-icon-sort_Light"><i
                                             data-v-0b1c0182="" class="icon-my-sort-up"></i>
                                             <i data-v-0b1c0182=""  class="icon-my-sort-down"></i></span>
                                     </th>
                                     <th data-v-e893afaa="" class="H text-left link-hover"
-                                        ng-click="orderByClick('lastDealPrize')">
+                                        ng-click="orderByClick('lsp')">
                                         <span data-v-e893afaa="" ng-bind="lang.latest"></span>
                                         <span data-v-0b1c0182="" data-v-e893afaa=""
                                               class="box-icon-sort box-icon-sort_Light">
@@ -261,7 +260,7 @@
                                             <i data-v-0b1c0182="" class="icon-my-sort-down"></i>
                                         </span>
                                     </th>
-                                    <th data-v-e893afaa="" class="H link-hover" ng-click="orderByClick('fupanddown')">
+                                    <th data-v-e893afaa="" class="H link-hover" ng-click="orderByClick('up')">
                                         <span data-v-e893afaa="" ng-bind="lang.shake"></span>
                                         <span data-v-0b1c0182="" data-v-e893afaa=""
                                               class="box-icon-sort box-icon-sort_Light">
@@ -270,7 +269,7 @@
                                         </span>
                                     </th>
                                     <th data-v-e893afaa="" class="H link-hover"
-                                        ng-click="orderByClick('highestPrize24')">
+                                        ng-click="orderByClick('hp')">
                                         <span data-v-e893afaa="" ng-bind="lang.highest"></span>
                                         <span data-v-0b1c0182="" data-v-e893afaa=""
                                               class="box-icon-sort box-icon-sort_Light">
@@ -279,7 +278,7 @@
                                         </span>
                                     </th>
                                     <th data-v-e893afaa="" class="H link-hover"
-                                        ng-click="orderByClick('lowestPrize24')">
+                                        ng-click="orderByClick('lp')">
                                         <span data-v-e893afaa="" ng-bind="lang.lowest"></span>
                                         <span data-v-0b1c0182="" data-v-e893afaa=""
                                               class="box-icon-sort box-icon-sort_Light">
@@ -287,7 +286,7 @@
                                             <i data-v-0b1c0182="" class="icon-my-sort-down"></i>
                                         </span>
                                     </th>
-                                    <th data-v-e893afaa="" class="text-right H link-hover" ng-click="orderByClick('volumn')"><span
+                                    <th data-v-e893afaa="" class="text-right H link-hover" ng-click="orderByClick('v')"><span
                                             data-v-e893afaa="" ng-bind="lang.dealVol"></span>
                                         <span data-v-0b1c0182="" data-v-e893afaa=""
                                               class="box-icon-sort box-icon-sort_Light">
@@ -315,30 +314,31 @@
                                 </colgroup>
                                 <tbody data-v-e893afaa="" class="ts-14">
                                 <tr data-v-e893afaa="" class="home-td color-333 ng-hide" ng-show="markets[selectedMarket].length > 0"
-                                    ng-repeat="ticker in markets[selectedMarket] "
-                                    ng-class="ticker.fid == selectedPair.fid ? 'market-active':''">
+                                    ng-repeat="ticker in markets[selectedMarket] | orderBy : orderKey : orderDesc | filter : search  "
+                                    ng-class="ticker.fid == selectedPair.fid ? 'market-active':''" ng-click = "trade(ticker.iid)">
                                     <td data-id="\{{ticker.iid}}" data-v-e893afaa="" class="D collect-hover text-center ts-18"
-                                        ng-click="selfSelect(ticker.fid)">
+                                        >
                                         <!--<i data-v-e893afaa="" class="icon-my-no-collect"-->
                                            <!--ng-class="ticker.self == '1' ? 'color-theme' : ''"></i>-->
                                     </td>
-                                    <td data-v-e893afaa="" class="D text-left" ng-click="trade(ticker.fid)">
+                                    <td data-v-e893afaa="" class="D text-left" >
                                         <span data-v-e893afaa="" ng-bind="ticker.key | uppercase"></span>
                                     </td>
-                                    <td data-v-e893afaa="" class="D text-left" ng-click="trade(ticker.fid)">
+                                    <td data-v-e893afaa="" class="D text-left" >
                                         <span data-v-e893afaa="" ng-bind="ticker.lsp || 0 "></span>
                                         <!-- <span data-v-e893afaa="" class="color-minor"> / 4.62CNY</span>-->
                                     </td>
-                                    <td data-v-e893afaa="" class="D text-left " ng-click="trade(ticker.fid)"
-                                        ng-class="ticker.fupanddown > 0 ? 'color-rose' : 'color-fall'" ng-bind="\{{ticker.fupanddown || 0 | currency:'':2}} + '%'">
+                                    <td data-v-e893afaa="" class="D text-left "
+                                        ng-class="ticker.up > 0 ? 'color-rose' : 'color-fall'" >
+                                        \{{ticker.up ? ticker.up : 0 | number:2}}%
                                     </td>
-                                    <td data-v-e893afaa="" class="D" ng-click="trade(ticker.fid)" ng-bind="ticker.hp || 0"></span></td>
-                                    <td data-v-e893afaa="" class="D" ng-click="trade(ticker.fid)" ng-bind="ticker.lp || 0"></td>
-                                    <td data-v-e893afaa="" class="D text-right" ng-click="trade(ticker.fid)" style="padding-right:8px;">
+                                    <td data-v-e893afaa="" class="D"  ng-bind="ticker.hp || 0"></span></td>
+                                    <td data-v-e893afaa="" class="D"  ng-bind="ticker.lp || 0"></td>
+                                    <td data-v-e893afaa="" class="D text-right"  style="padding-right:8px;">
                                         <span data-v-e893afaa="" ng-bind="ticker.v || 0"></span>
                                         <span data-v-e893afaa="" class="color-minor" ng-bind="selectedMarket | uppercase"></span>
                                     </td>
-                                    <td ng-click="trade(ticker.fid)"></td>
+                                    <td></td>
                                 </tr>
 
                                 <tr data-v-e893afaa="" class="ng-hide" ng-show="tickers && 0 == tickers.length">

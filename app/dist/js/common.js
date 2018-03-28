@@ -222,6 +222,23 @@ var _handler = {
     });
 
     var qrcode_init = false;
+    function getUser() {
+        var key = sessionStorage.getItem("uid");
+        if(isEmpty(key)){
+            $("#alogin").show();
+            $("#aregister").show();
+        }else {
+            $("#aexit").show();
+            $("#aid").show();
+            $("#a_name").text(key);
+        }
+    }
+    $("#aexit").click(function () {
+        sessionStorage.removeItem('uid');
+        sessionStorage.removeItem('key');
+        location.href = "/user/login"
+    });
+    getUser();
     function getInfo() {
         $.getJSON('/v1/session?' + new Date().getTime(), {}, function(data){
             if(data && 200 == data.code){

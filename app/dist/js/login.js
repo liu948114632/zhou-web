@@ -1,5 +1,6 @@
 var app = angular.module('app', ['i18n']);
 app.controller('loginCtrl',function ($scope,$http) {
+    $scope.host = location.host;
     $scope.login = function () {
         if(isEmpty($scope.name) || isEmpty($scope.password)){
             error_win("参数不能为空");
@@ -18,8 +19,6 @@ app.controller('loginCtrl',function ($scope,$http) {
             var result = JSON.parse(toGbk(res.data));
             if(result.em == "用户名或密码错误"){
                 error_win(result.em);
-                $scope.name ="";
-                $scope.password ="";
             }else {
                 sessionStorage.setItem("uid",$scope.name);
                 sessionStorage.setItem("key",$scope.password);
