@@ -233,7 +233,7 @@
                                                    ng-model="buyOrder.price"
                                                    input-decimal-separator="8"
                                                    class="ng-pristine ng-valid ng-valid-required">
-                                            <span class="unit ng-binding">\{{selectedPair.group}}</span>
+                                            <span class="unit ng-binding">\{{selectedPair.iid.split("_")[1] |uppercase }}</span>
                                         </div>
                                     </div>
                                     <div class="field f-cb">
@@ -244,7 +244,7 @@
                                                    ng-model="buyOrder.amount"
                                                    ng-change="setTotalOrAmount('buyOrder')"
                                                    class="ng-pristine ng-invalid ng-invalid-required">
-                                            <span class="unit ng-binding">\{{selectedPair.fShortName}}</span>
+                                            <span class="unit ng-binding">\{{selectedPair.iid.split("_")[0] |uppercase }}</span>
                                         </div>
                                     </div>
                                     <div class="field percent  f-cb">
@@ -263,7 +263,7 @@
                                         <div class="iptwrap money-wrap">
                                              <span ng-bind="buyOrder.total || 0"
                                                    class="ng-pristine ng-valid c_green"></span>
-                                            <span class="ng-binding">\{{selectedPair.group}}</span>
+                                            <span class="ng-binding">\{{selectedPair.iid.split("_")[1] |uppercase }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -291,14 +291,14 @@
                                         <label class="ng-binding" ng-bind="lang.price + '：'"></label>
                                         <div class="iptwrap leftBig">
                                             <input type="text" name="sellPrice" id="sellUnitPrice"  ng-model="sellOrder.price" ng-change="setTotalOrAmount('sellOrder')" input-decimal-separator="8" class="ng-pristine ng-valid">
-                                            <span class="unit ng-binding">\{{selectedPair.group}}</span>
+                                            <span class="unit ng-binding">\{{selectedPair.iid.split("_")[1]| uppercase}}</span>
                                         </div>
                                     </div>
                                     <div class="field f-cb">
                                         <label class="ng-binding" ng-bind="lang.spread.amount + ': '"></label>
                                         <div class="iptwrap" >
                                             <input type="text" name="sellQuanity" id="sellNumber"  ng-model="sellOrder.amount" ng-change="setTotalOrAmount('sellOrder')" input-decimal-separator="4" class="ng-pristine ng-valid">
-                                            <span class="unit ng-binding">\{{selectedPair.fShortName}}</span>
+                                            <span class="unit ng-binding">\{{selectedPair.iid.split("_")[0]| uppercase}}</span>
                                         </div>
                                     </div>
                                     <div class="field percent  f-cb">
@@ -313,11 +313,11 @@
                                         </div>
                                     </div>
                                     <div class="field f-cb">
-                                        <label class="ng-binding" ng-bind="lang.cost + ': '"></label>
+                                        <label class="ng-binding" >得到</label>
                                         <div class="iptwrap money-wrap">
                                             <span ng-bind="sellOrder.total || 0"
                                                   class="ng-pristine ng-valid c_red"></span>
-                                            <span class="ng-binding">\{{selectedPair.fShortName}}</span>
+                                            <span class="ng-binding">\{{selectedPair.iid.split("_")[1] |uppercase }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -428,10 +428,10 @@
                                 <tbody>
                                 <tr ng-repeat="row in recentDealList" class="ng-scope">
                                     <td class="f-left ng-binding green"
-                                        ng-class="row[3] == 1 ? 'magenta' : 'green'" ng-bind="row[0] | fixed: 4">
+                                        ng-class="'green'" ng-bind="row.p?row.p : 0 | fixed: 4">
                                     </td>
-                                    <td class="f-right ng-binding" ng-bind-html="row[1] | fixed: 2 | gg"></td>
-                                    <td class="f-right ng-binding" ng-bind="row[2].substring(6)"></td>
+                                    <td class="f-right ng-binding" ng-bind="row.v ? row.v : 0 | fixed: 4"></td>
+                                    <td class="f-right ng-binding" ng-bind="row.tt | date :'HH:mm:ss' "></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -441,10 +441,10 @@
             </div>
         </div>
         <div class="userRecords f-cb">
-            <div class="userRecords-title">
-                <span class="cur ng-binding" ng-bind="lang.opneOrders"></span>
-                <a href="/finance/open" class="f-fr more ng-binding" ng-bind="lang.more"></a>
-            </div>
+            <!--<div class="userRecords-title">-->
+                <!--<span class="cur ng-binding" ng-bind="lang.opneOrders"></span>-->
+                <!--<a href="/finance/open" class="f-fr more ng-binding" ng-bind="lang.more"></a>-->
+            <!--</div>-->
             <div class="userRecords-main">
                 <div class="item-con">
                     <table class="table table-striped">
@@ -483,10 +483,10 @@
             </div>
         </div>
         <div class="userRecords f-cb">
-            <div class="userRecords-title">
-                <span class="cur ng-binding" ng-bind="lang.orderHis"></span>
-                <a href="/finance/bill" class="f-fr more ng-binding" ng-bind="lang.more"></a>
-            </div>
+            <!--<div class="userRecords-title">-->
+                <!--<span class="cur ng-binding" ng-bind="lang.orderHis"></span>-->
+                <!--<a href="/finance/bill" class="f-fr more ng-binding" ng-bind="lang.more"></a>-->
+            <!--</div>-->
             <div class="userRecords-main">
                 <div class="item-con">
                     <table class="table table-striped">

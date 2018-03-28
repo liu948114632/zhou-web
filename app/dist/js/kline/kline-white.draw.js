@@ -4125,7 +4125,8 @@ MainDataSource.prototype.getLastDate = function () {
     if (a < 1) {
         return -1
     }
-    return this.getDataAt(a - 1).date
+    // return this.getDataAt(a - 1).date
+    return a;
 };
 MainDataSource.prototype.getDataAt = function (a) {
     return this._dataItems[a]
@@ -8423,10 +8424,10 @@ function deCode(data){
     }
 function getklinedataAjax() {
 //msgtype=ReqQryKLine&iid=ltc_btc&klt=1&sns=1&sne=300&UserID=00001&TimeStamp=2112345678000
-    var time =  (new Date()).valueOf();
-    var val = "msgtype=ReqQryKLine&iid=ltc_btc&klt=1&UserID=111"+"&TimeStamp="+time;
-    var hash = CryptoJS.HmacSHA256(val, "123123");
-    var sign = hash.toString();
+//     var time =  (new Date()).valueOf();
+//     var val = "msgtype=ReqQryKLine&iid=ltc_btc&sns=1&sne=50&klt=1&UserID=111"+"&TimeStamp="+time;
+//     var hash = CryptoJS.HmacSHA256(val, "123123");
+//     var sign = hash.toString();
     GLOBAL_VAR.G_HTTP_REQUEST = $.ajax({
 //        type: "get",
 //        // url: '/dist/json/period.json',
@@ -8442,10 +8443,10 @@ function getklinedataAjax() {
         type: "post",
         // url: '/dist/json/period.json',
         url: GLOBAL_VAR.url,
-        dataType: "arraybuffer",
+        dataType: "json",
         contentType:"text/json;charset=UTF-8",
-//        data: GLOBAL_VAR.requestParam ,
-        data: val+"&Sign="+sign ,
+       data: GLOBAL_VAR.requestParam + "&Sign=" + CryptoJS.HmacSHA256(GLOBAL_VAR.requestParam, "123123").toString() ,
+        // data: val+"&Sign="+sign ,
         timeout: 30000,
         created: Date.now(),
         beforeSend: function () {
@@ -8454,8 +8455,8 @@ function getklinedataAjax() {
         },
         success: function (res) {
             // todo mark1
-            console.log("23123132");
-            var data = JSON.parse(deCode(res.data));
+            // var data = JSON.parse(deCode(res.data));
+            var data = res;
 //            var data = toGbk(res.data);
             console.log(data);
 
@@ -8473,18 +8474,22 @@ function getklinedataAjax() {
 //                data[i][3] = di
 //                data[i][4] = shou
                 var row = [];
-                row[0] = data[i]['t'];
-                row[1] = data[i]['op'];
-                row[2] = data[i]['hp'];
-                row[3] = data[i]['lp'];
-                row[4] = data[i]['cp'];
-                row[5] = data[i]['v'];
+                row[0] = data[i]['t'] ;
+                row[1] = data[i]['op']?data[i]['op'] : 0;
+                row[2] = data[i]['hp']?data[i]['hp'] : 0;
+                row[3] = data[i]['lp']?data[i]['lp'] : 0;
+                row[4] = data[i]['cp']?data[i]['cp'] : 0;
+                row[5] = data[i]['v']?data[i]['v'] : 0;
 
-                if (!timeKey[data[i][0]]) {
-//                    newData.push(data[i])
+                if (!timeKey[row[0]]) {
                     newData.push(row)
-                    timeKey[data[i][0]] = true
+                    timeKey[row[0]] = true
                 }
+                // if (!timeKey[data[i][0]]) {
+                //    newData.push(data[i])
+                //     newData.push(row)
+                //     timeKey[data[i][0]] = true
+                // }
             }
             data = newData
             delete timeKey
@@ -8661,14 +8666,23 @@ function setHttpRequestParam(b, c, a, e) {
         "3min": 60 * 3,
         "1min": 60 * 1
     }
+    b = "ltc_btc";
+    var time =  (new Date()).valueOf();
+    // var val = "msgtype=ReqQryKLine&iid="+b+"&sns=1&sne="+e+"&klt=1&UserID=111"+"&TimeStamp="+time;
 
-    var d = "needTickers=1&symbol=" + b + "&type=" + c + "&step=" + stepMap[c];
-    if (a != null) {
-        d += "&size=" + a
-    } else {
-        d += "&since=" + e
+    var val ="";
+    if(a !=null){
+        val = "msgtype=ReqQryKLine&iid="+b+"&sns=1&sne=40&klt=a&UserID=111"+"&TimeStamp="+time;
+    }else{
+        val = "msgtype=ReqQryKLine&iid="+b+"&sns="+e+"&sne="+(40+e*1)+"&klt=a&UserID=111"+"&TimeStamp="+time;
     }
-    return d
+    // var d = "needTickers=1&symbol=" + b + "&type=" + c + "&step=" + stepMap[c];
+    // if (a != null) {
+    //     d += "&size=" + a
+    // } else {
+    //     d += "&since=" + e
+    // }
+    return val;
 }
 
 function refreshTemplate() {

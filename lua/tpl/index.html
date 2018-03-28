@@ -172,25 +172,25 @@
     <div data-v-15f70906="">
         <div class="main min-w" style="background-color: #262626;">
             <main data-v-e893afaa="" class="min-w" style="line-height: 1.5;">
-                <section class="hero hero-main">
-                    <div class="content-wrap">
-                        <div class="hero-body">
-                            <div class="columns">
-                                <div class="column is-12-mobile is-6-tablet is-5-desktop hero-content">
-                                    <div style="width:300px;position:relative;">
-                                        <h2 style="position:absolute; bottom: -5px;left: 90px;font-size:38px;" ng-bind="lang.an.t6"></h2>
-                                    </div>
-                                    <h2 style="font-size:38px;" ng-bind="lang.an.t5"></h2>
-                                    <p ng-bind="lang.an.t4"></p>
-                                    <a class="button is-primary trade-now-button" style="color:#fff;" href="/exchange" target="_blank" style="background-color: #ff4b33; color:white;" ng-bind="lang.trade_now"></a>
-                                </div>
-                                <div class="is-6-tablet is-7-desktop">
-                                    <img src="{+resources+}/dist/images/banner.png" class="hero-background-image">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <!--<section class="hero hero-main">-->
+                    <!--<div class="content-wrap">-->
+                        <!--<div class="hero-body">-->
+                            <!--<div class="columns">-->
+                                <!--<div class="column is-12-mobile is-6-tablet is-5-desktop hero-content">-->
+                                    <!--<div style="width:300px;position:relative;">-->
+                                        <!--<h2 style="position:absolute; bottom: -5px;left: 90px;font-size:38px;" ng-bind="lang.an.t6"></h2>-->
+                                    <!--</div>-->
+                                    <!--<h2 style="font-size:38px;" ng-bind="lang.an.t5"></h2>-->
+                                    <!--<p ng-bind="lang.an.t4"></p>-->
+                                    <!--<a class="button is-primary trade-now-button" style="color:#fff;" href="/exchange" target="_blank" style="background-color: #ff4b33; color:white;" ng-bind="lang.trade_now"></a>-->
+                                <!--</div>-->
+                                <!--<div class="is-6-tablet is-7-desktop">-->
+                                    <!--<img src="{+resources+}/dist/images/banner.png" class="hero-background-image">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</section>-->
                 <div data-v-e893afaa="" class="home-banner">
                     <span class="text-center banner-notice_" ng-repeat="a in articles">
                         <!--<i class="iconfont">&#xe61d;</i>-->
@@ -326,16 +326,16 @@
                                         <span data-v-e893afaa="" ng-bind="ticker.key | uppercase"></span>
                                     </td>
                                     <td data-v-e893afaa="" class="D text-left" ng-click="trade(ticker.fid)">
-                                        <span data-v-e893afaa="" ng-bind="ticker.lsp | currency:'':8"></span>
+                                        <span data-v-e893afaa="" ng-bind="ticker.lsp || 0 "></span>
                                         <!-- <span data-v-e893afaa="" class="color-minor"> / 4.62CNY</span>-->
                                     </td>
                                     <td data-v-e893afaa="" class="D text-left " ng-click="trade(ticker.fid)"
                                         ng-class="ticker.fupanddown > 0 ? 'color-rose' : 'color-fall'" ng-bind="\{{ticker.fupanddown || 0 | currency:'':2}} + '%'">
                                     </td>
-                                    <td data-v-e893afaa="" class="D" ng-click="trade(ticker.fid)" ng-bind="ticker.hp"></span></td>
-                                    <td data-v-e893afaa="" class="D" ng-click="trade(ticker.fid)" ng-bind="ticker.lp"></td>
+                                    <td data-v-e893afaa="" class="D" ng-click="trade(ticker.fid)" ng-bind="ticker.hp || 0"></span></td>
+                                    <td data-v-e893afaa="" class="D" ng-click="trade(ticker.fid)" ng-bind="ticker.lp || 0"></td>
                                     <td data-v-e893afaa="" class="D text-right" ng-click="trade(ticker.fid)" style="padding-right:8px;">
-                                        <span data-v-e893afaa="" ng-bind="ticker.v"></span>
+                                        <span data-v-e893afaa="" ng-bind="ticker.v || 0"></span>
                                         <span data-v-e893afaa="" class="color-minor" ng-bind="selectedMarket | uppercase"></span>
                                     </td>
                                     <td ng-click="trade(ticker.fid)"></td>

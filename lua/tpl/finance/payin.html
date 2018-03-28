@@ -112,53 +112,56 @@
 
                             </div>
                             <ul class="lists-body">
-                                <li ng-repeat="log in rechargeLogs" class="f-cb ng-scope"
+                                <li ng-repeat="log in rechargeLogs | orderBy :log.it :'desc' | limitTo:20 " class="f-cb ng-scope"
                                     ng-class="{true:'grey',false:''}[d.status==2]">
-                                    <div class="status">
-                                        <span ng-if="log.status ==3"  class="ng-binding yellow" ng-bind="lang.success"></span>
-                                        <span ng-if="log.status !=3"  class="ng-binding " ng-bind="lang.js.asset.pending"></span>
+                                    <div class="amount ng-binding" ng-bind="log.tsid "></div>
+                                    <div class="name ng-binding" ng-bind="log.d ? log.d :0  + log.cid"></div>
+                                    <div class="status" ng-cloak="">
+                                        <!--a已提交,b已接受,c已拒绝,e已复核-->
+                                        <span ng-if="log.ts =='a'"  class="ng-binding gray" >已提交</span>
+                                        <span ng-if="log.ts =='b'"  class="ng-binding yellow" >已接受</span>
+                                        <span ng-if="log.ts =='c'"  class="ng-binding red" >已拒绝</span>
+                                        <span ng-if="log.ts =='e'"  class="ng-binding green" >已复核</span>
                                     </div>
-                                    <div class="name ng-binding" ng-bind="log.name"></div>
-                                    <div class="amount ng-binding" ng-bind="log.amount"></div>
-                                    <div class="ng-binding" ng-bind="log.time | date:'yyyy-MM-dd HH:mm:ss'">
+                                    <div class="ng-binding" ng-bind="log.it | date:'yyyy-MM-dd HH:mm:ss'">
                                     </div>
-                                    <table >
-                                        <tbody>
-                                        <tr>
-                                            <th class="ng-binding" ng-bind="lang.js.payin.address"></th>
-                                            <td>
-                                                <a class="ng-binding ng-scope"  href="\{{log.url}}\{{log.in_address}}"  target="_blank" ng-bind="log.in_address"></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th class="ng-binding">Txid:</th>
-                                            <td class="ng-scope">
-                                                <a   href="\{{log.url}}\{{log.txid}}" target="_blank" class="ng-binding" ng-bind="log.txid">
-                                            </a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                    <!--<table >-->
+                                        <!--<tbody>-->
+                                        <!--<tr>-->
+                                            <!--<th class="ng-binding" ng-bind="lang.js.payin.address"></th>-->
+                                            <!--<td>-->
+                                                <!--<a class="ng-binding ng-scope"  href="\{{log.url}}\{{log.in_address}}"  target="_blank" ng-bind="log.in_address"></a>-->
+                                            <!--</td>-->
+                                        <!--</tr>-->
+                                        <!--<tr>-->
+                                            <!--<th class="ng-binding">Txid:</th>-->
+                                            <!--<td class="ng-scope">-->
+                                                <!--<a   href="\{{log.url}}\{{log.txid}}" target="_blank" class="ng-binding" ng-bind="log.txid">-->
+                                            <!--</a>-->
+                                            <!--</td>-->
+                                        <!--</tr>-->
+                                        <!--</tbody>-->
+                                    <!--</table>-->
                                 </li>
                             </ul>
                         </div>
-                        <nav class="pagination ng-hide" ng-show="rechargeLogs.length > 0">
-                            <ul style="">
-                                <li  ng-repeat="num in all_pages" ng-click ="loadList(num)" ng-class="currency_page == num ? 'pagination-current': ''" >
-                                    <span ng-bind="num"></span>
-                                </li>
+                        <!--<nav class="pagination ng-hide" ng-show="rechargeLogs.length > 0">-->
+                            <!--<ul style="">-->
+                                <!--<li  ng-repeat="num in all_pages" ng-click ="loadList(num)" ng-class="currency_page == num ? 'pagination-current': ''" >-->
+                                    <!--<span ng-bind="num"></span>-->
+                                <!--</li>-->
 
-                                <li  ng-click="loadList(currency_page+1)" ng-if = "totalPage > 1">
-                                    <span style="font-size: 20px;line-height: 25px;">›</span>
-                                </li>
-                                <li ng-click=" loadList(totalPage)" ng-if = "totalPage > 1" ><span style="font-size: 20px;line-height: 25px;">»</span>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="nodata ng-scope" ng-if="totalPage == 0">
-                            <img src="{+resources+}/dist/images/zups.png">
-                            <p class="ng-binding" ng-bind="lang.noRecord"></p>
-                        </div>
+                                <!--<li  ng-click="loadList(currency_page+1)" ng-if = "totalPage > 1">-->
+                                    <!--<span style="font-size: 20px;line-height: 25px;">›</span>-->
+                                <!--</li>-->
+                                <!--<li ng-click=" loadList(totalPage)" ng-if = "totalPage > 1" ><span style="font-size: 20px;line-height: 25px;">»</span>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        <!--</nav>-->
+                        <!--<div class="nodata ng-scope" ng-if="totalPage == 0">-->
+                            <!--<img src="{+resources+}/dist/images/zups.png">-->
+                            <!--<p class="ng-binding" ng-bind="lang.noRecord"></p>-->
+                        <!--</div>-->
                     </div>
                 </div>
             </div>

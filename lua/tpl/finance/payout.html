@@ -98,8 +98,8 @@
                                                     <strong class="ng-binding" ng-bind="lang.emailCode"></strong>
                                                 </div>
                                                 <div class="inputGroup">
-                                                    <input type="text" style="line-height: 32px;width: 288px;" ng-model="code" />
-                                                    <span id="code_btn" class="code_btn" ng-click = "sendCode()" data-cate="inner" ng-bind="lang.send"></span>
+                                                    <input type="text" style="line-height: 32px;width: 288px;" ng-model="code" placeholder="验证码一分钟内有效" />
+                                                    <span id="code_btn" class="code_btn" ng-click = "sendCode()" data-cate="inner" ng-cloak="">\{{tip}}</span>
                                                 </div>
                                             </div>
                                             <!--<div class="total f-cb ng-binding ng-scope" style="margin-bottom: 27px;margin-top:30px;">-->
@@ -120,33 +120,33 @@
 
                             </div>
                             <ul class="lists-body">
-                                <li ng-repeat="log in rechargeLogs"  class="f-cb ng-scope"
+                                <li ng-repeat="log in rechargeLogs | orderBy :log.it :'desc' | limitTo:20 "  class="f-cb ng-scope"
                                     ng-class="{true:'grey',false:''}[d.status==2]">
-                                    <div class="status">
-                                        <span ng-if="log.status == 1"  class="ng-binding" >等待审核</span>
-                                        <span ng-if="log.status == 2"  class="ng-binding yellow" >正在处理</span>
-                                        <span ng-if="log.status == 3"  class="ng-binding green" >提现成功</span>
-                                        <span ng-if="log.status == 4"  class="ng-binding gray" >用户撤销</span>
+                                    <div class="amount ng-binding" ng-bind="log.tsid "></div>
+                                    <div class="name ng-binding" ng-bind="log.d ? log.d :0  + log.cid"></div>
+                                    <div class="status" ng-cloak="">
+                                        <span ng-if="log.ts =='a'"  class="ng-binding gray" >已提交</span>
+                                        <span ng-if="log.ts =='b'"  class="ng-binding yellow" >已接受</span>
+                                        <span ng-if="log.ts =='c'"  class="ng-binding red" >已拒绝</span>
+                                        <span ng-if="log.ts =='e'"  class="ng-binding green" >已复核</span>
                                     </div>
-                                    <div class="name ng-binding" ng-bind="log.name"></div>
-                                    <div class="amount ng-binding" ng-bind="log.amount"></div>
-                                    <div class="ng-binding" ng-bind="log.time | date:'yyyy-MM-dd HH:mm:ss'">
+                                    <div class="ng-binding" ng-bind="log.it | date:'yyyy-MM-dd HH:mm:ss'">
                                     </div>
                                     <table >
                                         <tbody>
                                         <tr>
                                             <th class="ng-binding">地址:</th>
                                             <td>
-                                                <a class="ng-binding ng-scope"  href="\{{log.url}}\{{log.in_address}}"  target="_blank" ng-bind="log.out_address"></a>
+                                                <a class="ng-binding ng-scope"    target="_blank" ng-bind="log.dca"></a>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <th class="ng-binding">Txid:</th>
-                                            <td class="ng-scope">
-                                                <a   href="\{{log.url}}\{{log.txid}}" target="_blank" class="ng-binding" ng-bind="log.txid">
-                                                </a>
-                                            </td>
-                                        </tr>
+                                        <!--<tr>-->
+                                            <!--<th class="ng-binding">Txid:</th>-->
+                                            <!--<td class="ng-scope">-->
+                                                <!--<a   target="_blank" class="ng-binding" ng-bind="log.txid">-->
+                                                <!--</a>-->
+                                            <!--</td>-->
+                                        <!--</tr>-->
                                         </tbody>
                                     </table>
                                 </li>

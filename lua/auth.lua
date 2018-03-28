@@ -2,7 +2,7 @@
 local session = require "session"
 
 local intercept_uri = {
---    '/account',
+--    '/exchange',
 --    '/finance',
 --    '/support',
 --    '/*'

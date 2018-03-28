@@ -45,21 +45,39 @@
             bids: [],
             tradeLogs: []
         }
-
-        function getDepth() {
-//            var symbol = kline.symbol;
-//            var url = DOMAIN_TRANS + "/api/v2/market/marketRefresh?symbol=" + symbol + "&&depth=4";
-//            $http.get(url).then(function(res){
-//                $scope.depth = {
-//                    asks: res.data.sellDepthList.reverse(),
-//                    bids: res.data.buyDepthList,
-//                    tradeLogs: res.data.recentDealList
-//                }
-//                updateDepth()
-//            })
+        function deCode(data){
+            var dataView = new DataView(data);
+            var decoder = new TextDecoder('gb2312');
+            return decoder.decode(dataView);
         }
 
-//        getDepth()
+        function getDepth() {
+           // var symbol = kline.symbol;
+           var symbol = "ltc_btc";
+
+            var time =  (new Date()).valueOf();
+            var val = "msgtype=ReqQryDepth&iid="+symbol+"&UserID=123"+"&TimeStamp="+time;
+            var hash = CryptoJS.HmacSHA256(val, "123123");
+            var sign = hash.toString();
+            $http({
+                method:"POST",
+                url:"/api/v1",
+                data:val+"&Sign="+sign,
+                responseType :'arraybuffer',
+            }).then(function (res) {
+                var result = deCode(res.data);
+                var s = result.replace('"iid":'+symbol+',',"");
+                var json_result = JSON.parse(s);
+                $scope.depth = {
+                    asks: json_result.asks,
+                    bids: json_result.bids,
+                }
+                updateDepth()
+            })
+
+        }
+
+       getDepth()
 
         function updateDepth() {
             _set_current_depth({

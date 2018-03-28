@@ -13,7 +13,8 @@ if "POST" == request_method then
     -- ngx.exec("@c")
     ngx.req.read_body()
     local arg = ngx.req.get_post_args()["msgtype"]
-    if arg == "ReqQryDepthMarketData"  or arg == "ReqQryDepth" or arg == "ReqQryOrder" or arg =="ReqQryTradingAccount" or arg =="ReqQryDepositAddress" then
+    if arg == "ReqQryDepthMarketData"  or arg == "ReqQryDepth" or arg == "ReqQryOrder" or arg =="ReqQryTradingAccount"
+            or arg =="ReqQryDepositAddress" or arg == "ReqQryKLine" or arg =="ReqQryLastTrade" or arg =="ReqQryTransfer" then
         ngx.exec("@c")
     else
         ngx.exec("@b")

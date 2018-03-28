@@ -6,25 +6,26 @@ app.controller('loginCtrl',function ($scope,$http) {
             return;
         }
         var time =  (new Date()).valueOf();
-        // var val = "msgtype=ReqQryInstrument&iid=ltc_btc&UserID="+$scope.name+"&TimeStamp="+time;
-        var val = "msgtype=ReqQryDepthMarketData&UserID="+sessionStorage.getItem("uid")+"&TimeStamp="+time;
+        var val = "msgtype=ReqQryTradingAccount&cid="+$scope.id +"&UserID="+$scope.name+"&TimeStamp="+time;
         var hash = CryptoJS.HmacSHA256(val, $scope.password);
         var sign = hash.toString();
-        $http.post("/api/v1",val+"&Sign="+sign)
-            .then(function (res) {
-            console.log(res.data);
-            sessionStorage.setItem("uid",$scope.name);
-            sessionStorage.setItem("key",$scope.password);
+        $http({
+            method:"POST",
+            url:"/api/v1",
+            data:val+"&Sign="+sign,
+            responseType :'arraybuffer',
+        }).then(function (res) {
+            var result = JSON.parse(toGbk(res.data));
+            if(result.em == "用户名或密码错误"){
+                error_win(result.em);
+                $scope.name ="";
+                $scope.password ="";
+            }else {
+                sessionStorage.setItem("uid",$scope.name);
+                sessionStorage.setItem("key",$scope.password);
+                location.href = "/"
+            }
         })
-        // $http({
-        //     method:"POST",
-        //     url:"/api/v1",
-        //     data:val+"&Sign="+sign,
-        //     responseType :'arraybuffer'
-        // }).then(function (res) {
-        //     var result = unzip(res.data);
-        //     console.log(JSON.parse(result))
-        // })
     }
 
 })

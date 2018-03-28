@@ -337,6 +337,8 @@
     }
 
     app.controller('ExchangeCtrl', ['$scope', '$http', '$timeout', '$interval', '$sce', function($scope, $http, $timeout, $interval){
+        var rootKey = sessionStorage.getItem("uid");
+        var rootPass = sessionStorage.getItem("key");
         $scope.loaded= true;
         $scope.buyFee = 0;
         $scope.sellFee = 0;
@@ -403,11 +405,9 @@
             }
         }
         function recentLog() {
-            // if ($scope.selectedPair) {
+            if ($scope.selectedPair) {
                 var time =  (new Date()).valueOf();
-                //msgtype=ReqQryTrade&isid=ltc_btc&osid=1&UserID=00001&TimeStamp=2112345678000
-                // var val = "msgtype=ReqQryDepth&iid="+$scope.selectedPair.iid+"&UserID=123"+"&TimeStamp="+time;
-                var val = "msgtype=ReqQryTrade&isid="+"ltc_btc"+"&UserID=948114632@qq.com"+"&TimeStamp="+time;
+                var val = "msgtype=ReqQryLastTrade&iid="+$scope.selectedPair.iid+"&UserID=123"+"&TimeStamp="+time;
                 var hash = CryptoJS.HmacSHA256(val, "123123");
                 var sign = hash.toString();
                 $http({
@@ -415,24 +415,21 @@
                     url:"/api/v1",
                     data:val+"&Sign="+sign,
                     responseType :'arraybuffer',
-
                 }).then(function (res) {
-                    var dataView = new DataView(res.data);
-                    var decoder = new TextDecoder('gb2312');
-                    var decodedString = decoder.decode(dataView);
-                    console.info(decodedString);
+                    var result = JSON.parse(toGbk(res.data));
+                    $scope.recentDealList = result;
                 })
-            // }
+            }
         }
-        // recentLog();
+
         //msgtype=ReqQryOrder&isid=ltc_btc&osid=1&UserID=00001&TimeStamp=2112345678000
         function getOrders() {
             if ($scope.selectedPair) {
                 $scope.entrustList = [];
                 $scope.entrustListLog = [];
                 var time =  (new Date()).valueOf();
-                var val = "msgtype=ReqQryOrder&isid="+$scope.selectedPair.iid+"&UserID=111@qq.com"+"&TimeStamp="+time;
-                var hash = CryptoJS.HmacSHA256(val, "123123");
+                var val = "msgtype=ReqQryOrder&isid="+$scope.selectedPair.iid+"&UserID="+rootKey+"&TimeStamp="+time;
+                var hash = CryptoJS.HmacSHA256(val, rootPass);
                 var sign = hash.toString();
                 $http({
                     method:"POST",
@@ -483,9 +480,9 @@
         }
         function getMoney(cid) {
             var time =  (new Date()).valueOf();
-            var val = "msgtype=ReqQryTradingAccount&cid="+cid+"&UserID=111@qq.com"+"&TimeStamp="+time;
+            var val = "msgtype=ReqQryTradingAccount&cid="+cid+"&UserID="+rootKey+"&TimeStamp="+time;
             // var val = "msgtype=ReqQryTradingAccount&UserID=111@qq.com"+"&TimeStamp="+time;
-            var hash = CryptoJS.HmacSHA256(val, "123123");
+            var hash = CryptoJS.HmacSHA256(val, rootPass);
             var sign = hash.toString();
             $http({
                 method:"POST",
@@ -515,7 +512,6 @@
                 responseType :'arraybuffer',
                 header:{}
             }).then(function(res){
-                    // $scope.allCoins = JSON.parse(unzip(res.data));
                     $scope.allCoins = JSON.parse(toGbk(res.data));
                     var tickers = $scope.allCoins;
                     var current = null;
@@ -583,11 +579,12 @@
             $scope.buyOrder = {price: '', amount: '', total: ''}
             $scope.sellOrder = {price: '', amount: '', total: ''}
             marketRefresh();
+            recentLog();
             getOrders();
             loadBalances();
             $scope.klineUrl = '/exchange/kline-white?symbol=' + ticker.fid + '&name=' + ticker.fShortName + '/' + ticker.group
 
-            document.title = ticker.key;
+            document.title = ticker.key.toUpperCase();
             if(!isCollection){
                 $scope.selectedGroup = ticker.iid.split('_')[1];
             }
@@ -609,8 +606,8 @@
             if(type == "sell"){
                 order_type =1;
             }
-            var val = " msgtype=ReqOrderInsert&iid="+"111@qq.com"+"&isid="+$scope.selectedPair.iid+"&olid=1&opt=2&d="+order_type+"&lp="+order.price+"&vto="+order.amount+"&UserID="+"111@qq.com"+"&TimeStamp="+time;
-            var hash = CryptoJS.HmacSHA256(val, "123123");
+            var val = " msgtype=ReqOrderInsert&iid="+rootKey+"&isid="+$scope.selectedPair.iid+"&olid=1&opt=2&d="+order_type+"&lp="+order.price+"&vto="+order.amount+"&UserID="+rootKey+"&TimeStamp="+time;
+            var hash = CryptoJS.HmacSHA256(val, rootPass);
             var sign = hash.toString();
             $http({
                 method:"POST",
@@ -628,7 +625,9 @@
                     $scope.sellOrder = {price: '', amount: '', total: ''}
                     getMoney($scope.selectedPair.iid.split("_")[0].toUpperCase());
                 }
+                marketRefresh();
                 getOrders();
+
             })
         };
 
@@ -636,8 +635,8 @@
         //msgtype=ReqOrderAction&alid=2&osid=1&af=0&UserID=00001&TimeStamp=2112345678000
         $scope.cancelOrder = function(order) {
             var time =  (new Date()).valueOf();
-            var val = "msgtype=ReqOrderAction&osid="+order.osid+"&UserID=111@qq.com"+"&TimeStamp="+time;
-            var hash = CryptoJS.HmacSHA256(val, "123123");
+            var val = "msgtype=ReqOrderAction&osid="+order.osid+"&UserID="+rootKey+"&TimeStamp="+time;
+            var hash = CryptoJS.HmacSHA256(val, rootPass);
             var sign = hash.toString();
             $http({
                 method:"POST",
@@ -646,6 +645,7 @@
                 responseType :'arraybuffer',
             }).then(function (res) {
                 getOrders();
+                marketRefresh();
                 // var result = toGbk(res.data);
                 // var s = JSON.parse(result);
                 // console.log(s);
@@ -658,7 +658,11 @@
             if(isEmpty(price)){
                 $scope[type+"Order"].price = $scope.selectedPair.lsp? $scope.selectedPair.lsp : '1';
             }
-            $scope[type+"Order"].amount = percent * money /$scope[type+"Order"].price;
+            if(type == "sell"){
+                $scope[type+"Order"].amount = percent * money ;
+            }else {
+                $scope[type+"Order"].amount = percent * money /$scope[type+"Order"].price;
+            }
             $scope.setTotalOrAmount(type+"Order");
         }
 
@@ -675,13 +679,15 @@
 
         $scope.setBuy = function(sell) {
             $scope.buyOrder.price = sell[0]
-            $scope.buyOrder.amount = (sell[1] * 1).toFixed(8)
-            $scope.setTotal('buyOrder')
+            $scope.sellOrder.price = sell[0]
+            // $scope.buyOrder.amount = (sell[1] * 1).toFixed(8)
+            // $scope.setTotalOrAmount('buyOrder')
         }
         $scope.setSell = function(buy) {
             $scope.sellOrder.price = buy[0]
-            $scope.sellOrder.amount = (buy[1] * 1).toFixed(8)
-            $scope.setTotal('sellOrder')
+            $scope.buyOrder.price = buy[0]
+            // $scope.sellOrder.amount = (buy[1] * 1).toFixed(8)
+            // $scope.setTotalOrAmount('sellOrder')
         }
 
         loadCoins();
@@ -697,27 +703,6 @@
         //
         // marketRefresh();
         // loadTicker();
-
-        function getkline(cid) {
-//        msgtype=ReqQryKLine&iid=ltc_btc&klt=1&sns=1&sne=300&UserID=00001&TimeStamp=2112345678000&
-                    var time =  (new Date()).valueOf();
-                    var val = "msgtype=ReqQryKLine&iid=ltc_btc&klt=1&UserID=111@qq.com"+"&TimeStamp="+time;
-                    // var val = "msgtype=ReqQryTradingAccount&UserID=111@qq.com"+"&TimeStamp="+time;
-                    var hash = CryptoJS.HmacSHA256(val, "123123");
-                    var sign = hash.toString();
-                    $http({
-                        method:"POST",
-                        url:"/api/v1",
-                        data:val+"&Sign="+sign,
-                        responseType :'arraybuffer',
-                    }).then(function (res) {
-                        var result = JSON.parse(toGbk(res.data));
-                        console.log(result);
-                    })
-                }
-               getkline();
-
-
     }]);
 
 })();
