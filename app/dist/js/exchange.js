@@ -582,7 +582,7 @@
             recentLog();
             getOrders();
             loadBalances();
-            $scope.klineUrl = '/exchange/kline-white?symbol=' + ticker.fid + '&name=' + ticker.fShortName + '/' + ticker.group
+            $scope.klineUrl = '/exchange/kline-white?symbol=' + ticker.iid ;
 
             document.title = ticker.key.toUpperCase();
             if(!isCollection){

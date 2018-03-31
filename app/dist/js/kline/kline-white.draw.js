@@ -5322,7 +5322,10 @@ MainInfoPlotter.prototype.Draw = function (c) {
             }
         }
         var o = m.getDataAt(s - 1);
-        var h = (C.close - o.close) / o.close * 100;
+        var h = 0;
+        if(o.close !=0){
+            h = (C.close - o.close) / o.close * 100;
+        }
         if (h >= 0) {
             h = " " + h.toFixed(2);
             c.fillStyle = y.getColor(Theme.Color.TextPositive)
@@ -5338,7 +5341,10 @@ MainInfoPlotter.prototype.Draw = function (c) {
             return
         }
     }
-    var d = (C.high - C.low) / C.low * 100;
+    var d = 0;
+    if(C.low != 0){
+        d = (C.high - C.low) / C.low * 100;
+    }
     if (D == "zh-cn") {
         if (!Plotter.drawString(c, "  振幅: " + d.toFixed(2) + " %", a)) {
             return
@@ -8458,7 +8464,7 @@ function getklinedataAjax() {
             // var data = JSON.parse(deCode(res.data));
             var data = res;
 //            var data = toGbk(res.data);
-            console.log(data);
+//             console.log(data);
 
             var newData = []
             var timeKey = {}
@@ -8651,30 +8657,44 @@ var main = function () {
 
 function setHttpRequestParam(b, c, a, e) {
 
+    // var stepMap = {
+    //     "1week": 60 * 60 * 24 * 7,
+    //     "3day": 60 * 60 * 24 * 3,
+    //     "1day": 60 * 60 * 24,
+    //     "12hour": 60 * 60 * 12,
+    //     "6hour": 60 * 60 * 6,
+    //     "4hour": 60 * 60 * 4,
+    //     "2hour": 60 * 60 * 2,
+    //     "1hour": 60 * 60,
+    //     "30min": 60 * 30,
+    //     "15min": 60 * 15,
+    //     "5min": 60 * 5,
+    //     "3min": 60 * 3,
+    //     "1min": 60 * 1
+    // }
     var stepMap = {
-        "1week": 60 * 60 * 24 * 7,
-        "3day": 60 * 60 * 24 * 3,
-        "1day": 60 * 60 * 24,
-        "12hour": 60 * 60 * 12,
-        "6hour": 60 * 60 * 6,
-        "4hour": 60 * 60 * 4,
-        "2hour": 60 * 60 * 2,
-        "1hour": 60 * 60,
-        "30min": 60 * 30,
-        "15min": 60 * 15,
-        "5min": 60 * 5,
-        "3min": 60 * 3,
-        "1min": 60 * 1
+        "1week": 'e',
+        "3day": 'd',
+        "1day": 'c',
+        "12hour":'b',
+        "6hour": '9',
+        "4hour": '8',
+        "2hour": '7',
+        "1hour": '6',
+        "30min": '5',
+        "15min": '4',
+        "5min": '3',
+        "3min": '2',
+        "1min": '1'
     }
-    b = "ltc_btc";
+    // b = "ltc_btc";
     var time =  (new Date()).valueOf();
     // var val = "msgtype=ReqQryKLine&iid="+b+"&sns=1&sne="+e+"&klt=1&UserID=111"+"&TimeStamp="+time;
-
     var val ="";
     if(a !=null){
-        val = "msgtype=ReqQryKLine&iid="+b+"&sns=1&sne=40&klt=a&UserID=111"+"&TimeStamp="+time;
+        val = "msgtype=ReqQryKLine&iid="+b+"&sns=1&sne=100&klt="+stepMap[c]+"&UserID=111"+"&TimeStamp="+time;
     }else{
-        val = "msgtype=ReqQryKLine&iid="+b+"&sns="+e+"&sne="+(40+e*1)+"&klt=a&UserID=111"+"&TimeStamp="+time;
+        val = "msgtype=ReqQryKLine&iid="+b+"&sns="+e+"&sne="+(100+e*1)+"&klt="+stepMap[c]+"&UserID=111"+"&TimeStamp="+time;
     }
     // var d = "needTickers=1&symbol=" + b + "&type=" + c + "&step=" + stepMap[c];
     // if (a != null) {
@@ -8766,7 +8786,7 @@ function on_size() {
     w.h = A.y - f.y;
     z.css({left: v.x + "px", top: v.y + "px", width: v.w + "px", height: v.h + "px"});
     if (G) {
-        p.css({display: "none",left: f.x + "px", top: f.y + "px", width: f.w + "px", height: f.h + "px"})
+        // p.css({display: "none",left: f.x + "px", top:  f.y + "px", width: f.w + "px", height: f.h + "px"})
     }
     s.css({left: w.x + "px", top: w.y + "px", width: w.w + "px", height: w.h + "px"});
     var x = $("#chart_mainCanvas")[0];
@@ -9044,16 +9064,17 @@ function calcPeriodWeight(d) {
     }
     c[a] = 8;
     ChartSettings.save();
-    $("#chart_toolbar_periods_horz").find("li").each(function () {
-        var e = $(this).attr("name");
-        var f = e;
-        if (e != "line") {
-            f = GLOBAL_VAR.periodMap[GLOBAL_VAR.tagMapPeriod[e]]
-        }
-        if (c[f] == 0) {
-            $(this).css("display", "none")
-        } else {
-            $(this).css("display", "inline-block")
-        }
-    })
+    // $("#chart_toolbar_periods_horz").find("li").each(function () {
+    //     var e = $(this).attr("name");
+    //     var f = e;
+    //     if (e != "line") {
+    //         f = GLOBAL_VAR.periodMap[GLOBAL_VAR.tagMapPeriod[e]]
+    //     }
+    //     if (c[f] == 0) {
+    //         $(this).css("display", "none")
+    //         // $(this).css("display", "inline-block")
+    //     } else {
+    //         $(this).css("display", "inline-block")
+    //     }
+    // })
 };
