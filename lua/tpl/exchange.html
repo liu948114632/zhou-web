@@ -351,10 +351,10 @@
                 <div class="depths" style="margin-bottom:-2px;">
                     <div class="depthstitle f-cb">
                         <ul class="tab-box" ng-init="curMarket=getQuoteAsset">
-                            <li class="f-fl" id="defaultStart"  ng-click="selectedGroup='like'"
-                                ng-class="{true:'active',false:''}[selectedGroup=='like']">
-                                <!--<span class="iconfont icon-xingxing activeTabDefault ng-binding" ng-bind="lang.store"></span>-->
-                            </li>
+                            <!--<li class="f-fl" id="defaultStart"  ng-click="selectedGroup='like'"-->
+                                <!--ng-class="{true:'active',false:''}[selectedGroup=='like']">-->
+                                <!--&lt;!&ndash;<span class="iconfont icon-xingxing activeTabDefault ng-binding" ng-bind="lang.store"></span>&ndash;&gt;-->
+                            <!--</li>-->
 
                             <li class="f-fr  f-nomargin" ng-repeat="(group, coins) in coinGroup" ng-click="changeGroup(group)"
                                 ng-class="selectedGroup == group ? 'active' : ''"
