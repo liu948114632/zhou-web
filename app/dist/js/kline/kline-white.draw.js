@@ -1,7 +1,8 @@
 var GLOBAL_VAR = {
     KLineAllData: new Object,
     KLineData: new Object,
-    time_type: "15min",
+    // time_type: "15min",
+    time_type: "3min",
     market_from: "1",
     market_from_name: "ttrans",
     limit: "1000",
