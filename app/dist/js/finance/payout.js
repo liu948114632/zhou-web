@@ -92,7 +92,7 @@ app.controller('payoutController', ['$scope', '$http', '$location', '$interval',
            return;
        }
        if(isEmpty($scope.amount) || isEmpty($scope.address) || isEmpty($scope.code)){
-           error_win("参数不能为空");
+           error_win(lang.noempty);
            return;
        }
        if(isEmpty($scope.wallet.a) || $scope.amount >$scope.wallet.a  || $scope.wallet.a == 0){

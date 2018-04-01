@@ -93,7 +93,7 @@
                                                 <div class="chargeAddress text ng-binding" ng-show="address" ng-bind="address">
                                                 </div>
                                                 <div  style="padding: unset;text-align: center" ng-show="!address">
-                                                    <input ng-click = "applyAddress()" type="button" style="height: 32px;width: 140px;background-color: #f00;color: #ffffff;margin-bottom: -8px" value="获取充值地址">
+                                                    <input ng-click = "applyAddress()" type="button" style="height: 32px;width: 140px;background-color: #f00;color: #ffffff;margin-bottom: -8px" value="\{{lang.getaddress}}">
                                                 </div>
 
                                                 <div class="f-cb" ng-show="ischarge">
@@ -127,10 +127,10 @@
                                     <div class="name ng-binding" ng-bind="log.d ? log.d :0  + log.cid"></div>
                                     <div class="status" ng-cloak="">
                                         <!--a已提交,b已接受,c已拒绝,e已复核-->
-                                        <span ng-if="log.ts =='a'"  class="ng-binding gray" >已提交</span>
-                                        <span ng-if="log.ts =='b'"  class="ng-binding yellow" >已接受</span>
-                                        <span ng-if="log.ts =='c'"  class="ng-binding red" >已拒绝</span>
-                                        <span ng-if="log.ts =='e'"  class="ng-binding green" >已复核</span>
+                                        <span ng-if="log.ts =='a'"  class="ng-binding gray" ng-bind="lang.js.bill.dealStatus1"></span>
+                                        <span ng-if="log.ts =='b'"  class="ng-binding yellow" ng-bind="lang.js.bill.dealStatus2"></span>
+                                        <span ng-if="log.ts =='c'"  class="ng-binding red" ng-bind="lang.js.bill.dealStatus3"></span>
+                                        <span ng-if="log.ts =='e'"  class="ng-binding green" ng-bind="lang.js.bill.dealStatus4"></span>
                                     </div>
                                     <div class="ng-binding" ng-bind="log.it | date:'yyyy-MM-dd HH:mm:ss'">
                                     </div>

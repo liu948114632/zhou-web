@@ -3,25 +3,25 @@
 
     <!--<a href="/" class="logo"><img src="{+cdn+}{{param['logo']}}"></a>-->
 
-    <!--<div class="f-fr">-->
-        <!--<div class="languages" ng-mouseover="showFlags=true;" ng-mouseout="showFlags=false;">-->
+    <div class="f-fr">
+        <div class="languages" ng-mouseover="showFlags=true;" ng-mouseout="showFlags=false;">
 
-            <!--<span class="font-lang ng-scope" >-->
-                <!--{% if lang == 'cn' then %}-->
-                <!--<span ng-bind="lang.chinese"></span>-->
-                <!--{% else %}-->
-                <!--English-->
-                <!--{% end %}-->
-            <!--</span>-->
+            <span class="font-lang ng-scope" >
+                {% if lang == 'cn' then %}
+                <span ng-bind="lang.chinese"></span>
+                {% else %}
+                English
+                {% end %}
+            </span>
 
-            <!--<ul ng-show="showFlags" class="ng-hide">-->
-                <!--<li ng-click="switching('en')" data-lang ="en"  class="languagenew">English</li>-->
-                <!--<li ng-click="switching('cn')"  data-lang = "cn" class="languagenew" ng-bind="lang.chinese">-->
-                    <!--<span class="duigou ng-scope" ng-bind="lang.chinese"></span>-->
-                <!--</li>-->
-            <!--</ul>-->
-        <!--</div>-->
-    <!--</div>-->
+            <ul ng-show="showFlags" class="ng-hide">
+                <li ng-click="switching('en')" data-lang ="en"  class="languagenew">English</li>
+                <li ng-click="switching('cn')"  data-lang = "cn" class="languagenew" ng-bind="lang.chinese">
+                    <span class="duigou ng-scope" ng-bind="lang.chinese"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
     <div class="login-register f-fr ng-scope dn" >
         <a href="/user/login" target="_self" class="ng-binding" ng-bind="lang.login"></a>&nbsp;&nbsp;
         <a href="/user/register" target="_self" class="ng-binding" ng-bind="lang.register"></a>&nbsp;&nbsp;

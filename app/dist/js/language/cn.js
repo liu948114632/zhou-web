@@ -1,4 +1,8 @@
 var lang = {
+    aa:"验证码一分钟内有效",
+    getaddress:"获取充值地址",
+    dayin:"今日充值",
+    dayout:"今日提现",
     searchresult:"搜索结果",
     result1:"  结果  ",
     count1:"条",
@@ -408,10 +412,10 @@ var lang = {
             pending: "正在处理"
         },
         bill:{
-            dealStatus1:"未成交",
-            dealStatus2:"部分成交",
-            dealStatus3:"已成功",
-            dealStatus4:"已撤销",
+            dealStatus1:"已提交",
+            dealStatus2:"已接受",
+            dealStatus3:"已拒绝",
+            dealStatus4:"已复核",
         },
         payin:{
             u:"您的",

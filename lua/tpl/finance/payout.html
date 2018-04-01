@@ -51,11 +51,11 @@
                                         <colgroup style="width:180px;"></colgroup>
                                         <tbody>
                                         <tr>
-                                            <th class="ng-binding" ng-bind="lang.js.payout.frozen">下单冻结</th>
+                                            <th class="ng-binding" ng-bind="lang.js.payout.frozen"></th>
                                             <td class="ng-binding" ng-bind="wallet.fc ? wallet.fc: '' | number : 6"></td>
                                         </tr>
                                         <tr>
-                                            <th class="ng-binding" ng-bind="lang.js.payout.total">可用余额</th>
+                                            <th class="ng-binding" ng-bind="lang.js.payout.total"></th>
                                             <td class="ng-binding" ng-bind="wallet.a ? wallet.a: '' | number : 6"></td>
                                         </tr>
                                         </tbody>
@@ -64,7 +64,7 @@
                                         <form class="withdrawalForm ng-pristine ng-valid" id="withdrawalForm">
                                             <div class="filed" >
                                                 <div class="label f-cb" >
-                                                    <strong class="ng-binding" >提现地址</strong>
+                                                    <strong class="ng-binding" ng-bind="lang.sup.wiaddress"></strong>
                                                 </div>
                                                 <div class="inputGroup">
                                                     <input type="text"   ng-model="address">
@@ -102,8 +102,8 @@
                                                 <div class="label f-cb" style="margin-bottom: 7px">
                                                     <strong class="ng-binding" ng-bind="lang.emailCode"></strong>
                                                 </div>
-                                                <div class="inputGroup">
-                                                    <input type="text" style="line-height: 32px;width: 288px;" ng-model="code" placeholder="验证码一分钟内有效" />
+                                                <div class="inputGroup" ng-cloak="">
+                                                    <input type="text" style="line-height: 32px;width: 288px;" ng-model="code" placeholder="\{{lang.aa}}" />
                                                     <span id="code_btn" class="code_btn" ng-click = "sendCode()" data-cate="inner" ng-cloak="">\{{tip}}</span>
                                                 </div>
                                             </div>
@@ -111,7 +111,7 @@
                                                 <!--\{{lang.fees}}: <strong><span ng-bind="params.feeAmount"></span>+<span ng-bind="params.feeRatio * 100"></span>%</strong>-->
                                                 <!--&lt;!&ndash;<span class="f-fr ng-binding">实际到账: <strong ng-bind="realAmount">0.00000000</strong></span>&ndash;&gt;-->
                                             <!--</div>-->
-                                            <input style="margin-top:20px;" type="button" value="\{{lang.submit}}" ng-click="bindWithdraw()" class="confirm btn btn-orange btn-block" id="btn-withdraw">
+                                            <input style="margin-top:20px;" ng-cloak="" type="button" value="\{{lang.submit}}" ng-click="bindWithdraw()" class="confirm btn btn-orange btn-block" id="btn-withdraw">
                                         </form>
                                     </div>
                                 </div>
@@ -130,17 +130,17 @@
                                     <div class="amount ng-binding" ng-bind="log.tsid "></div>
                                     <div class="name ng-binding" ng-bind="log.d ? log.d :0  + log.cid"></div>
                                     <div class="status" ng-cloak="">
-                                        <span ng-if="log.ts =='a'"  class="ng-binding gray" >已提交</span>
-                                        <span ng-if="log.ts =='b'"  class="ng-binding yellow" >已接受</span>
-                                        <span ng-if="log.ts =='c'"  class="ng-binding red" >已拒绝</span>
-                                        <span ng-if="log.ts =='e'"  class="ng-binding green" >已复核</span>
+                                        <span ng-if="log.ts =='a'"  class="ng-binding gray" ng-bind="lang.js.bill.dealStatus1"></span>
+                                        <span ng-if="log.ts =='b'"  class="ng-binding yellow" ng-bind="lang.js.bill.dealStatus2"></span>
+                                        <span ng-if="log.ts =='c'"  class="ng-binding red" ng-bind="lang.js.bill.dealStatus3"></span>
+                                        <span ng-if="log.ts =='e'"  class="ng-binding green" ng-bind="lang.js.bill.dealStatus4"></span>
                                     </div>
                                     <div class="ng-binding" ng-bind="log.it | date:'yyyy-MM-dd HH:mm:ss'">
                                     </div>
                                     <table >
                                         <tbody>
                                         <tr>
-                                            <th class="ng-binding">地址:</th>
+                                            <th class="ng-binding" ng-cloak="">\{{lang.sup.address}}:</th>
                                             <td>
                                                 <a class="ng-binding ng-scope"    target="_blank" ng-bind="log.dca"></a>
                                             </td>
@@ -184,7 +184,7 @@
                                 </div>
                             </div>
                             <div class="bk-tabList-bd text-left clearfix addressform">
-                                <i class="iconfont close"></i>
+                                <i class="iconfont close"></i>
                                 <form id="addForm"  method="post" autocomplete="off">
                                     <div >
                                         <label  ><span class="ng-binding" ng-bind="lang.addressName"></span>：</label>

@@ -8850,21 +8850,21 @@ function on_size() {
         k.before(e);
         a.style.display = "none"
     }
-    if (u < 1050) {
-        $("#chart_updated_time").css("display", "none")
-    } else {
-        $("#chart_updated_time").css("display", "")
-    }
-    if (u < 940) {
-        $("#chart_language_setting_div").css("display", "none")
-    } else {
-        $("#chart_language_setting_div").css("display", "")
-    }
-    if (u < 280) {
-        $("#chart_exchanges_setting_div").css("display", "none")
-    } else {
-        $("#chart_exchanges_setting_div").css("display", "")
-    }
+    // if (u < 1050) {
+    //     $("#chart_updated_time").css("display", "none")
+    // } else {
+    //     $("#chart_updated_time").css("display", "")
+    // }
+    // if (u < 940) {
+    //     $("#chart_language_setting_div").css("display", "none")
+    // } else {
+    //     $("#chart_language_setting_div").css("display", "")
+    // }
+    // if (u < 280) {
+    //     $("#chart_exchanges_setting_div").css("display", "none")
+    // } else {
+    //     $("#chart_exchanges_setting_div").css("display", "")
+    // }
     ChartManager.getInstance().redraw("All", true)
 }
 

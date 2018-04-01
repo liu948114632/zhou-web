@@ -1,4 +1,8 @@
 var lang = {
+    aa:"The code is valid for one minute.",
+    getaddress:"Get Address",
+    dayin:"Day Recharge",
+    dayout:"Day Withdraw",
     searchresult:"Search Results",
     result1:"  results  ",
     count1:"count",
@@ -129,7 +133,7 @@ var lang = {
     orderHis:"Order History",
     opneOrders :"Open Orders",
     orders:"Orders",
-    chinese:"Chinese",
+    chinese:"简体中文",
     help:"Help",
     lang: "en",
     sufficient: "Insufficient Funds",
@@ -408,10 +412,10 @@ var lang = {
             pending: "Pending"
         },
         bill:{
-            dealStatus1:"Undone",
-            dealStatus2:"Partial",
-            dealStatus3:"Success",
-            dealStatus4:"Canceled",
+            dealStatus1:"Submitted",
+            dealStatus2:"Accepted",
+            dealStatus3:"Rejected",
+            dealStatus4:"Re-checked",
         },
         payin:{
             u:"Your ",
@@ -440,8 +444,8 @@ var lang = {
             noLimit:"Unlimited",
             min:"Single minimum available quantity: ",
             max:"Single maximum available quantity: ",
-            total:"Usable：",
-            frozen:"Frozen：",
+            total:"Usable",
+            frozen:"Frozen",
             all:"Withdraw all",
             add:"Add",
             address:"Receive Address"
