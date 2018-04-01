@@ -5809,26 +5809,26 @@ TimelinePlotter.prototype.Draw = function (b) {
         } else {
             if (B == 1 && (f < (t / TimelinePlotter.TP_HOUR))) {
                 if (E == 1) {
-                    p = o.toString();
-                    if (I == "zh-cn") {
-                        p += "年"
-                    } else {
-                        if (I == "zh-tw") {
-                            p += "年"
-                        }
-                    }
+                    // p = o.toString();
+                    // if (I == "zh-cn") {
+                    //     p += "年"
+                    // } else {
+                    //     if (I == "zh-tw") {
+                    //         p += "年"
+                    //     }
+                    // }
                 } else {
-                    if (I == "zh-cn") {
-                        p = E.toString() + "月"
-                    } else {
-                        if (I == "zh-tw") {
-                            p = E.toString() + "月"
-                        } else {
-                            if (I == "en-us") {
-                                p = TimelinePlotter.MonthConvert[E]
-                            }
-                        }
-                    }
+                    // if (I == "zh-cn") {
+                    //     p = E.toString() + "月"
+                    // } else {
+                    //     if (I == "zh-tw") {
+                    //         p = E.toString() + "月"
+                    //     } else {
+                    //         if (I == "en-us") {
+                    //             p = TimelinePlotter.MonthConvert[E]
+                    //         }
+                    //     }
+                    // }
                 }
                 b.fillStyle = C.getColor(Theme.Color.Text4)
             }
