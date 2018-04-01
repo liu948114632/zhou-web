@@ -3,11 +3,13 @@ app.controller('assetController',function ($scope,$http) {
     $scope.items = [];
     $scope.allItems = [];
     $scope.hideAccount = false;
+    var rootKey = sessionStorage.getItem("uid");
+    var rootPass = sessionStorage.getItem("key");
     function getAsset() {
         var time =  (new Date()).valueOf();
         // var val = "msgtype=ReqQryTradingAccount&cid="+cid+"&UserID=111@qq.com"+"&TimeStamp="+time;
-        var val = "msgtype=ReqQryTradingAccount&UserID=111@qq.com"+"&TimeStamp="+time;
-        var hash = CryptoJS.HmacSHA256(val, "123123");
+        var val = "msgtype=ReqQryTradingAccount&UserID="+rootKey+"&TimeStamp="+time;
+        var hash = CryptoJS.HmacSHA256(val, rootPass);
         var sign = hash.toString();
         $http({
             method:"POST",
