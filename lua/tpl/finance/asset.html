@@ -251,7 +251,7 @@
             <div class="balance_search f-cb">
                 <div class="search_input f-fl">
 
-                    <input type="text" ng-model = "keyword" ng-keyup="search($event)" class="ng-pristine ng-valid">
+                    <input type="text" ng-model = "keyword"  class="ng-pristine ng-valid">
                     <i class="iconfont icon-sousuo"></i>
                 </div>
                 <div class="f-fl">
@@ -282,7 +282,7 @@
                         <div class="action f-right"></div>
                     </div>
                 </li>
-                <li   ng-repeat="w in items | filter : func" ng-cloak="">
+                <li   ng-repeat="w in allItems | filter : func | filter :search" ng-cloak="">
                     <div class="items f-cb">
                         <div class="coin ng-binding">
                             <span ng-bind="w.cid | uppercase"></span>

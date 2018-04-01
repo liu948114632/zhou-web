@@ -3,8 +3,33 @@ app.controller('assetController',function ($scope,$http) {
     $scope.items = [];
     $scope.allItems = [];
     $scope.hideAccount = false;
+    $scope.allCoins = [];
     var rootKey = sessionStorage.getItem("uid");
     var rootPass = sessionStorage.getItem("key");
+
+    // msgtype=ReqQryInstrument&iid=ltc_btc&UserID=00001&TimeStamp=2112345678000
+    function getAllCoin() {
+        var time =  (new Date()).valueOf();
+        var val = "msgtype=ReqQryInstrument&UserID="+rootKey+"&TimeStamp="+time;
+        var hash = CryptoJS.HmacSHA256(val, rootPass);
+        var sign = hash.toString();
+        $http({
+            method:"POST",
+            url:"/api/v1",
+            data:val+"&Sign="+sign,
+            responseType :'arraybuffer',
+        }).then(function (res) {
+            var result = JSON.parse(toGbk(res.data));
+            var all =[];
+            for(var i = 0;i< result.length ; i++){
+                all.push(result[i].pid);
+            }
+            $scope.allCoins = Array.from(new Set(all))
+            getAsset();
+        })
+    }
+    getAllCoin();
+
     function getAsset() {
         var time =  (new Date()).valueOf();
         // var val = "msgtype=ReqQryTradingAccount&cid="+cid+"&UserID=111@qq.com"+"&TimeStamp="+time;
@@ -18,13 +43,31 @@ app.controller('assetController',function ($scope,$http) {
             responseType :'arraybuffer',
         }).then(function (res) {
             $scope.init_load = true;
-            $scope.items = JSON.parse(toGbk(res.data));
-            $scope.allItems = $scope.items;
+            var result = JSON.parse(toGbk(res.data));
+            //没有记录
+            if(result.toString().indexOf("正确") == -1){
+                for (var j =0;j<$scope.allCoins.length;j++){
+                    $scope.allItems.push({'cid':$scope.allCoins[j]})
+                } 
+            }else {
+                $scope.allItems = result;
+                var coins = [];
+                for (var i = 0; i<result.length;i++){
+                    coins.push(result[i].cid.toUpperCase());
+                }
+                var srt = coins.toString();
+                for (var k = 0;k< $scope.allCoins.length; k++){
+                    if(srt.indexOf($scope.allCoins[k])  == -1){
+                        $scope.allItems.push({'cid':$scope.allCoins[k]})
+                    }
+                }
+            }
+            // $scope.allItems = $scope.items;
         })
     }
     $scope.func = function(res){
         if($scope.hideAccount){
-            if((res.a || 0 + w.fc || 0) > 0.00001){
+            if((res.a || 0 + res.fc || 0) > 0.00001){
                 return res;
             }
         }else {
@@ -32,18 +75,15 @@ app.controller('assetController',function ($scope,$http) {
         }
 
     };
-    $scope.search = function(){
+    $scope.search = function(res){
         if(isEmpty($scope.keyword)){
-            $scope.items = $scope.allItems;
-            return;
-        }
-        $scope.items = [];
-        for (var i = 0;i<$scope.allItems.length ;i++){
-            if($scope.allItems[i].cid.indexOf($scope.keyword.toUpperCase()) > -1){
-                $scope.items.push($scope.allItems[i])
+            return res;
+        }else {
+            if(res.cid.indexOf($scope.keyword.toUpperCase()) > -1){
+                return res;
             }
         }
     };
 
-    getAsset();
+    // getAsset();
 });

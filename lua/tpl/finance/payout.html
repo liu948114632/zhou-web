@@ -80,7 +80,7 @@
                                                     <span class="unit ng-binding" ng-bind="id"></span>
                                                     <div class="available">
                                                         <label class="ng-binding" ng-bind="lang.js.payout.total"></label>
-                                                        <span class="ng-binding" ng-bind="wallet.a | number : 4">0.00000000</span>
+                                                        <span class="ng-binding" ng-bind="wallet.a || 0 | number : 4">0.00000000</span>
 
                                                     </div>
                                                     <a href="javascript:;" style="position:absolute;top: 30px;right:10px;color: #ff4b33;font-size:12px;text-decoration: underline;float:right;" ng-click="withdrawAll()"

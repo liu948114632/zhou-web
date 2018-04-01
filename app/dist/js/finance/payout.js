@@ -87,12 +87,16 @@ app.controller('payoutController', ['$scope', '$http', '$location', '$interval',
     var isPending = false;
 //msgtype=ReqTransferInsert&iid=00001&tlid=2&tt=1&d=1.0&cid=BTC&at=4&fp=123456&dca=26mhzjkJ71oMAMkKu4dy98dnUpkyQBHL37&adt=123123&UserID=00001&TimeStamp=2112345678000
    $scope.bindWithdraw = function () {
+       if($scope.amount<=0){
+           error_win(lang.js.payout.amountEmptyTips);
+           return;
+       }
        if(isEmpty($scope.amount) || isEmpty($scope.address) || isEmpty($scope.code)){
            error_win("参数不能为空");
            return;
        }
-       if($scope.amount >$scope.wallet.a){
-           error_win("最大提现"+$scope.wallet.a);
+       if(isEmpty($scope.wallet.a) || $scope.amount >$scope.wallet.a  || $scope.wallet.a == 0){
+           error_win(lang.sufficient);
            return;
        }
        var time =  (new Date()).valueOf();

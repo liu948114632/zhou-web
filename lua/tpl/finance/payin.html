@@ -90,8 +90,12 @@
                                         <div  class="ng-scope">
                                             <div class="depositAddress">
                                                 <strong class="ng-binding">\{{id}} \{{lang.js.payin.address}}</strong>
-                                                <div class="chargeAddress text ng-binding" ng-bind="address">
+                                                <div class="chargeAddress text ng-binding" ng-show="address" ng-bind="address">
                                                 </div>
+                                                <div  style="padding: unset;text-align: center" ng-show="!address">
+                                                    <input ng-click = "applyAddress()" type="button" style="height: 32px;width: 140px;background-color: #f00;color: #ffffff;margin-bottom: -8px" value="获取充值地址">
+                                                </div>
+
                                                 <div class="f-cb" ng-show="ischarge">
                                                    <span ng-click="copyAddress('contentTextarea','showMsg')"  class="btn btn-white btn-copy f-fl ng-binding ng-scope" >
                                                        <i class="iconfont icon-copy"></i>

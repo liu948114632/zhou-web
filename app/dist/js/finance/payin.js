@@ -40,12 +40,15 @@ app.controller('payinController', ['$scope', '$http', '$location', '$interval', 
             var result = JSON.parse(toGbk(res.data));
             console.log(result);
             if(isEmpty(result.da)){
-                applyAddress();
+                // applyAddress();
+                $scope.address = "";
+            }else {
+                $scope.address = result.da;
             }
         })
     }
     //msgtype=ReqTransferInsert&iid=00001&tlid=1&tt=0&cid=BTC&at=4&UserID=00001&TimeStamp=2112345678000
-    function applyAddress() {
+    $scope.applyAddress = function() {
         var time =  (new Date()).valueOf();
         var val = "msgtype=ReqTransferInsert&iid="+rootKey+"&tlid=1&tt=0&cid="+$scope.id +"&at=4&UserID="+rootKey+"&TimeStamp="+time;
         var hash = CryptoJS.HmacSHA256(val, rootPass);
@@ -57,7 +60,8 @@ app.controller('payinController', ['$scope', '$http', '$location', '$interval', 
             responseType :'arraybuffer',
         }).then(function (res) {
             var result = JSON.parse(toGbk(res.data));
-            console.log(result);
+            // console.log(result);
+            $scope.address = result.osid;
         })
     }
     function getLogs() {
@@ -82,7 +86,7 @@ app.controller('payinController', ['$scope', '$http', '$location', '$interval', 
     }
     getLogs();
     getAsset();
-    // getAddress();
+    getAddress();
 
 
 }]);
