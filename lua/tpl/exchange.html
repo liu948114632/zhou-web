@@ -213,13 +213,16 @@
                         <label class="ng-binding" ng-bind="lang.sell_fee + '：'"> </label><span  class="ng-binding ng-scope">\{{sellFee * 100}} %</span>
                     </div>
                 </div>
-                <div class="orderforms f-cb" ng-init="orderType={'v':'limit'}" ng-cloak="">
+                <div class="orderforms f-cb"  ng-cloak="">
                     <div class="orderform-type">
-							<span ng-class="{true:'cur',false:''}[orderType.v=='limit']" ng-click="orderType.v='limit'"
-                                  class="ng-binding cur" ng-bind="lang.entrust">
+							<span ng-class="{true:'cur',false:''}[tradeType=='limit']" ng-click="tradeType='limit'"
+                                  class="ng-binding" ng-bind="lang.entrust">
+							</span>
+							<span ng-class="{true:'cur',false:''}[tradeType=='market']" ng-click="tradeType='market'"
+                                  class="ng-binding" ng-bind="lang.shijia">
 							</span>
                     </div>
-                    <div class="orderform-main f-cb" ng-show="orderType.v=='limit'" ng-cloak="">
+                    <div class="orderform-main f-cb" ng-if="tradeType=='limit'" ng-cloak="">
                         <div class="f-fl">
                             <div class="orderforms-hd">
                                 <div>
@@ -233,7 +236,7 @@
                                     <div class="field f-cb">
                                         <label class="ng-binding" ng-bind="lang.price + '：'"></label>
                                         <div class="iptwrap leftBig">
-                                            <input type="text" name="buyPrice" id="buyUnitPrice"
+                                            <input type="text" name="buyPrice"
                                                    ng-change="setTotalOrAmount('buyOrder')"
                                                    ng-model="buyOrder.price"
                                                    input-decimal-separator="8"
@@ -244,7 +247,7 @@
                                     <div class="field f-cb">
                                         <label class="ng-binding" ng-bind="lang.spread.amount + '：'"></label>
                                         <div class="iptwrap" ng-init="maxQuantity=false">
-                                            <input type="text" name="buyQuanity" id="buyNumber"
+                                            <input type="text" name="buyQuanity"
                                                    input-decimal-separator="4"
                                                    ng-model="buyOrder.amount"
                                                    ng-change="setTotalOrAmount('buyOrder')"
@@ -264,7 +267,7 @@
                                         </div>
                                     </div>
                                     <div class="field f-cb">
-                                        <label class="ng-binding" ng-bind="lang.cost + '：'"></label>
+                                        <label class="ng-binding" ng-bind="lang.entrustTotal + '：'"  ></label>
                                         <div class="iptwrap money-wrap">
                                              <span ng-bind="buyOrder.total || 0"
                                                    class="ng-pristine ng-valid c_green"></span>
@@ -295,10 +298,110 @@
                                     <div class="field f-cb">
                                         <label class="ng-binding" ng-bind="lang.price + '：'"></label>
                                         <div class="iptwrap leftBig">
-                                            <input type="text" name="sellPrice" id="sellUnitPrice"  ng-model="sellOrder.price" ng-change="setTotalOrAmount('sellOrder')" input-decimal-separator="8" class="ng-pristine ng-valid">
+                                            <input type="text" name="sellPrice"   ng-model="sellOrder.price" ng-change="setTotalOrAmount('sellOrder')" input-decimal-separator="8" class="ng-pristine ng-valid">
                                             <span class="unit ng-binding">\{{selectedPair.iid.split("_")[1]| uppercase}}</span>
                                         </div>
                                     </div>
+                                    <div class="field f-cb">
+                                        <label class="ng-binding" ng-bind="lang.spread.amount + ': '"></label>
+                                        <div class="iptwrap" >
+                                            <input type="text" name="sellQuanity"   ng-model="sellOrder.amount" ng-change="setTotalOrAmount('sellOrder')" input-decimal-separator="4" class="ng-pristine ng-valid">
+                                            <span class="unit ng-binding">\{{selectedPair.iid.split("_")[0]| uppercase}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="field percent  f-cb">
+                                        <label></label>
+                                        <div class="iptwrap"
+                                             ng-click="hideerror({target:'#sellQuanity'},'sellform-error')">
+                                            <span class="col"
+                                                  ng-click="orderPercent(0.25,'sell','limit')">25%</span><span
+                                                class="col" ng-click="orderPercent(0.5,'sell','limit')">50%</span><span
+                                                class="col" ng-click="orderPercent(0.75,'sell','limit')">75%</span><span
+                                                class="col" ng-click="orderPercent(1,'sell','limit')">100%</span>
+                                        </div>
+                                    </div>
+                                    <div class="field f-cb">
+                                        <label class="ng-binding" ng-bind="lang.entrustTotal + '：'"></label>
+                                        <div class="iptwrap money-wrap">
+                                            <span ng-bind="sellOrder.total || 0"
+                                                  class="ng-pristine ng-valid c_red"></span>
+                                            <span class="ng-binding">\{{selectedPair.iid.split("_")[1] |uppercase }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="orderforms-btn">
+                                    <div ng-if="user && user.isLogin != 1" class="logout ng-binding ng-scope"><a
+                                            href="/user/login"
+                                            class="ng-binding" ng-bind="lang.login"></a> or <a href="/user/register" class="ng-binding" ng-bind="lang.register"></a>
+                                    </div>
+                                    <input type="submit" value=" \{{lang.sell + ' ' + selectedPair.group}}" ng-click="createOrder('sell')" class="btn btn-block btn-sell ng-scope" >
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="orderform-main f-cb" ng-if="tradeType=='market'" ng-cloak="">
+                        <div class="f-fl">
+                            <div class="orderforms-hd">
+                                <div>
+                                    <label class="ng-binding"> \{{lang.buy + " "+ selectedPair.iid.split("_")[0] | uppercase}}</label>
+                                    <span class="f-fr ng-binding">\{{selectedPair.iid.split("_")[1] |uppercase }}\{{lang.yue}}：\{{groupMoney ? (groupMoney | fixed: 4) : '--'}} </span>
+                                </div>
+                            </div>
+                            <form name="buyForm" ng-submit="buy_submit()" novalidate="" autocomplete="off"
+                                  class="ng-pristine ng-invalid ng-invalid-required">
+                                <div class="orderforms-inputs">
+                                    <div class="field f-cb">
+                                        <label class="ng-binding" ng-bind="lang.spread.amount + '：'"></label>
+                                        <div class="iptwrap" ng-init="maxQuantity=false">
+                                            <input type="text" name="buyQuanity" id="buyNumber"
+                                                   input-decimal-separator="4"
+                                                   ng-model="buyOrder.amount"
+                                                   ng-change="setTotalOrAmount('buyOrder')"
+                                                   class="ng-pristine ng-invalid ng-invalid-required">
+                                            <span class="unit ng-binding">\{{selectedPair.iid.split("_")[0] |uppercase }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="field percent  f-cb">
+                                        <label></label>
+                                        <div class="iptwrap"
+                                             ng-click="hideerror({target:'#buyQuanity'},'buyform-error')">
+                                            <span class="col"
+                                                  ng-click="orderPercent(0.25,'buy','limit')">25%</span><span
+                                                class="col" ng-click="orderPercent(0.5,'buy','limit')">50%</span><span
+                                                class="col" ng-click="orderPercent(0.75,'buy','limit')">75%</span><span
+                                                class="col" ng-click="orderPercent(1,'buy','limit')">100%</span>
+                                        </div>
+                                    </div>
+                                    <!--<div class="field f-cb">-->
+                                        <!--<label class="ng-binding" ng-bind="lang.cost + '：'"></label>-->
+                                        <!--<div class="iptwrap money-wrap">-->
+                                             <!--<span ng-bind="buyOrder.total || 0"-->
+                                                   <!--class="ng-pristine ng-valid c_green"></span>-->
+                                            <!--<span class="ng-binding">\{{selectedPair.iid.split("_")[1] |uppercase }}</span>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                </div>
+                                <div class="orderforms-btn">
+                                    <div ng-if="user && user.isLogin != 1" class="logout ng-binding ng-scope"><a
+                                            href="/user/login"
+                                            class="ng-binding" ng-bind="lang.login"></a> or <a href="/user/register"
+                                                                                               class="ng-binding" ng-bind="lang.register"></a>
+                                    </div>
+                                    <input type="submit" ng-click="createOrder('buy')" value=" \{{lang.buy + ' '  + selectedPair.fShortName}}" class="btn btn-block btn-buy ng-scope" >
+                                </div>
+                            </form>
+                        </div>
+                        <div class="f-fr">
+                            <div class="orderforms-hd orderforms-hd-magenta">
+                                <div>
+                                    <label class="ng-binding"> \{{lang.sell + " " + selectedPair.iid.split("_")[0] | uppercase}}</label>
+                                    <span class="f-fr ng-binding">\{{selectedPair.iid.split("_")[0] | uppercase }}\{{lang.yue}}：\{{keyMoney ? (keyMoney | fixed: 4) : '--'}} </span>
+                                </div>
+                            </div>
+                            <form name="sellForm" ng-submit="sell_submit()" autocomplete="off"
+                                  class="ng-pristine ng-valid">
+                                <div class="orderforms-inputs">
                                     <div class="field f-cb">
                                         <label class="ng-binding" ng-bind="lang.spread.amount + ': '"></label>
                                         <div class="iptwrap" >
@@ -317,14 +420,14 @@
                                                 class="col" ng-click="orderPercent(1,'sell','limit')">100%</span>
                                         </div>
                                     </div>
-                                    <div class="field f-cb">
-                                        <label class="ng-binding" >得到</label>
-                                        <div class="iptwrap money-wrap">
-                                            <span ng-bind="sellOrder.total || 0"
-                                                  class="ng-pristine ng-valid c_red"></span>
-                                            <span class="ng-binding">\{{selectedPair.iid.split("_")[1] |uppercase }}</span>
-                                        </div>
-                                    </div>
+                                    <!--<div class="field f-cb">-->
+                                        <!--<label class="ng-binding" >得到</label>-->
+                                        <!--<div class="iptwrap money-wrap">-->
+                                            <!--<span ng-bind="sellOrder.total || 0"-->
+                                                  <!--class="ng-pristine ng-valid c_red"></span>-->
+                                            <!--<span class="ng-binding">\{{selectedPair.iid.split("_")[1] |uppercase }}</span>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
                                 </div>
                                 <div class="orderforms-btn">
                                     <div ng-if="user && user.isLogin != 1" class="logout ng-binding ng-scope"><a
@@ -500,16 +603,18 @@
             <div class="userRecords-main">
                 <div class="item-con">
                     <table class="table table-striped">
-                        <colgroup style="width: 20%"></colgroup>
-                        <colgroup style="width: 19%"></colgroup>
                         <colgroup style="width: 18%"></colgroup>
-                        <colgroup style="width: 18%"></colgroup>
-                        <colgroup style="width: 18%"></colgroup>
+                        <colgroup style="width: 13%"></colgroup>
+                        <colgroup style="width: 13%"></colgroup>
+                        <colgroup style="width: 16%"></colgroup>
+                        <colgroup style="width: 16%"></colgroup>
+                        <colgroup style="width: 17%"></colgroup>
                         <colgroup style="width: 7%"></colgroup>
                         <thead>
                             <tr>
                                 <th class="f-left ng-binding" ng-bind="lang.entrustTime"></th>
                                 <th class="f-left ng-binding" ng-bind="lang.dealType"></th>
+                                <th class="f-left ng-binding" ng-bind="lang.sup.type"></th>
                                 <th class="f-left ng-binding" ng-bind="lang.entrustPrice"></th>
                                 <th class="f-left ng-binding" ng-bind="lang.entrustAmount"></th>
                                 <th class="f-left ng-binding" ng-bind="lang.entrustTotal"></th>
@@ -520,9 +625,12 @@
                             <tr ng-repeat="row in entrustListLog |orderBy :row.id : 'desc'">
                                 <td class="f-left" ng-bind="row.it | date: 'yyyy-MM-dd HH:mm:ss'"></td>
                                 <td class="f-left"><span ng-class="row.d == 0? 'green': 'magenta'" ng-bind="row.d == 0 ? lang.buy : lang.sell"></span></td>
-                                <td class="f-left" ng-bind="row.lp | fixed: 8 "></td>
+                                <td class="f-left" ng-cloak="">\{{row.opt == 2? lang.xianjia : lang.shijia}}</td>
+                                <td class="f-left" ng-bind="row.lp  | fixed: 8 " ng-show="row.lp"></td>
+                                <td class="f-left"  ng-show="!row.lp">-</td>
                                 <td class="f-left" ng-bind="row.vto | fixed: 4"></td>
-                                <td class="f-left" ng-bind="(row.lp * row.vto) | fixed: 4"></td>
+                                <td class="f-left" ng-bind="(row.lp * row.vto) | fixed: 4" ng-show="row.lp"></td>
+                                <td class="f-left"  ng-show="!row.lp">-</td>
                                 <td class="f-right" ng-bind="row.os | formatEntrustStatus"></td>
                             </tr>
                         </tbody>

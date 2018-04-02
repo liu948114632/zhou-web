@@ -1,4 +1,6 @@
 var lang = {
+    xianjia:"现价",
+    shijia:"市价",
     aa:"验证码一分钟内有效",
     getaddress:"获取充值地址",
     dayin:"今日充值",

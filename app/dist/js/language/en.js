@@ -1,4 +1,6 @@
 var lang = {
+    xianjia:"Limit",
+    shijia:"Market",
     aa:"The code is valid for one minute.",
     getaddress:"Get Address",
     dayin:"Day Recharge",

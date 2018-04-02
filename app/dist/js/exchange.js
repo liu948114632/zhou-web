@@ -439,6 +439,7 @@
                 }).then(function (res) {
                     var result = toGbk(res.data);
                     var orders = JSON.parse(result);
+                    console.log(orders)
                     for(var i =0; i<orders.length; i++){
                         if(orders[i]['os'] == 1 || orders[i]['os'] == 3){
                             $scope.entrustList.push(orders[i]);
@@ -455,9 +456,11 @@
                 setErrorMessage(type, lang.js.exchange.amountTips);
                 return false;
             }
-            if (!order.total || order.total <= 0) {
-                setErrorMessage(type, lang.js.exchange.moneyTips);
-                return false;
+            if($scope.tradeType == "limit"){
+                if (!order.total || order.total <= 0) {
+                    setErrorMessage(type, lang.js.exchange.moneyTips);
+                    return false;
+                }
             }
             return true
         }
@@ -589,24 +592,26 @@
                 $scope.selectedGroup = ticker.iid.split('_')[1];
             }
         };
+        $scope.tradeType = 'limit';
 
         $scope.createOrder = function(type) {
             if (!checkOrder(type)) {
                 return
             }
-            var order = $scope[type + 'Order']
-            $scope.data = {
-                symbol: $scope.selectedPair.iid,
-                tradeAmount: order.amount,
-                tradeCnyPrice: order.price,
-                type: type
-            };
+            var order = $scope[type + 'Order'];
             var time =  (new Date()).valueOf();
             var order_type = 0;
             if(type == "sell"){
                 order_type =1;
             }
-            var val = " msgtype=ReqOrderInsert&iid="+rootKey+"&isid="+$scope.selectedPair.iid+"&olid=1&opt=2&d="+order_type+"&lp="+order.price+"&vto="+order.amount+"&UserID="+rootKey+"&TimeStamp="+time;
+            var opt = 2;
+            var val = "msgtype=ReqOrderInsert&iid="+rootKey+"&isid="+$scope.selectedPair.iid+"&olid=1&opt=";
+            if($scope.tradeType == 'market'){
+                opt =3;
+                val = val + opt+"&d="+order_type+ "&vto="+order.amount+"&UserID="+rootKey+"&TimeStamp="+time;
+            }else {
+                val = val + opt+"&d="+order_type+ "&lp="+order.price+ "&vto="+order.amount+"&UserID="+rootKey+"&TimeStamp="+time;
+            }
             var hash = CryptoJS.HmacSHA256(val, rootPass);
             var sign = hash.toString();
             $http({
@@ -615,9 +620,8 @@
                 data:val+"&Sign="+sign,
                 responseType :'arraybuffer'
             }).then(function (res) {
-                var dataView = new DataView(res.data);
-                var decoder = new TextDecoder('gb2312');
-                var result = decoder.decode(dataView);
+                var result = JSON.parse(toGbk(res.data));
+                console.log(result);
                 if(order_type == 0){
                     $scope.buyOrder = {price: '', amount: '', total: ''}
                     getMoney($scope.selectedPair.iid.split("_")[1].toUpperCase());
