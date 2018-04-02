@@ -124,24 +124,25 @@
                             <div class="lists-title ng-binding" ng-bind="lang.seest.withdrawre">
 
                             </div>
-                            <ul class="lists-body">
+                            <ul class="lists-body" ng-cloak="">
                                 <li ng-repeat="log in rechargeLogs | orderBy :log.it :'desc' | limitTo:20 "  class="f-cb ng-scope"
                                     ng-class="{true:'grey',false:''}[d.status==2]">
-                                    <div class="amount ng-binding" ng-bind="log.tsid "></div>
-                                    <div class="name ng-binding" ng-bind="log.d ? log.d :0  + log.cid"></div>
+                                    <div class="amount ng-binding" >ID: \{{log.tsid}}</div>
+                                    <div class="name ng-binding">\{{lang.entrustTotal}}: \{{log.d ? log.d :0  + log.cid}}</div>
                                     <div class="status" ng-cloak="">
-                                        <span ng-if="log.ts =='a'"  class="ng-binding gray" ng-bind="lang.js.bill.dealStatus1"></span>
-                                        <span ng-if="log.ts =='b'"  class="ng-binding yellow" ng-bind="lang.js.bill.dealStatus2"></span>
-                                        <span ng-if="log.ts =='c'"  class="ng-binding red" ng-bind="lang.js.bill.dealStatus3"></span>
-                                        <span ng-if="log.ts =='e'"  class="ng-binding green" ng-bind="lang.js.bill.dealStatus4"></span>
+                                        \{{lang.status}}:
+                                        <span ng-if="log.ts =='a'"  class="ng-binding gray" >\{{lang.js.bill.dealStatus1}}</span>
+                                        <span ng-if="log.ts =='b'"  class="ng-binding yellow" >\{{lang.js.bill.dealStatus2}}</span>
+                                        <span ng-if="log.ts =='c'"  class="ng-binding red" >\{{lang.js.bill.dealStatus3}}</span>
+                                        <span ng-if="log.ts =='e'"  class="ng-binding green" > \{{lang.js.bill.dealStatus4}}</span>
                                     </div>
-                                    <div class="ng-binding" ng-bind="log.it | date:'yyyy-MM-dd HH:mm:ss'">
+                                    <div class="ng-binding" >\{{lang.time}}: \{{log.it | date:'yyyy-MM-dd HH:mm:ss'}}
                                     </div>
                                     <table >
                                         <tbody>
                                         <tr>
                                             <th class="ng-binding" ng-cloak="">\{{lang.sup.address}}:</th>
-                                            <td>
+                                            <td ng-bind="log.dca">
                                                 <a class="ng-binding ng-scope"    target="_blank" ng-bind="log.dca"></a>
                                             </td>
                                         </tr>

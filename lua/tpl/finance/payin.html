@@ -120,13 +120,19 @@
                             <div ng-bind="lang.rechargedata" class="lists-title ng-binding">
 
                             </div>
-                            <ul class="lists-body">
+                            <ul class="lists-body" ng-show="rechargeLogs.length > 0">
+                                <li  class="f-cb ng-scope" >
+                                    <div class="amount ng-binding">ID</div>
+                                    <div class="name ng-binding" ng-bind="lang.entrustTotal"></div>
+                                    <div class="status" ng-cloak="" ng-bind="lang.status"></div>
+                                    <div class="ng-binding" ng-bind="lang.time">
+                                    </div>
+                                </li>
                                 <li ng-repeat="log in rechargeLogs | orderBy :log.it :'desc' | limitTo:20 " class="f-cb ng-scope"
                                     ng-class="{true:'grey',false:''}[d.status==2]">
                                     <div class="amount ng-binding" ng-bind="log.tsid "></div>
                                     <div class="name ng-binding" ng-bind="log.d ? log.d :0  + log.cid"></div>
                                     <div class="status" ng-cloak="">
-                                        <!--a已提交,b已接受,c已拒绝,e已复核-->
                                         <span ng-if="log.ts =='a'"  class="ng-binding gray" ng-bind="lang.js.bill.dealStatus1"></span>
                                         <span ng-if="log.ts =='b'"  class="ng-binding yellow" ng-bind="lang.js.bill.dealStatus2"></span>
                                         <span ng-if="log.ts =='c'"  class="ng-binding red" ng-bind="lang.js.bill.dealStatus3"></span>
@@ -134,23 +140,6 @@
                                     </div>
                                     <div class="ng-binding" ng-bind="log.it | date:'yyyy-MM-dd HH:mm:ss'">
                                     </div>
-                                    <!--<table >-->
-                                        <!--<tbody>-->
-                                        <!--<tr>-->
-                                            <!--<th class="ng-binding" ng-bind="lang.js.payin.address"></th>-->
-                                            <!--<td>-->
-                                                <!--<a class="ng-binding ng-scope"  href="\{{log.url}}\{{log.in_address}}"  target="_blank" ng-bind="log.in_address"></a>-->
-                                            <!--</td>-->
-                                        <!--</tr>-->
-                                        <!--<tr>-->
-                                            <!--<th class="ng-binding">Txid:</th>-->
-                                            <!--<td class="ng-scope">-->
-                                                <!--<a   href="\{{log.url}}\{{log.txid}}" target="_blank" class="ng-binding" ng-bind="log.txid">-->
-                                            <!--</a>-->
-                                            <!--</td>-->
-                                        <!--</tr>-->
-                                        <!--</tbody>-->
-                                    <!--</table>-->
                                 </li>
                             </ul>
                         </div>

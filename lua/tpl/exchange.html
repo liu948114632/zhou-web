@@ -431,6 +431,11 @@
                                 <colgroup style="width:30%"></colgroup>
                                 <colgroup style="width:40%"></colgroup>
                                 <tbody>
+                                <tr class="ng-scope">
+                                    <td class="f-left ng-binding" ng-bind="lang.price"></td>
+                                    <td class="f-right ng-binding" ng-bind="lang.spread.amount"></td>
+                                    <td class="f-right ng-binding" ng-bind="lang.spread.time"></td>
+                                </tr>
                                 <tr ng-repeat="row in recentDealList" class="ng-scope">
                                     <td class="f-left ng-binding green"
                                         ng-class="'green'" ng-bind="row.p?row.p : 0 | fixed: 4">

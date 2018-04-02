@@ -152,9 +152,9 @@ body,.wrap{background:#f7f7f7;}
 	.lists .lists-body li.th{background:#fafafa;color:#999;padding:0;}
 	.lists .lists-body li.th>div{border-right:1px solid #e6e6e6;padding:0 12px;color:#999;}
 	.lists .lists-body li.th>div:last-of-type{border:none;}
-	.lists .lists-body li>div.status{width: 128px;}
-	.lists .lists-body li>div.name{width: 107px;}
-	.lists .lists-body li>div.amount{width: 132px;}
+	.lists .lists-body li>div.status{width: 125px;}
+	.lists .lists-body li>div.name{width: 125px;}
+	.lists .lists-body li>div.amount{width: 100px;}
 	.lists .lists-body li>div.date{width:112px;}
 	.lists .lists-body li table{width:88%;margin:4px 0;}
 	.lists .lists-body li table th,.lists .lists-body li table td{padding:2px 4px;line-height:18px;}

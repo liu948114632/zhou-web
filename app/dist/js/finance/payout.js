@@ -111,9 +111,13 @@ app.controller('payoutController', ['$scope', '$http', '$location', '$interval',
            responseType :'arraybuffer',
        }).then(function (res) {
            var result = JSON.parse(toGbk(res.data));
-           console.log(result);
+           if(!isEmpty(result.osid)){
+               success_win(lang.operationSuccess,function () {
+                   location.reload();
+               })
+           }
        })
-   }
+   };
 
     getAsset();
     getLogs();

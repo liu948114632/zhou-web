@@ -45,7 +45,7 @@ app.controller('assetController',function ($scope,$http) {
             $scope.init_load = true;
             var result = JSON.parse(toGbk(res.data));
             //没有记录
-            if(result.toString().indexOf("正确") == -1){
+            if(result.toString().indexOf("正确") != -1){
                 for (var j =0;j<$scope.allCoins.length;j++){
                     $scope.allItems.push({'cid':$scope.allCoins[j]})
                 } 

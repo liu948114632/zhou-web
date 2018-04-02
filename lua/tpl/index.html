@@ -233,13 +233,13 @@
                                    class="text-right home-table">
                                 <colgroup data-v-e893afaa="">
                                     <col data-v-e893afaa="" width="48">
-                                    <col data-v-e893afaa="" width="180">
+                                    <col data-v-e893afaa="" width="188">
                                     <col data-v-e893afaa="" width="200">
                                     <col data-v-e893afaa="" width="198">
                                     <col data-v-e893afaa="" width="188">
                                     <col data-v-e893afaa="" width="188">
+                                    <col data-v-e893afaa="" width="188">
                                     <col data-v-e893afaa="" width="100">
-                                    <col data-v-e893afaa="" width="30">
                                 </colgroup>
                                 <thead data-v-e893afaa="" class="ts-12">
                                 <tr data-v-e893afaa="" class="home-th">
@@ -304,13 +304,13 @@
                                    class="text-right home-table">
                                 <colgroup data-v-e893afaa="">
                                     <col data-v-e893afaa="" width="48">
-                                    <col data-v-e893afaa="" width="180">
+                                    <col data-v-e893afaa="" width="188">
                                     <col data-v-e893afaa="" width="200">
                                     <col data-v-e893afaa="" width="198">
                                     <col data-v-e893afaa="" width="188">
                                     <col data-v-e893afaa="" width="188">
+                                    <col data-v-e893afaa="" width="188">
                                     <col data-v-e893afaa="" width="100">
-                                    <col data-v-e893afaa="" width="30">
                                 </colgroup>
                                 <tbody data-v-e893afaa="" class="ts-14">
                                 <tr data-v-e893afaa="" class="home-td color-333 ng-hide" ng-show="markets[selectedMarket].length > 0"
@@ -325,17 +325,17 @@
                                         <span data-v-e893afaa="" ng-bind="ticker.key | uppercase"></span>
                                     </td>
                                     <td data-v-e893afaa="" class="D text-left" >
-                                        <span data-v-e893afaa="" ng-bind="ticker.lsp || 0 "></span>
+                                        <span data-v-e893afaa="" ng-bind="ticker.lsp || 0 |number : 6"></span>
                                         <!-- <span data-v-e893afaa="" class="color-minor"> / 4.62CNY</span>-->
                                     </td>
                                     <td data-v-e893afaa="" class="D text-left "
                                         ng-class="ticker.up > 0 ? 'color-rose' : 'color-fall'" >
                                         \{{ticker.up ? ticker.up : 0 | number:2}}%
                                     </td>
-                                    <td data-v-e893afaa="" class="D"  ng-bind="ticker.hp || 0"></span></td>
-                                    <td data-v-e893afaa="" class="D"  ng-bind="ticker.lp || 0"></td>
+                                    <td data-v-e893afaa="" class="D"  ng-bind="ticker.hp || 0 | number :6"></span></td>
+                                    <td data-v-e893afaa="" class="D"  ng-bind="ticker.lp || 0 | number :6"></td>
                                     <td data-v-e893afaa="" class="D text-right"  style="padding-right:8px;">
-                                        <span data-v-e893afaa="" ng-bind="ticker.v || 0"></span>
+                                        <span data-v-e893afaa="" ng-bind="ticker.v || 0 | number : 3"></span>
                                         <span data-v-e893afaa="" class="color-minor" ng-bind="selectedMarket | uppercase"></span>
                                     </td>
                                     <td></td>
