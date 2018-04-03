@@ -285,11 +285,11 @@
                         <div class="coin ng-binding">
                             <span ng-bind="w.cid | uppercase"></span>
                         </div>
-                        <div class="locked f-right ng-binding" > \{{w.a ||  0  | number :8}}</div>
-                        <div class="equalValue f-right ng-binding">\{{w.fc || 0 | number :8}}</div>
-                        <div class="equalValue f-right ng-binding">\{{w.d || 0 | number :8}}</div>
-                        <div class="equalValue f-right ng-binding">\{{w.w || 0 | number :8}}</div>
-                        <div class="equalValue f-right ng-binding">\{{w.c || 0 | number :8}}</div>
+                        <div class="locked f-right ng-binding" > \{{w.a ||  0  | number :7}}</div>
+                        <div class="equalValue f-right ng-binding">\{{w.fc || 0 | number :7}}</div>
+                        <div class="equalValue f-right ng-binding">\{{w.d || 0 | number :7}}</div>
+                        <div class="equalValue f-right ng-binding">\{{w.w || 0 | number :7}}</div>
+                        <div class="equalValue f-right ng-binding">\{{w.c || 0 | number :7}}</div>
                         <div class="action f-right">
                             <a  href="/finance/payin?id=\{{w.cid}}"  class="btn btn-deposit ng-binding ng-scope" ng-bind="lang.recharge"></a>
                             <a href="/finance/payout?id=\{{w.cid}}"  class="btn btn-withdraw ng-binding ng-scope" ng-bind="lang.withdraw"></a>
