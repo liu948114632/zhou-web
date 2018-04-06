@@ -21,8 +21,16 @@ var lang = {
         t2:"*The transaction password is not allowed to be presented within 24 hours after the transaction password is modified",
         t3:"*Please carefully fill in your credentials and real name, once submitted can not be modified",
         t4:"Provide the most currency blockchain places, quality service for every user",
-        t5:"Aims at largest exchange",
-        t6:"Bilaxy",
+        t5:"An exchange to build the world's best project",
+        t6:"TAOBIEX",
+    },
+    banner2:{
+        t1:'(BEX)  Invite register Incentive',
+        t2:'1,000,000BEX GIVE AWAY',
+        t3:'Register Award',
+        t4:'Promotion Award',
+        t5:'Activity Time：2018/4/10 - 2018/4/30',
+        btn:'REGISTER NOW'
     },
     newss:{
         subask:"Submit Ask",
@@ -200,7 +208,8 @@ var lang = {
         service:"Agreement",
         apply:"Coin Apply",
         us:"About",
-        coin:"Coin Data"
+        coin:"Coin Data",
+        copyRight:"© TAOBIEX Trade Platform CopyRight 2018"
     },
     news:{
         announce: "Announce",
