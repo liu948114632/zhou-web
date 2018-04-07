@@ -8,162 +8,368 @@
     <meta name="description" content="{{param[lang..'_desc']}}"/>
     <meta name="keywords" content="{{param[lang..'_keywords']}}"/>
     <link rel="shortcut icon" href="/favicon.ico?v=1.0.0">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="/dist/js/jquery/jquery-1.11.3.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="{+resources+}/dist/css/index.css" rel="stylesheet">
+    <link href="{+resources+}/dist/css/banner.css" rel="stylesheet">
     <title>{{param[lang..'_title']}}</title>
     <style>.body-mark {
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        text-align: center;
-        display: none;
-        background: #f8f8fb;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    display: none;
+    background: #f8f8fb;
     }
 
-    .main{
-        padding-bottom:0px;
+    .main {
+    padding-bottom: 0px;
     }
 
     span, td {
-        color: #666;
+    color: #bcbcbc;
     }
 
     .body-mark.show {
-        display: block;
+    display: block;
     }
 
     .loading {
-        width: 60px;
-        height: 40px;
-        position: absolute;
-        top: 40%;
-        transform: translate(-50%, -50%);
+    width: 60px;
+    height: 40px;
+    position: absolute;
+    top: 40%;
+    transform: translate(-50%, -50%);
     }
 
     .login-register > .ng-binding {
-        color: #bcbcbc;
+    color: #bcbcbc;
     }
 
     .login-register > .ng-binding:hover {
-        color: #fff;
+    color: #fff;
     }
 
     .home-banner {
-        display: flex;
-        justify-content: space-between;
-        padding: 15px 18% !important;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 18% !important;
     }
 
     .home-banner > .banner-notice_ {
-        line-height: 21px;
-        font-size: 14px;
-        color: #bcbcbc;
+    line-height: 21px;
+    font-size: 14px;
+    color: #bcbcbc;
     }
 
     .home-banner > .banner-notice_ > a:hover {
-        color: #fff;
+    color: #fff;
     }
 
     .home-banner > .banner-notice_ > a {
-        color: #bcbcbc;
+    color: #bcbcbc;
     }
 
     .home-banner > .banner-notice_ > i {
     / / color: #c2daff;
-        color: #bcbcbc;
+    color: #bcbcbc;
 
     }
 
     #select.home-market .table-header-tab {
-        height: 30px;
+    height: 40px;
     }
 
     #select.home-market {
-        background-color: #252525 !important;
-        padding: 40px 0 80px;
-        min-height: 500px;
-    }
-
-    #select.home-market .table-header-tab > span {
-        padding: 0 15px;
-        color: #bcbcbc;
-        font-size: 14px;
-        line-height: 30px;
-    }
-
-    #select.home-market .table-header-tab > span.active {
-        color: #fff;
-        font-weight: normal;
-        background-color: #ff4b33;
-    }
-
-    #select.home-market .item:hover {
-        color: #fff;
-        background-color: #ff4b33;
-    }
-
-    #select table.home-table thead.ts-12 {
-        background-color: #252525;
-    }
-
-    #select .home-table-header {
-        border-bottom:0px;
-        position: relative;
-    }
-
-
-    #select .home-table-header .table-header-input {
-        position: absolute;
-
-        top: -8px;
-        right: 0;
-    }
-
-    #select .home-table-header .table-header-input input {
-        border-color: #666;
-    }
-
-    .table-header-tab > span {
-        height: 100%;
-    }
-
-    input[type=text]:not(.input-error):hover {
-        border-style: solid;
-        border-color: #a0a0a0 !important;
+    width: 1200px;
+    margin: 20px auto 0;
+    background-color: #1a1a1a !important;
+    padding: 0 0 60px;
+    min-height: 500px;
+    border-radius: 6px;
+    box-shadow: 0px 3px 7px 0px #0e0e0e;
     }
 
     #select table.home-table tbody tr:nth-child(even) {
-        background-color: #252525;
+    background-color: #1a1a1a;
     }
 
     #select table.home-table tbody tr:nth-child(odd) {
-        background-color: #191919;
+    background-color: #0a0a0a;
+    }
+
+    #select table.home-table thead.ts-12 {
+    background-color: #1a1a1a;
+    }
+
+    #select.home-market .table-header-tab > span {
+    padding: 0 15px;
+    color: #bcbcbc;
+    font-size: 14px;
+    line-height: 40px;
+    }
+
+    #select.home-market .table-header-tab > span.active {
+    color: #fff;
+    font-weight: normal;
+    background-color: #2d2c32;
+    }
+
+    #select.home-market .item:hover {
+    color: #fff;
+    background-color: #ff4b33;
+    }
+
+    #select .home-table-header {
+    border-bottom: 1px solid #ff4b33;
+    position: relative;
+    }
+
+    #select .home-table-header .table-header-input {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    }
+
+    #select .home-table-header .table-header-input input {
+    border-color: #666;
+    }
+
+    .table-header-tab > span {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    height: 100%;
+    }
+
+    input[type=text]:not(.input-error):hover {
+    border-style: solid;
+    border-color: #a0a0a0 !important;
+    }
+
+    .hero.hero-main {
+    position: relative;
+    background-color: #1a1a1a;
+    }
+
+    #select .table-header-tab.ts-16.color-666 > .item.active {
+    border-bottom: none;
     }
 
     #select table.home-table .no-data {
-        padding: 40px 0 10px;
-        font-size: 14px;
+    padding: 40px 0 10px;
+    font-size: 14px;
+    }
+
+    #select .box-icon-sort .icon-my-sort-up, #select .box-icon-sort .icon-my-sort-down {
+    top: -2px;
     }
 
     a[title="Email"]:hover {
-        color: #fff;
+    color: #fff;
     }
 
-    #search-input:focus,#search-input:active{
-        border-width:0px 0px 1px;
-        outline: none
+    #search-input:focus, #search-input:active {
+    border-width: 0px 0px 1px;
+    outline: none
     }
+
     a.button {
-        background-color: #ff4b33;
+    background-color: #ff4b33;
     }
 
-   .hero-body a.trade-now-button {
-        background-color: #ff4b33;
-        color: #fff;
+    .hero-body a.trade-now-button {
+    background-color: #ff4b33;
+    color: #fff;
     }
+
+    .bg {
+    height: 605px;
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    }
+
+    .jd_banner > ul > li:nth-child(1) > .bg {
+    background: url("/dist/images/bg.jpg") no-repeat center;
+    }
+
+    .jd_banner > ul > li:nth-child(2) > .bg {
+    background: url("/dist/images/bg2.png") no-repeat center;
+    }
+
+    .carousel-caption {
+    height: 100%;
+    display:flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    }
+
+
+
+    .item:nth-child(1)  .carousel-caption > .content > div:nth-child(1) {
+    font-size: 70px;
+
+    }
+
+    .item:nth-child(2)  .carousel-caption > .content > div:nth-child(1) {
+    font-size: 38px;
+    }
+
+    .item:nth-child(1) .carousel-caption > .content > div:nth-child(2) {
+    font-size: 38px;
+    line-height: 70px;
+    }
+
+    .item:nth-child(2) .carousel-caption > .content > div:nth-child(2) {
+    font-size: 55px;
+    margin-top: 20px;
+    line-height: 70px;
+    font-weight: bold;
+    background: linear-gradient(to bottom, #ad60ff 0%, #b25aff 45%, #cb39b8 55%,#ff44ec 80%, #ff44ec 100%);
+    -webkit-background-clip: text;
+    color: transparent;
+    }
+
+    .item:nth-child(1) .carousel-caption > .content > div:nth-child(3) {
+    font-size: 16px;
+    line-height: 40px;
+    color: #919191;
+    }
+
+    .item:nth-child(2) .carousel-caption > .content > div:nth-child(3) {
+    font-size: 16px;
+    margin-top: 25px;
+    line-height: 35px;
+    color: #919191;
+    }
+
+    .item .carousel-caption> .content > div:nth-child(4) {
+    margin-top: 20px;
+    }
+
+
+    .item:nth-child(1) .carousel-caption > .content > div:nth-child(4) > a {
+    background-color: #ff4b33;
+    color: #fff;
+    }
+
+    .item:nth-child(1) .carousel-caption > .content > div:nth-child(4) > a:hover {
+    background-color: #4a4a4a;
+    text-decoration: none;
+    }
+
+    .item:nth-child(2) .carousel-caption > .content > div:nth-child(5)  a:hover {
+    text-decoration: none;
+    }
+
+    .item:nth-child(2) .carousel-caption > .content > div:nth-child(4)> span {
+    display: inline-block;
+    padding:5px;
+    color: #fff;
+    font-size:14px;
+    border-radius: 3px;
+    background-color: #55585b;
+    }
+
+    .item:nth-child(2) .carousel-caption > .content > div:nth-child(5) {
+    margin-top: 25px;
+    }
+
+    .notice {
+    color: #212f5c;
+    background: #1a1a1a;
+    overflow: hidden;
+    zoom: 1;
+    margin: 0 auto;
+    height: 40px;
+    line-height: 40px;
+    margin-top: 13px;
+    width: 1200px;
+    box-shadow: 0px 3px 7px 0px #0e0e0e;
+    position: relative;
+    border-radius: 6px;
+
+    }
+
+    .notice > .More {
+    position: absolute;
+    top: 0;
+    right: 50px;
+    }
+
+    /*start notice*/
+    .slideInfo {
+    width: 920px;
+    margin-left: 160px;
+    }
+
+    .transform_up {
+    transform: translateX(40px);
+    -webkit-transform: translateX(40px);
+    }
+
+    #notice_div.notice a {
+    color: #a6b7d2;
+    display: block;
+    font-size: 14px;
+    text-align: left;
+    }
+
+    #notice_div.notice > .notice-close {
+    width: 20px;
+    height: 20px;
+    background-position: -109px 0;
+    top: 5px;
+    right: 0;
+    position: absolute;
+    }
+
+    #notice_div .notice-icon {
+    width: 18px;
+    margin-bottom: 2px;
+    background: url('{+resources+}/dist/images/notice.gif') no-repeat;
+    background-size: cover;
+    position: absolute;
+    margin-top: 10px;
+    left: 120px;
+    height: 18px;
+    line-height: 23px;
+    margin-right: 10px;
+    vertical-align: middle;
+    display: inline-block;
+    *display: inline;
+    overflow: hidden;
+    zoom: 1;
+    }
+
+    /*end notice*/
+    .loading {
+    width: 100%;
+    height: 500px;
+    text-align: center;
+    line-height: 500px;
+    }
+
+    .loading img {
+    width: 60px;
+    }
+
+    .text-center {
+    text-align: center;
+    }
+
+    .color-selected:before {
+    content: '\e63b';
+    color: #ff4b33;
+    }
+
     </style>
-    <link href="{+resources+}/dist/css/index.css" rel="stylesheet">
-    <link href="{+resources+}/dist/css/banner.css" rel="stylesheet">
 </head>
 <body>
 
@@ -172,25 +378,86 @@
     <div data-v-15f70906="">
         <div class="main min-w" style="background-color: #262626;">
             <main data-v-e893afaa="" class="min-w" style="line-height: 1.5;">
-                <!--<section class="hero hero-main">-->
-                    <!--<div class="content-wrap">-->
-                        <!--<div class="hero-body">-->
-                            <!--<div class="columns">-->
-                                <!--<div class="column is-12-mobile is-6-tablet is-5-desktop hero-content">-->
-                                    <!--<div style="width:300px;position:relative;">-->
-                                        <!--<h2 style="position:absolute; bottom: -5px;left: 90px;font-size:38px;" ng-bind="lang.an.t6"></h2>-->
-                                    <!--</div>-->
-                                    <!--<h2 style="font-size:38px;" ng-bind="lang.an.t5"></h2>-->
-                                    <!--<p ng-bind="lang.an.t4"></p>-->
-                                    <!--<a class="button is-primary trade-now-button" style="color:#fff;" href="/exchange" target="_blank" style="background-color: #ff4b33; color:white;" ng-bind="lang.trade_now"></a>-->
-                                <!--</div>-->
-                                <!--<div class="is-6-tablet is-7-desktop">-->
-                                    <!--<img src="{+resources+}/dist/images/banner.png" class="hero-background-image">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</section>-->
+                <!--<section class="hero hero-main">
+                    <div class="content-wrap">
+                        <div class="hero-body">
+                            <div class="columns">
+                                <div class="column is-12-mobile is-6-tablet is-5-desktop hero-content">
+                                    <div style="width:300px;position:relative;">
+                                        <h2 style="position:absolute; bottom: -5px;left: 90px;font-size:38px;" ng-bind="lang.an.t6"></h2>
+                                    </div>
+                                    <h2 style="font-size:38px;" ng-bind="lang.an.t5"></h2>
+                                    <p ng-bind="lang.an.t4"></p>
+                                    <a class="button is-primary trade-now-button" style="color:#fff;" href="/exchange" target="_blank" style="background-color: #ff4b33; color:white;" ng-bind="lang.trade_now"></a>
+                                </div>
+                                <div class="is-6-tablet is-7-desktop">
+                                    <img src="{+resources+}/dist/images/banner.png" class="hero-background-image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>-->
+
+
+                <section>
+                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                        </ol>
+
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                                <img src="/dist/images/bg.jpg" alt="...">
+                                <div class="carousel-caption">
+                                    <div class="content">
+                                        <div style="letter-spacing: 4px;"><i style="font-weight: lighter;">TAO</i>BIEX
+                                        </div>
+                                        <div ng-bind="lang.an.t5"></div>
+                                        <div ng-bind="lang.an.t4"></div>
+                                        <div>
+                                            <a href="/exchange" class="button is-primary trade-now-button"
+                                               ng-bind="lang.trade_now"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="/dist/images/bg2.png" alt="...">
+                                <div class="carousel-caption">
+                                    <div class="content">
+                                        <div style="letter-spacing: 4px;"><i style="font-weight: lighter;">TAO</i>BIEX<span style="color: #fff;" ng-bind="lang.banner2.t1"></span></div>
+                                        <div style="letter-spacing: 5px;" ng-bind="lang.banner2.t2"></div>
+                                        <div><span ng-bind="lang.banner2.t3"></span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<span ng-bind="lang.banner2.t4"></span></div>
+                                        <div><span ng-bind="lang.banner2.t5"></span></div>
+                                        <div>
+                                            <a href="/user/register" class="button trade-now-button"
+                                               ng-bind="lang.banner2.btn" style="background-color: transparent; color:#fff;"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Controls -->
+                        <a class="left carousel-control" href="#carousel-example-generic" role="button"
+                           data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" role="button"
+                           data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </section>
+
+
+
+
                 <div data-v-e893afaa="" class="home-banner">
                     <span class="text-center banner-notice_" ng-repeat="a in articles">
                         <!--<i class="iconfont">&#xe61d;</i>-->
@@ -223,7 +490,7 @@
                                                           style="z-index: 1;"></span>
                                             <!----> <input data-v-40fb2a9f="" type="text" ng-model = "keyword"
                                                            class="box-input_input input__input_style js_input input_small box-input_input-undefined"
-                                                          id="search-input" style="padding-left: 8px; padding-right: 30px; color:#aaa;outline: 0; border-width:0px 0px 1px">
+                                                          id="search-input" style="padding-left: 8px; padding-right: 30px; color:#aaa;outline: 0; border-width:1px">
                                         </div>
                                         <div data-v-40fb2a9f="" class="box-input_err text-left ts-12"></div>
                                     </div>
@@ -356,5 +623,6 @@
 </div>
 <script src="{+resources+}/dist/js/pako.js?v={+version+}"></script>
 <script src="{+resources+}/dist/js/index.js?v={+versoion+}"></script>
+
 </body>
 </html>
