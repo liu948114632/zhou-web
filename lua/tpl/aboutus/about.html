@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html ng-app ="app" ng-controller="Ctrl">
+<head>
+    {(tpl/common/include.html)}
+    <title>关于我们</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <!--<link rel="stylesheet" type="text/css" href="https://img.bafang.com/cdn/okcom/20180330180652/seo/font/iconfont.css">-->
+    <link href="{+resources+}/dist/css/about/about.css" rel="stylesheet">
+    <link href="{+resources+}/dist/css/about/left.css" rel="stylesheet">
+    <link href="{+resources+}/dist/css/about/base.css" rel="stylesheet">
+    <link href="{+resources+}/dist/css/about/iconfont.css" rel="stylesheet">
+</head>
+<body>
+{(tpl/common/header.html)}
+<div id="container" class="container" ng-controller="aboutCtrl" >
+    <div class="main clear" id="main" style="background-color: #fff">
+        {(tpl/aboutus/about-left.html)}
+        <div class="company-right float-left">
+            <h2 class="about-title" ng-bind="lang.about.aboutus"></h2>
+            <dl >
+                <dt style="font-size: 20px">TaoBiex</dt>
+                <dd ng-bind="lang.about.intro"></dd>
+            </dl>
+            <dl>
+                <dt class="our-mission"></dt>
+                <dt ng-bind="lang.about.missiontip"></dt>
+                <dd ng-bind="lang.about.mission"></dd>
+            </dl>
+            <dl>
+                <dt class="out-technical"></dt>
+                <dt ng-bind="lang.about.technicalttip"></dt>
+                <dd ng-bind="lang.about.technicalt"></dd>
+            </dl>
+            <dl>
+                <dt class="about-digital"></dt>
+                <dt ng-bind="lang.about.Assetstip"></dt>
+                <dd >
+                     <p>以比特币为代表的数字资产自 2009年诞生以来，作为一种互联网技术创新实践在全球范围高速发展。
+                                            目前比特币等数字资产在全球范围内有几千万用户，遍布上百个国家。区块链技术源自比特币，比特币是区块链目前最大规模的应用实践。
+                                            很多世界名流把比特币和互联网的发明相提并论，认为比特币及其背 后的区块链是“金融的互联网”，有可能从底层重构金融体系 。</p>
+                    <p>随着比特币和区块链在全 球范围的热度持续攀升，众多世界领先的风险投资公司和最 优秀的创业者涌入这个行业，基于比特币和区块链的经济已经初步形成。
+                        从全球范围看，谷哥、高盛、软银、纽交所等世界前沿企业已经投资了多家该领域的创业公司，总投资金额高达数十亿美元。\n" +
+                        可以预见，未来 5-10 年内银行、证券、保险、审计、公证等领域都将出现比特币和区块链的身影，比特币和区块链经济的市场规模可能达到数千亿美元。</p>
+                    <p>从世界范围来看，目前主 流业界对比特币主要有 5 种观点，共识正在逐步形成。</p>
+                    <p>第一， 比特币是一种虚拟商品，有一定的投资属性;</p>
+                    <p>第二，比特币是一种点对点支付手段，未来有挑战 Visa 垄断地位的可能 性;</p>
+                    <p>第三，比特币区块链作为一种底层区块链，为其他的公 有区块链提供共识解决方案，比特币本身是使用这个底层区 块链的手续费，比特币区块链未来可能成为其他区块链应用 的基础设施;</p>
+                    <p>第四，比特币是一种互联网上的虚拟货币，拥 有一定的货币属性，在特定的互联网社区里有一定的支付属性;</p>
+                    <p>第五，比特币是一种类似黄金的储备资产，因其标准化、 可拆分、可在线传输等特点，在支付效率、保存成本等方面 有巨大优势，未来有可能成为“数字黄金”，并且是在价值互联网时代可能取代黄金的一种全球性资产。</p>
+                    <p>大部分国家目前不承认比特币是货币，而是把他定义成一种虚拟商品，但已有不少国家已经制定相应政策规范或支持其发展，并从中立渐趋积极。美国把比特币纳入传统金融监管体系，要求比特币相关企业需要申请MTL(货币传输牌 照)，
+                        纽约州政府还推出了专门的 BitLicense 来监管比特币; 欧洲多国对比特币一直采取相对积极的态度，部分国家把比特币公司纳入沙箱监管，部分国家强调比特币的经济活动需要按规定纳税;日本 FSA 正式承认比特币和数字货币的货币 地位，
+                        规定数字货币交易所必须在 FSA 登记注册;俄罗斯 曾经推出过比特币禁令，在多国出台相应政策后，俄罗斯已放开比特币交易;印度央行行长Raghuram Rajan 认为，在更深入地了解比特币之前，不应强烈干预，而是深入研究。</p>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+{(tpl/common/footer.html)}
+<script src="{+resources+}/dist/js/about/about.js?v={+versoion+}"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+.company-left-menu {
+    width: 180px;
+}
+.company-left-menu .left-menu-list li {
+    position: relative;
+    height: 42px;
+    box-sizing: border-box;
+}
+.company-left-menu .left-menu-list li i {
+    position: absolute;
+    top: 13px;
+    left: 8px;
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    color: #a0aabe;
+}
+.company-left-menu .left-menu-list li a {
+    margin-left: 10px;
+    text-align: left;
+    padding-left: 35px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 42px;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.65);
+}
+.company-left-menu .left-menu-list li.active {
+    background-color: #f1f5ff;
+    box-shadow: inset -3px 0 0 0 #5795f1;
+}
+.company-left-menu .left-menu-list li.active a {
+    color: #5795f1;
+}
