@@ -12,7 +12,10 @@ var GLOBAL_VAR = {
     TimeOutId: null,
     button_down: false,
     init: false,
-    url: "/api/v1"
+    url: "/api/v1",
+    num: 99,
+    nowNum : 1,
+    first : true
 };
 GLOBAL_VAR.periodMap = {
     "01w": "1week",
@@ -8399,30 +8402,6 @@ function getklinedataWebsocket() {
     if (init) {
         init = false
     }
-    // var b = kline.symbol + "_kline_" + GLOBAL_VAR.time_type;
-    // if (init) {
-    //     getklinedataAjax();
-    //     init = false
-    // } else {
-    //     if (oldChannel != b) {
-    //         if (oldChannel != null) {
-    //             sendChannel('{"event":"removeChannel","channel":"' + oldChannel + '"}')
-    //         }
-    //         getklinedataAjax();
-    //         oldChannel = b
-    //     } else {
-    //         var c = GLOBAL_VAR.chartMgr.getLastTime("BTC123." + GLOBAL_VAR.market_from + "." + GLOBAL_VAR.time_type);
-    //         var a = '{"event":"addChannel","channel":"' + b + '","lastTime":"' + c + '","isZip":"' + top.isZipData() + '"}';
-    //         sendChannel(a)
-    //     }
-    //     if (top.ajaxRun == false) {
-    //         return
-    //     } else {
-    //         if (!top.webSocket || !top.webSocket.socket || (top.webSocket && top.webSocket.socket && top.webSocket.socket.readyState != WebSocket.OPEN)) {
-    //             getklinedataAjax()
-    //         }
-    //     }
-    // }
 }
 function deCode(data){
     var dataView = new DataView(data);
@@ -8431,22 +8410,7 @@ function deCode(data){
     }
 function getklinedataAjax() {
 //msgtype=ReqQryKLine&iid=ltc_btc&klt=1&sns=1&sne=300&UserID=00001&TimeStamp=2112345678000
-//     var time =  (new Date()).valueOf();
-//     var val = "msgtype=ReqQryKLine&iid=ltc_btc&sns=1&sne=50&klt=1&UserID=111"+"&TimeStamp="+time;
-//     var hash = CryptoJS.HmacSHA256(val, "123123");
-//     var sign = hash.toString();
     GLOBAL_VAR.G_HTTP_REQUEST = $.ajax({
-//        type: "get",
-//        // url: '/dist/json/period.json',
-//        url: GLOBAL_VAR.url,
-//        dataType: "json",
-//        data: GLOBAL_VAR.requestParam,
-//        timeout: 30000,
-//        created: Date.now(),
-//        beforeSend: function () {
-//            this.time = GLOBAL_VAR.time_type;
-//            this.market = GLOBAL_VAR.market_from
-//        },
         type: "post",
         // url: '/dist/json/period.json',
         url: GLOBAL_VAR.url,
@@ -8458,15 +8422,15 @@ function getklinedataAjax() {
         created: Date.now(),
         beforeSend: function () {
             this.time = GLOBAL_VAR.time_type;
-            this.market = GLOBAL_VAR.market_from
+            this.market = GLOBAL_VAR.market_from;
         },
         success: function (res) {
             // todo mark1
             // var data = JSON.parse(deCode(res.data));
             var data = res;
+            console.log(res[data.length-1]['sn']);
+            GLOBAL_VAR.num = res[data.length-1]['sn'];
 //            var data = toGbk(res.data);
-//             console.log(data);
-
             var newData = []
             var timeKey = {}
             //[时间,开,高,低,收,量] new
@@ -8655,24 +8619,7 @@ var main = function () {
     readCookie();
     $("#chart_container").css({visibility: "visible"})
 }();
-
-function setHttpRequestParam(b, c, a, e) {
-
-    // var stepMap = {
-    //     "1week": 60 * 60 * 24 * 7,
-    //     "3day": 60 * 60 * 24 * 3,
-    //     "1day": 60 * 60 * 24,
-    //     "12hour": 60 * 60 * 12,
-    //     "6hour": 60 * 60 * 6,
-    //     "4hour": 60 * 60 * 4,
-    //     "2hour": 60 * 60 * 2,
-    //     "1hour": 60 * 60,
-    //     "30min": 60 * 30,
-    //     "15min": 60 * 15,
-    //     "5min": 60 * 5,
-    //     "3min": 60 * 3,
-    //     "1min": 60 * 1
-    // }
+function getLast() {
     var stepMap = {
         "1week": 'e',
         "3day": 'd',
@@ -8687,22 +8634,70 @@ function setHttpRequestParam(b, c, a, e) {
         "5min": '3',
         "3min": '2',
         "1min": '1'
-    }
+    };
+    var time = (new Date()).valueOf();
+    var pa = "msgtype=ReqQryKLine&iid="+GLOBAL_VAR.market_from+"&sns=-100&sne=-1&klt="+stepMap[GLOBAL_VAR.time_type]+"&UserID=111"+"&TimeStamp="+time;
+    $.ajax({
+        type: "post",
+        // url: '/dist/json/period.json',
+        url: GLOBAL_VAR.url,
+        dataType: "json",
+        contentType:"text/json;charset=UTF-8",
+        data: pa + "&Sign=" + CryptoJS.HmacSHA256(pa, "123123").toString() ,
+        success: function (res) {
+            console.log(res);
+            GLOBAL_VAR.num = res.sn;
+            GLOBAL_VAR.nowNum = res.sn;
+        }
+    })
+}
+// getLast();
+
+function setHttpRequestParam(b, c, a, e) {
+    var stepMap = {
+        "1week": 'e',
+        "3day": 'd',
+        "1day": 'c',
+        "12hour":'b',
+        "6hour": '9',
+        "4hour": '8',
+        "2hour": '7',
+        "1hour": '6',
+        "30min": '5',
+        "15min": '4',
+        "5min": '3',
+        "3min": '2',
+        "1min": '1'
+    };
+
     // b = "ltc_btc";
     var time =  (new Date()).valueOf();
     // var val = "msgtype=ReqQryKLine&iid="+b+"&sns=1&sne="+e+"&klt=1&UserID=111"+"&TimeStamp="+time;
     var val ="";
-    if(a !=null){
-        val = "msgtype=ReqQryKLine&iid="+b+"&sns=1&sne=100&klt="+stepMap[c]+"&UserID=111"+"&TimeStamp="+time;
-    }else{
-        val = "msgtype=ReqQryKLine&iid="+b+"&sns="+e+"&sne="+(100+e*1)+"&klt="+stepMap[c]+"&UserID=111"+"&TimeStamp="+time;
-    }
-    // var d = "needTickers=1&symbol=" + b + "&type=" + c + "&step=" + stepMap[c];
-    // if (a != null) {
-    //     d += "&size=" + a
-    // } else {
-    //     d += "&since=" + e
+    // if(GLOBAL_VAR.nowNum >0){
+    //     var sns = GLOBAL_VAR.nowNum-100  ;
+    //     sns = sns >0? sns : 1;
+    //     val = "msgtype=ReqQryKLine&iid="+b+"&sns="+sns+"&sne="+GLOBAL_VAR.nowNum+"&klt="+stepMap[c]+"&UserID=111"+"&TimeStamp="+time;
+    //     GLOBAL_VAR.nowNum = GLOBAL_VAR.nowNum -100;
+    // }else {
+    //     val = "msgtype=ReqQryKLine&iid="+b+"&sns="+GLOBAL_VAR.num+"&sne="+(GLOBAL_VAR.num * 1 + 100)+"&klt="+stepMap[c]+"&UserID=111"+"&TimeStamp="+time;
+    //     GLOBAL_VAR.num = GLOBAL_VAR.num +100;
     // }
+    if(GLOBAL_VAR.first){
+        val = "msgtype=ReqQryKLine&iid="+b+"&sns=-100&sne=-1&klt="+stepMap[c]+"&UserID=111"+"&TimeStamp="+time;
+        GLOBAL_VAR.first = false;
+    }else {
+        var now = GLOBAL_VAR.nowNum;
+        console.log(now)
+        if(a !=null){
+            val = "msgtype=ReqQryKLine&iid="+b+"&sns=1&sne=100&klt="+stepMap[c]+"&UserID=111"+"&TimeStamp="+time;
+        }else{
+            val = "msgtype=ReqQryKLine&iid="+b+"&sns="+e+"&sne="+(100+e*1)+"&klt="+stepMap[c]+"&UserID=111"+"&TimeStamp="+time;
+        }
+        // val = "msgtype=ReqQryKLine&iid="+b+"&sns="+now+"&sne="+(100+now*1)+"&klt="+stepMap[c]+"&UserID=111"+"&TimeStamp="+time;
+        // GLOBAL_VAR.nowNum = GLOBAL_VAR.nowNum*1 + 100;
+    }
+
     return val;
 }
 
