@@ -70,7 +70,7 @@
 }
 .accountInfo-lists li:first-of-type{border-top:none;}
 .accountInfo-lists li.th{background:#f4f4f4;}
-.accountInfo-lists li.th .items>div{color:#999;}
+.accountInfo-lists li.th .items>div{color:rgb(194,194,194);}
 .accountInfo-lists li.th .items>div .iconfont{font-size:14px;vertical-align:baseline;margin-right:0;}
 .accountInfo-lists li .moreinfo .tips{width:400px;}
 .accountInfo-lists li .moreinfo .tips li{line-height:1.5;list-style-type:square;font-size:12px;color:#999;padding:5px 0;border:none;}

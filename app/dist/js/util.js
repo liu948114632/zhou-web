@@ -94,7 +94,7 @@ function isEmail(email){
 }
 
 function isMobile(phone){
-    var format = /^\d+$/;
+    var format = /^\d{11}$/;
     if(!phone.match(format)) {
     	return false;
     }

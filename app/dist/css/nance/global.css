@@ -350,10 +350,10 @@ input[type=text]:focus,input[type=password]:focus,input[type=number]:focus,input
 .main-nav{float:right;}
 .main-nav i{color:#fff;font-size: 12px;vertical-align: middle;margin-right: 0;}
 .main-nav>li{float:left;position:relative;}
-.main-nav>li>a{display:inline-block;font-size:13px;color:#bcbcbc;line-height:48px;padding:0 16px;}
+.main-nav>li>a{display:inline-block;font-size:13px;color:rgb(226,226,226);line-height:48px;padding:0 16px;}
 .main-nav>li>img{display:none;position:absolute;left:50%;bottom:3px;-webkit-transform:translateX(-50%);-moz-transform:translateX(-50%);-ms-transform:translateX(-50%);-o-transform:translateX(-50%);transform:translateX(-50%);}
 .main-nav>li:hover>img{display:block;}
-.main-nav>li:hover>a{background:#313131;color:#fff;}
+.main-nav>li:hover>a{background:#313131;color:rgb(231,134,56);}
 .main-nav>li .subNav{display:none;min-width:100%;position:absolute;right:0;top:48px;z-index:999;background:#fff;box-shadow:1px 1px 10px rgba(0,0,0,0.35);}
 .main-nav>li .subNav a{position:relative;display:inline-block;white-space: nowrap;box-sizing:border-box;width:100%;padding:0 26px;line-height:34px;font-size:13px;color:#333;border-bottom:1px solid #e2e2e2;}
 .main-nav>li .subNav a:hover{color:#ff4b33;background:#f4f4f4;}
@@ -520,10 +520,10 @@ line-height:18px;
 .orderforms-inputs .iptwrap .tip{width:100%;box-sizing:border-box;padding:0 10px;height:20px;line-height:20px;font-size:12px;color:#333;background:#f3ba2e;position:absolute;left:0;top:30px;z-index:999;}
 .calculation{padding:0 18px;line-height:60px;font-size:16px;color:#666;}
 .orderforms-btn .btn,.orderforms-btn .logout{height:36px;line-height:36px;background:#f3f3f3;font-size:12px;color:#666;margin-top: 8px;}
-.orderforms-btn .btn.btn-buy,.orderforms-btn .btn.btn-sell{background:#46a656;border-color:#46a656;padding:0;font-size:14px;color:#fff;}
-.orderforms-btn .btn.btn-sell{background:#f00;border-color:#f00;}
-.orderforms-btn .btn.btn-buy:hover{background-color:#4fc362;border-color:#4fc362;}
-.orderforms-btn .btn.btn-sell:hover{background-color:#ff4b33;border-color:#ff4b33;}
+.orderforms-btn .btn.btn-buy,.orderforms-btn .btn.btn-sell{background:rgb(41,196,85);border-color:rgb(41,196,85);padding:0;font-size:14px;color:#fff;}
+.orderforms-btn .btn.btn-sell{background:rgb(245,71,91);border-color:rgb(245,71,91);}
+.orderforms-btn .btn.btn-buy:hover{background-color:rgb(41,196,85);border-color:rgb(41,196,85);}
+.orderforms-btn .btn.btn-sell:hover{background-color:rgb(245,71,91);border-color:rgb(245,71,91);}
 .orders .table tbody tr:hover td{color:#96c748;}
 .orderforms .error-box{height:18px;line-height:18px;padding-left:56px;font-size:12px;color:#ef4b5a;}
 .logout{text-align:center;font-size:12px;color:#666;width:100%;height:32px;line-height:32px;border:1px solid #e4e4e4;border-radius:3px;}

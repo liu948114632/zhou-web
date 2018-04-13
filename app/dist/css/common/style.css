@@ -901,6 +901,9 @@ a:hover{text-decoration: none;}
 .main-nav li.active,.user-info.active{
     background:#303030;
 }
+.main-nav li.active a{
+    color: rgb(231,134,56);
+}
 .footer-email{
     position:  absolute;
     right: 211px;

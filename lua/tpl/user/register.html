@@ -160,23 +160,23 @@
                     </div>
                     <div class="filed">
                         <i class="iconfont">&#xe60b;</i>
-                        <input type="text" name="email" placeholder="邮箱"  ng-model="name"
+                        <input type="text" name="email" placeholder="\{{lang.emailVerify}}"  ng-model="name"
                                class="ipt fillemail ng-valid ng-valid-email ng-dirty name"
                                >
                     </div>
                     <div class="filed">
                         <i class="iconfont">&#xe623;</i>
-                        <input type="password" placeholder="密码"  ng-model="password"
+                        <input type="password" placeholder="\{{lang.password}}"  ng-model="password"
                                class="ipt pwd ng-pristine ng-valid" datatype="*" name="password">
                     </div>
                     <div class="filed">
                         <i class="iconfont">&#xe623;</i>
-                        <input type="password" placeholder="确认密码"  ng-model="confirmPwd"
+                        <input type="password" placeholder="\{{lang.rePwd}}"  ng-model="confirmPwd"
                                class="ipt pwd ng-pristine ng-valid" datatype="*" >
                     </div>
                     <div class="filed">
                         <i class="iconfont" style="font-size:16px;">&#xe6e8;</i>
-                        <input type="text" style="width:214px;" id="code" ng-model="code" placeholder="邮箱验证码"
+                        <input type="text" style="width:214px;" id="code" ng-model="code" placeholder="\{{lang.emailCode}}"
                                class="ipt pwd ng-pristine ng-valid">
                         <span class="code_btn" id="code_btn"  ng-click = "sendCode()" ng-cloak="">\{{tip}}</span>
                     </div>

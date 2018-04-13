@@ -29,50 +29,51 @@ app.controller('registerCtrl',function ($scope,$interval) {
             }
             if(result.msgtype == "RspInvestorRegister"){
                if(result.em == "正确"){
-                   success_win("注册成功",function () {
+                   success_win(lang.success,function () {
                        location.href = '/user/login';
                    })
                }else {
-                   error_win("注册失败，"+result.em);
+                   error_win(lang.errorTips+":"+result.em);
                }
             }
         };
         fr.readAsText(event.data,'gbk');
     };
     ws.onclose = function() {
-        console.log("连接已关闭...");
     };
 
     $scope.sendCode = function () {
         if(isEmpty($scope.name)){
-            error_win("邮箱或手机号不能为空");
+            error_win(lang.noempty);
             return;
         }
-        if(!isEmail($scope.name)){
+        if(!(isEmail($scope.name) || isMobile($scope.name))){
             error_win(lang.emailFormatError);
             return;
         }
-        ws.send("msgtype=ReqSmsCodeGenerate&em="+$scope.name);
+        if(isEmail($scope.name)){
+            ws.send("msgtype=ReqSmsCodeGenerate&em="+$scope.name);
+        }else {
+            ws.send("msgtype=ReqSmsCodeGenerate&m="+$scope.name);
+        }
+
     };
 
     $scope.register = function(){
-        if(isEmpty($scope.password) ){
-            error_win("登录密码不能为空");
-            return;
-        }
-        if(isEmpty($scope.name) ){
-            error_win("邮箱或手机号不能为空");
-            return;
-        }
-        if(isEmpty($scope.code) ){
-            error_win("验证码不能为空");
+        if(isEmpty($scope.password) || isEmpty($scope.name) || isEmpty($scope.code)){
+            error_win(lang.noempty);
             return;
         }
         if($scope.password != $scope.confirmPwd){
-            error_win("两次密码不一样");
+            error_win(lang.noSamePwd);
             return;
         }
-        ws.send("msgtype=ReqInvestorRegister&em="+$scope.name+"&p="+$scope.password+"&sc="+$scope.code);
+        if(isEmail($scope.name)){
+            ws.send("msgtype=ReqInvestorRegister&em="+$scope.name+"&p="+$scope.password+"&sc="+$scope.code);
+        }else {
+            ws.send("msgtype=ReqInvestorRegister&m="+$scope.name+"&p="+$scope.password+"&sc="+$scope.code);
+        }
+
     };
     $interval(function () {
         ws.send("msgtype=HeartBeat");

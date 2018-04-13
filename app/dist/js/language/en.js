@@ -1,18 +1,28 @@
 var lang = {
+    foo:{
+        a1:"About us",
+        a2:"Teams",
+        a3:"Trading service",
+        a4:"Coin data",
+        a5:"Fee",
+        a6:"API",
+        a7:"Business service",
+        a8:"Broker",
+        a9:"Apply coin",
+        a10:"Privacy",
+    },
     about:{
         aboutus:"About Us",
         contactus:"Contact Us",
         team:"Our Team",
-        intro:"TaoBiex国际站（www.taobiex.com）是全球数字资产交易平台之一，主要面向全球用户\n" +
-        "                    提供全球区块链接资产、数字资产、Token的交易服务，由TaoBi Technology Company Limited经营。\n" +
-        "                    TaoBiex的核心团队来自中信证券、里昂证券、摩根士丹利、运通银行、腾讯、华为、SUNGARD等世界知名企业。",
-        missiontip:"我们的愿景",
-        mission:"我们信奉区块链、数字货币的核心思想，分布式账本和智能合约技术将构建人类的信任基础，消除交易壁垒，\n" +
-        "                    未来能够成为人类商业文明的可靠的应用基石，我们希望用我们专业的技术为区块链、数字货币、TOKEN的拥有者构建一个安全、信任、高流动性的交易平台，\n" +
-        "                    为大家带来一个数字资产探索、发现的价值平台",
-        technicalttip:"我们的技术",
-        technicalt:"TaoBiEx采用分布式服务器集群、分布式存储、多机互备的高速内存交易引擎、冷钱包、私钥离线化的热钱包等先进的技术，以Web端、手机端、\n" +
-        "                    PC端等多终端为我们的客户提供安全、稳定、可信的数字资产交易服务。我们会提供针对2C和2B的用户打造适合的交易产品",
+        intro:"TaoBiex international station (www.taobiex.com) is one of the global digital asset trading platforms, which mainly provides global users with global block link assets, digital assets and Token transaction services, and is operated by TaoBi Technology Company Limited. TaoBiex's core team is from citic securities, clsa, Morgan Stanley, amex, tencent, huawei, SUNGARD and other world-renowned companies.",
+        missiontip:"Our Vision",
+        mission:"We believe in the core idea of block chain and digital currency. Distributed ledger and intelligent contract technology will build the trust foundation of human beings and eliminate trade barriers." +
+        "                    Future can become a reliable application of commercial civilization cornerstone, we hope that with our professional technology for the chain block, digital currency, TOKEN owners to build a safe, trust and high liquidity of trading platform," +
+        "                    To bring you a digital asset exploration, discovery of the value platform.",
+        technicalttip:"Our Technology",
+        technicalt:"TaoBiEx adopts the advanced technologies such as distributed server cluster, distributed storage, high-speed memory trading engine with multiple machines, cold wallet, and hot wallet, which is offline." +
+        "                    PC terminals and other terminals provide safe, stable and reliable digital asset trading services for our customers. We will provide users with 2C and 2B to create suitable trading products.",
         Assetstip:"关于数字资产",
         Assets:"",
     },
@@ -37,8 +47,8 @@ var lang = {
         t1:"*The login password is not allowed to be presented within 24 hours after the login password is modified",
         t2:"*The transaction password is not allowed to be presented within 24 hours after the transaction password is modified",
         t3:"*Please carefully fill in your credentials and real name, once submitted can not be modified",
-        t4:"Provide the most currency blockchain places, quality service for every user",
-        t5:"An exchange to build the world's best project",
+        t4:"Provide global block chain asset, digital asset, Token asset free trade, exchange, circulation place.",
+        t5:"Security, trust, high mobility, excellent user experience trading platform.",
         t6:"TAOBIEX",
     },
     banner2:{
@@ -196,7 +206,7 @@ var lang = {
     login:"Sign in",
     register:"Sign up",
     phoneVerify:"Mobile Auth",
-    emailVerify:"Email Auth",
+    emailVerify:"Email Or Mobile",
     safewordVerify:"SafeWord Auth",
     passwordVerify:"Password Auth",
     authVerify:"KYC1 Auth",
@@ -254,7 +264,7 @@ var lang = {
     frontIdentify:"Positive Documents",
     backIdentify:"Negative Documents",
     email1:"If your login account number is mailbox number, then after the mailbox is successful, the login account will also become a new mailbox number, please remember!",
-    emailCode:"Email Code",
+    emailCode:"Code",
     send:"Send",
     change:"Change",
     basic:"Basic Info",
@@ -399,7 +409,7 @@ var lang = {
     cancelTips:"Are u sure to cancel?",
     deleteTips:"Are u sure to delete?",
     success:"Success",
-    emailFormatError:"Email format is error",
+    emailFormatError:"Email or Mobile format is error",
     phoneFormatError:"Mobile format is error",
     noSamePwd:"Password is conflict",
     phoneUsedError:"Mobile is used",

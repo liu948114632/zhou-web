@@ -113,13 +113,13 @@
     }
 
     #select.home-market .table-header-tab > span.active {
-    color: #fff;
+    color: rgb(231,134,56)!important;
     font-weight: normal;
     background-color: #2d2c32;
     }
 
     #select.home-market .item:hover {
-    color: #fff;
+    color: red!important;
     background-color: #ff4b33;
     }
 
@@ -413,10 +413,10 @@
                                 <img src="/dist/images/bg.jpg" alt="...">
                                 <div class="carousel-caption">
                                     <div class="content">
-                                        <div style="letter-spacing: 4px;"><i style="font-weight: lighter;">TAO</i>BIEX
+                                        <div style="letter-spacing: 4px;color: #ff4b33"><i style="font-weight: lighter;">Tao</i>BiEx
                                         </div>
-                                        <div ng-bind="lang.an.t5"></div>
-                                        <div ng-bind="lang.an.t4"></div>
+                                        <div ng-bind="lang.an.t5" style="font-size: 33px"></div>
+                                        <div ng-bind="lang.an.t4" style="color: white"></div>
                                         <div>
                                             <a href="/exchange" class="button is-primary trade-now-button"
                                                ng-bind="lang.trade_now"></a>
@@ -428,8 +428,8 @@
                                 <img src="/dist/images/bg2.png" alt="...">
                                 <div class="carousel-caption">
                                     <div class="content">
-                                        <div style="letter-spacing: 4px;"><i style="font-weight: lighter;">TAO</i>BIEX<span style="color: #fff;" ng-bind="lang.banner2.t1"></span></div>
-                                        <div style="letter-spacing: 5px;" ng-bind="lang.banner2.t2"></div>
+                                        <div style="letter-spacing: 4px;"><i style="font-weight: lighter;">Tao</i>BiEx<span style="color: #fff;" ng-bind="lang.banner2.t1"></span></div>
+                                        <div style="letter-spacing: 5px;color: #ff4b33" ng-bind="lang.banner2.t2"></div>
                                         <div><span ng-bind="lang.banner2.t3"></span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<span ng-bind="lang.banner2.t4"></span></div>
                                         <div><span ng-bind="lang.banner2.t5"></span></div>
                                         <div>
@@ -475,7 +475,7 @@
                                 <div data-v-e893afaa="" class="table-header-tab ts-16 color-666">
                                     <!--<span data-v-e893afaa="" class="item mg-r20" id="self"-->
                                           <!--ng-mouseenter="setMarketBySelf($event)" ng-bind="lang.my"></span>-->
-                                    <span data-v-e893afaa="" data-ng-repeat="group in groups" class="item mg-r20"
+                                    <span style="color: rgb(226,226,226)" data-v-e893afaa="" data-ng-repeat="group in groups" class="item mg-r20"
                                           ng-class="selectedMarket == group ? 'active' : ''"
                                           data-ng-mouseenter="setMarket(group)" ng-cloak="">\{{group | uppercase}} \{{lang.area}}</span>
                                 </div>
