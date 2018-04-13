@@ -525,7 +525,7 @@
                     for (var i = 0; i < tickers.length; i++) {
                         var ticker = tickers[i];
                         var sp = ticker.pcp ? ticker.pcp : 1;
-                        ticker.up = (ticker.lsp ? ticker.lsp : 1 - sp)/sp *100 ;
+                        ticker.up = (ticker.lsp - sp)/sp *100 ;
                         ticker.key = ticker.iid.replace('_','/');
                         current = i == 0? ticker: current;
                         var group = ticker.iid.split('_')[1];
