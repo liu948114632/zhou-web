@@ -183,7 +183,7 @@
                             <tbody>
                             <tr ng-repeat="row in buyDepthList |orderBy :'+row[0]' " ng-click="setSell(row)" class="ng-scope">
                                 <td class="f-left green">
-                                    <span class="ng-binding ng-scope"><span ng-bind="row[0] | fixed: 8"></span></span>
+                                    <span class="ng-binding ng-scope"><span ng-bind="row[0] |number : 8"></span></span>
                                 </td>
                                 <td class="f-right"><span class="ng-binding" ng-bind-html="row[1] | fixed: 4 | gg"></span>
                                 </td>

@@ -400,8 +400,35 @@
                     var s = result.replace('"iid":'+iid+',',"");
                     var json_result = JSON.parse(s);
                     $scope.buyDepthList = json_result.bids;
+                    for (var i =0 ;i<$scope.buyDepthList.length;i++){
+                        $scope.buyDepthList[i][0] = scientificToNumber($scope.buyDepthList[i][0]);
+                    }
                     $scope.sellDepthList = json_result.asks;
+                    for (var j =0 ;j<$scope.sellDepthList.length;j++){
+                        $scope.sellDepthList[j][0] = scientificToNumber($scope.sellDepthList[j][0]);
+                    }
                 })
+            }
+        }
+        /*科学计数法转换数值*/
+        function scientificToNumber(num) {
+            var str = num.toString();
+            var reg = /^(\d+)(e)([\-]?\d+)$/;
+            var arr, len,
+                zero = '';
+
+            /*6e7或6e+7 都会自动转换数值*/
+            if (!reg.test(str)) {
+                return num;
+            } else {
+                /*6e-7 需要手动转换*/
+                arr = reg.exec(str);
+                len = Math.abs(arr[3]) - 1;
+                for (var i = 0; i < len; i++) {
+                    zero += '0';
+                }
+
+                return '0.' + zero + arr[1];
             }
         }
         function recentLog() {

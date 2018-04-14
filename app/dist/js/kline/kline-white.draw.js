@@ -8428,8 +8428,8 @@ function getklinedataAjax() {
             // todo mark1
             // var data = JSON.parse(deCode(res.data));
             var data = res;
-            console.log(res[data.length-1]['sn']);
-            GLOBAL_VAR.num = res[data.length-1]['sn'];
+            // console.log(res[data.length-1]['sn']);
+            // GLOBAL_VAR.num = res[data.length-1]['sn'];
 //            var data = toGbk(res.data);
             var newData = []
             var timeKey = {}
@@ -8683,12 +8683,12 @@ function setHttpRequestParam(b, c, a, e) {
     //     val = "msgtype=ReqQryKLine&iid="+b+"&sns="+GLOBAL_VAR.num+"&sne="+(GLOBAL_VAR.num * 1 + 100)+"&klt="+stepMap[c]+"&UserID=111"+"&TimeStamp="+time;
     //     GLOBAL_VAR.num = GLOBAL_VAR.num +100;
     // }
-    if(GLOBAL_VAR.first){
-        val = "msgtype=ReqQryKLine&iid="+b+"&sns=-100&sne=-1&klt="+stepMap[c]+"&UserID=111"+"&TimeStamp="+time;
-        GLOBAL_VAR.first = false;
-    }else {
-        var now = GLOBAL_VAR.nowNum;
-        console.log(now)
+    // if(GLOBAL_VAR.first){
+    //     val = "msgtype=ReqQryKLine&iid="+b+"&sns=-100&sne=-1&klt="+stepMap[c]+"&UserID=111"+"&TimeStamp="+time;
+    //     GLOBAL_VAR.first = false;
+    // }else {
+    //     var now = GLOBAL_VAR.nowNum;
+    //     console.log(now)
         if(a !=null){
             val = "msgtype=ReqQryKLine&iid="+b+"&sns=1&sne=100&klt="+stepMap[c]+"&UserID=111"+"&TimeStamp="+time;
         }else{
@@ -8696,7 +8696,7 @@ function setHttpRequestParam(b, c, a, e) {
         }
         // val = "msgtype=ReqQryKLine&iid="+b+"&sns="+now+"&sne="+(100+now*1)+"&klt="+stepMap[c]+"&UserID=111"+"&TimeStamp="+time;
         // GLOBAL_VAR.nowNum = GLOBAL_VAR.nowNum*1 + 100;
-    }
+    // }
 
     return val;
 }
