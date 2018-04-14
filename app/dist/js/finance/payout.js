@@ -57,7 +57,11 @@ app.controller('payoutController', ['$scope', '$http', '$location', '$interval',
             return;
         }
         var time =  (new Date()).valueOf();
-        var val = "msgtype=ReqSmsCodeGenerate&em="+rootKey+"&sct=3&TimeStamp="+time;
+        var m = "em";
+        if(isMobile(rootKey)){
+            m = "m";
+        }
+        var val = "msgtype=ReqSmsCodeGenerate&"+m+"="+rootKey+"&sct=3&TimeStamp="+time;
         var hash = CryptoJS.HmacSHA256(val, rootPass);
         var sign = hash.toString();
         $http({
