@@ -8498,7 +8498,8 @@ function getklinedataAjax() {
                 } catch (err) {
                 }
                 // console.log(7);
-                GLOBAL_VAR.TimeOutId = setTimeout(TwoSecondThread, 1000 * 10);
+                // GLOBAL_VAR.TimeOutId = setTimeout(TwoSecondThread, 1000 * 10);
+                GLOBAL_VAR.TimeOutId = setTimeout(TwoSecondThread, 500 );
                 $(".bk-animationload").fadeOut();
                 ChartManager.getInstance().redraw("All", false)
             }

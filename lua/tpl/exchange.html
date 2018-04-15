@@ -583,7 +583,7 @@
                             <tr ng-repeat="row in entrustList | orderBy :row.id : 'desc'">
                                 <td class="f-left" ng-bind="row.it | date: 'yyyy-MM-dd HH:mm:ss'"></td>
                                 <td class="f-left"><span ng-class="row.d== 0? 'green': 'magenta'" ng-bind="row.d == 0 ? lang.buy : lang.sell"></span></td>
-                                <td class="f-left" ng-bind-html="row.lp | fixed: 8 | gg"></td>
+                                <td class="f-left" ng-bind="row.lp "></td>
                                 <td class="f-left" ng-bind="row.vto | fixed: 4"></td>
                                 <td class="f-left" ng-bind="(row.lp * row.vto) | fixed: 4"></td>
                                 <td class="f-left" ng-bind="row.os | formatEntrustStatus"></td>

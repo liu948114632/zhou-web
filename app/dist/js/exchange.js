@@ -412,6 +412,9 @@
         }
         /*科学计数法转换数值*/
         function scientificToNumber(num) {
+            if(num == undefined){
+                return;
+            }
             var str = num.toString();
             var reg = /^(\d+)(e)([\-]?\d+)$/;
             var arr, len,
@@ -466,8 +469,8 @@
                 }).then(function (res) {
                     var result = toGbk(res.data);
                     var orders = JSON.parse(result);
-                    console.log(orders)
                     for(var i =0; i<orders.length; i++){
+                        orders[i]['lp'] = scientificToNumber(orders[i]['lp']);
                         if(orders[i]['os'] == 1 || orders[i]['os'] == 3){
                             $scope.entrustList.push(orders[i]);
                         }else {
