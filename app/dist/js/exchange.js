@@ -412,7 +412,7 @@
         }
         /*科学计数法转换数值*/
         function scientificToNumber(num) {
-            if(num == undefined){
+            if(isEmpty(num)){
                 return;
             }
             var str = num.toString();
