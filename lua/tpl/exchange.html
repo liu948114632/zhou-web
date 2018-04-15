@@ -151,11 +151,11 @@
                             <tbody>
                             <tr ng-repeat="row in sellDepthList | orderBy : 'row[0]' : 'desc'" ng-click="setBuy(row)" class="ng-scope">
                                 <td class="f-left green">
-                                    <span class="ng-binding ng-scope magenta"><span ng-bind="row[0] | fixed: 8"></span></span>
+                                    <span class="ng-binding ng-scope magenta"><span ng-bind="row[0] "></span></span>
                                 </td>
-                                <td class="f-right"><span class="ng-binding" ng-bind-html="row[1] | fixed: 4 | gg"></span>
+                                <td class="f-left"><span class="ng-binding" ng-bind="row[1]"></span>
                                 </td>
-                                <td class="f-right "><span  ng-bind="row[1] * row[0] | fixed: 8" class="ng-binding">0</span>
+                                <td class="f-left "><span  ng-bind="row[1] * row[0] | number : 6" class="ng-binding"></span>
                                     <div class="zhuzhuang" ng-style="{'width': (row[1] / maxBuyCount * 100) + '%'}"></div>
                                 </td>
                             </tr>
@@ -183,11 +183,11 @@
                             <tbody>
                             <tr ng-repeat="row in buyDepthList |orderBy :'+row[0]' " ng-click="setSell(row)" class="ng-scope">
                                 <td class="f-left green">
-                                    <span class="ng-binding ng-scope"><span ng-bind="row[0] |number : 8"></span></span>
+                                    <span class="ng-binding ng-scope"><span ng-bind="row[0] "></span></span>
                                 </td>
-                                <td class="f-right"><span class="ng-binding" ng-bind-html="row[1] | fixed: 4 | gg"></span>
+                                <td class="f-left"><span class="ng-binding" ng-bind="row[1] " ></span>
                                 </td>
-                                <td class="f-right "><span  ng-bind="row[1] * row[0] | fixed: 8" class="ng-binding">0</span>
+                                <td class="f-left "><span  ng-bind="row[1] * row[0] | fixed: 6" class="ng-binding"></span>
                                     <div class="zhuzhuang" ng-style="{'width': (row[1] / maxSellCount * 100) + '%'}"></div>
                                 </td>
                             </tr>
@@ -490,7 +490,7 @@
                                 <li class="ng-binding" style="width: 32%">\{{ticker.key}}</li>
                                 <li ng-class="{'green':p.close>lastPrices[p.symbol],'magenta':p.close<lastPrices[p.symbol]}"
                                     class="ng-binding" style="width: 36%;text-align: center">
-                                    \{{ticker.lsp ?ticker.lsp:0 | number: 6}}
+                                    \{{ticker.lsp ?ticker.lsp:0 }}
                                 </li>
                                 <li class="ng-scope" style="width: 32%">
                                     <span
@@ -512,7 +512,7 @@
                                 <li class="ng-binding" style="width:32%">\{{ticker.key | uppercase}}</li>
                                 <li style="width: 36%;text-align: center" ng-class="{'green':p.close>lastPrices[p.symbol],'magenta':p.close<lastPrices[p.symbol]}"
                                     class="ng-binding">
-                                    \{{ticker.lsp ?ticker.lsp:0 | number: 6}}
+                                    \{{ticker.lsp ?ticker.lsp:0 }}
                                 </li>
                                 <li class="ng-scope" style="width: 32%">
                                     <span
@@ -536,15 +536,15 @@
                                 <tbody>
                                 <tr class="ng-scope">
                                     <td class="f-left ng-binding" ng-bind="lang.price"></td>
-                                    <td class="f-right ng-binding" ng-bind="lang.spread.amount"></td>
-                                    <td class="f-right ng-binding" ng-bind="lang.spread.time"></td>
+                                    <td class="f-left ng-binding"  ng-bind="lang.spread.amount"></td>
+                                    <td class="f-left ng-binding" ng-bind="lang.spread.time" ></td>
                                 </tr>
                                 <tr ng-repeat="row in recentDealList" class="ng-scope">
                                     <td class="f-left ng-binding green"
-                                        ng-class="'green'" ng-bind="row.p?row.p : 0 | fixed: 4">
+                                        ng-class="'green'" ng-bind="row.p?row.p : 0 ">
                                     </td>
-                                    <td class="f-right ng-binding" ng-bind="row.v ? row.v : 0 | fixed: 4"></td>
-                                    <td class="f-right ng-binding" ng-bind="row.tt | date :'HH:mm:ss' "></td>
+                                    <td class="f-left ng-binding" ng-bind="row.v ? row.v : 0 "></td>
+                                    <td class="f-left ng-binding" ng-bind="row.tt | date :'HH:mm:ss' " ></td>
                                 </tr>
                                 </tbody>
                             </table>
