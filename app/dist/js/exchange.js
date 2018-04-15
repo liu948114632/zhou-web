@@ -756,7 +756,7 @@
                 for (var i = 0; i < tickers.length; i++) {
                     var ticker = tickers[i];
                     var sp = ticker.pcp ? ticker.pcp : 1;
-                    ticker.up = (ticker.lsp ? ticker.lsp : 1 - sp)/sp *100 ;
+                    ticker.up = (ticker.lsp  - sp)/sp *100 ;
                     ticker.key = ticker.iid.replace('_','/');
                     var group = ticker.iid.split('_')[1];
                     if (coinGroup[group] === undefined) {
@@ -784,7 +784,7 @@
 
                 var ticker  = JSON.parse(toGbk(res.data));
                 var sp = ticker.pcp ? ticker.pcp : 1;
-                ticker.up = (ticker.lsp ? ticker.lsp : 1 - sp)/sp *100 ;
+                ticker.up = (ticker.lsp  - sp)/sp *100 ;
                 ticker.key = ticker.iid.replace('_','/');
                 $scope.selectedPair = ticker;
             })
