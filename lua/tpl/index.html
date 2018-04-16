@@ -373,7 +373,82 @@
 </head>
 <body>
 
-{(tpl/common/header.html)}
+<div class="header">
+    <div class="logo" style="padding: 0 0 0;font-size: 30px;color: rgb(245,186,46)">
+        TaoBiEx
+    </div>
+    <div class="f-fr">
+        <div class="languages" ng-mouseover="showFlags=true;" ng-mouseout="showFlags=false;">
+
+            <span class="font-lang ng-scope" >
+                {% if lang == 'cn' then %}
+                <span ng-bind="lang.chinese"></span>
+                {% else %}
+                English
+                {% end %}
+            </span>
+            <ul ng-show="showFlags" class="ng-hide">
+                <li ng-click="switching('en')" data-lang ="en"  class="languagenew">English</li>
+                <li ng-click="switching('cn')"  data-lang = "cn" class="languagenew" ng-bind="lang.chinese">
+                    <span class="duigou ng-scope" ng-bind="lang.chinese"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="login-register f-fr ng-scope dn" >
+        <a href="/user/login" target="_self" class="ng-binding" ng-bind="lang.login"></a>&nbsp;&nbsp;
+        <a href="/user/register" target="_self" class="ng-binding" ng-bind="lang.register"></a>&nbsp;&nbsp;
+    </div>
+    <div class="user-info logined f-fr ng-scope dn {{account}}" >
+        <span class="ng-binding" ng-bind="lang.header.ACCOUNT"></span><br>
+        <ul>
+            <li>
+                <a class="link" href="/account/safe" target="_self">
+                    <strong class="ng-binding" >ID:</strong>
+                    <span class="ng-binding" id="M_userName"></span>
+                </a>
+            </li>
+            <li>
+                <a class="link" href="/account/message" target="_self">
+                    <span class="ng-binding" ng-bind="lang.message"></span><br>
+                </a>
+            </li>
+            <li>
+                <a class="link ng-binding exit"  href="javascript:;" ng-bind="lang.header.Log_out">
+
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <ul class="main-nav" >
+        <li  class="ng-scope {{home}}">
+            <a href="/"  class="ng-binding " ng-bind="lang.header.HOME" target="_self"></a>
+        </li>
+        <li  class="ng-scope  {{exchange}}">
+            <a href="/exchange" class="ng-binding" ng-bind="lang.header.EXCHANGE" target="_self"></a>
+        </li>
+        <li  class="ng-scope  {{funds}}" id="M_account">
+            <a href="/finance/asset"  class="ng-binding" ng-bind="lang.header.BALANCES" target="_self"></a>
+        </li>
+        <li  class="ng-scope  {{aboutus}}" >
+            <a href="/aboutus/about"  class="ng-binding"  target="_self" ng-bind="lang.about.aboutus"></a>
+        </li>
+        <li  class="ng-scope "  id="alogin" style="display: none">
+            <a href="/user/login" target="_self" class="ng-binding" ng-bind="lang.login"></a>&nbsp;&nbsp;
+        </li>
+        <li  class="ng-scope"  id ="aregister" style="display: none">
+            <a href="/user/register" target="_self" class="ng-binding" ng-bind="lang.register"></a>&nbsp;&nbsp;
+        </li>
+        <li  class="ng-scope"  id = "aid" style="display: none">
+            <a class="link ng-binding exit"  href="javascript:;" id ="a_name">
+            </a>
+        </li>
+        <li  class="ng-scope"  id="aexit" style="display: none">
+            <a class="link ng-binding exit"  href="javascript:;" ng-bind="lang.header.Log_out"></a>
+        </li>
+    </ul>
+</div>
 <div data-v-15f70906="" id="app" class="body font-family-zh" ng-controller="indexController">
     <div data-v-15f70906="">
         <div class="main min-w" style="background-color: #262626;">

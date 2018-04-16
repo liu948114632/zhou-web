@@ -723,6 +723,10 @@
             // $scope.sellOrder.amount = (buy[1] * 1).toFixed(8)
             // $scope.setTotalOrAmount('sellOrder')
         }
+        $scope.setPrice = function(row) {
+            $scope.sellOrder.price = row['p'];
+            $scope.buyOrder.price = row['p']
+        }
         $scope.search = function(res){
             if(isEmpty($scope.keyword)){
                 return res;
