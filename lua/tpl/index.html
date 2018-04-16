@@ -667,12 +667,12 @@
                                     <td data-v-e893afaa="" class="D text-left" >
                                         <span data-v-e893afaa="" ng-bind="ticker.key | uppercase"></span>
                                     </td>
-                                    <td data-v-e893afaa="" class="D text-left" >
-                                        <span data-v-e893afaa="" ng-bind="ticker.lsp || 0 "></span>
+                                    <td data-v-e893afaa="" class="D text-left"  >
+                                        <span data-v-e893afaa="" ng-class="ticker.up > 0 ? 'color-fall' : 'color-rose'" ng-bind="ticker.lsp || 0 "></span>
                                         <!-- <span data-v-e893afaa="" class="color-minor"> / 4.62CNY</span>-->
                                     </td>
                                     <td data-v-e893afaa="" class="D text-left "
-                                        ng-class="ticker.up > 0 ? 'color-rose' : 'color-fall'" >
+                                        ng-class="ticker.up > 0 ? 'color-fall' : 'color-rose'" >
                                         \{{ticker.up ? ticker.up : 0 | number:2}}%
                                     </td>
                                     <td data-v-e893afaa="" class="D"  ng-bind="ticker.hp || 0 "></span></td>
