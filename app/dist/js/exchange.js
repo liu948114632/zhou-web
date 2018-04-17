@@ -447,7 +447,9 @@
                     responseType :'arraybuffer',
                 }).then(function (res) {
                     var result = JSON.parse(toGbk(res.data));
-                    $scope.recentDealList = result;
+                    if(!result['em'] && result['em']!="正确"){
+                        $scope.recentDealList = result;
+                    }
                 })
             }
         }
