@@ -17,11 +17,17 @@ app.controller('indexController', ['$scope', '$http', '$interval',  function ($s
             responseType :'arraybuffer'
         }).then(function (res) {
             var result = JSON.parse(toGbk(res.data));
+            if(! (result instanceof Array)){
+                result = new Array(result);
+            }
             for(var i =0;i<result.length;i++){
                 var group = result[i].iid.split('_')[1];
                 var sp = result[i].pcp ? result[i].pcp : 1;
                 result[i].up = (result[i].lsp  - sp)/sp *100 ;
                 result[i].key = result[i].iid.replace('_','/');
+                result[i].lp = scientificToNumber(result[i].lp);
+                result[i].lsp = scientificToNumber(result[i].lsp);
+                result[i].hp = scientificToNumber(result[i].hp);
                 if( !isEmpty($scope.markets[group]) ){
                     deleteArray($scope.markets[group],result[i].iid);
                     $scope.markets[group].push(result[i]);

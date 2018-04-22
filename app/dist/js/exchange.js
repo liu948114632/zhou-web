@@ -381,7 +381,8 @@
                 }
                 $scope.maxSellCount = maxSellCount
             }
-        })
+        });
+        loadDetails();
 
         function marketRefresh() {
             if ($scope.selectedPair) {
@@ -397,45 +398,26 @@
                     responseType :'arraybuffer',
                 }).then(function (res) {
                     var result = toGbk(res.data);
-                    var s = result.replace('"iid":'+iid+',',"");
-                    var json_result = JSON.parse(s);
-                    $scope.buyDepthList = json_result.bids;
-                    for (var i =0 ;i<$scope.buyDepthList.length;i++){
-                        $scope.buyDepthList[i][0] = scientificToNumber($scope.buyDepthList[i][0]);
+                    if(result.indexOf("正确")==-1){
+                        var s = result.replace('"iid":'+iid+',',"");
+                        var json_result = JSON.parse(s);
+                        $scope.buyDepthList = json_result.bids;
+                        for (var i =0 ;i<$scope.buyDepthList.length;i++){
+                            $scope.buyDepthList[i][0] = scientificToNumber($scope.buyDepthList[i][0]);
+                        }
+                        $scope.sellDepthList = json_result.asks;
+                        for (var j =0 ;j<$scope.sellDepthList.length;j++){
+                            $scope.sellDepthList[j][0] = scientificToNumber($scope.sellDepthList[j][0]);
+                        }
                     }
-                    $scope.sellDepthList = json_result.asks;
-                    for (var j =0 ;j<$scope.sellDepthList.length;j++){
-                        $scope.sellDepthList[j][0] = scientificToNumber($scope.sellDepthList[j][0]);
-                    }
+
                 })
             }
         }
-        /*科学计数法转换数值*/
-        function scientificToNumber(num) {
-            if(isEmpty(num)){
-                return;
-            }
-            var str = num.toString();
-            var reg = /^(\d+)(e)([\-]?\d+)$/;
-            var arr, len,
-                zero = '';
 
-            /*6e7或6e+7 都会自动转换数值*/
-            if (!reg.test(str)) {
-                return num;
-            } else {
-                /*6e-7 需要手动转换*/
-                arr = reg.exec(str);
-                len = Math.abs(arr[3]) - 1;
-                for (var i = 0; i < len; i++) {
-                    zero += '0';
-                }
-
-                return '0.' + zero + arr[1];
-            }
-        }
         function recentLog() {
             if ($scope.selectedPair) {
+                $scope.recentDealList = [];
                 var time =  (new Date()).valueOf();
                 var val = "msgtype=ReqQryLastTrade&iid="+$scope.selectedPair.iid+"&UserID=123"+"&TimeStamp="+time;
                 var hash = CryptoJS.HmacSHA256(val, "123123");
@@ -448,7 +430,15 @@
                 }).then(function (res) {
                     var result = JSON.parse(toGbk(res.data));
                     if(!result['em'] && result['em']!="正确"){
-                        $scope.recentDealList = result;
+                        if(result instanceof Array){
+                            $scope.recentDealList = result;
+                        }else {
+                            $scope.recentDealList = new Array(result);
+                        }
+
+                        for (var i =0;i<$scope.recentDealList.length;i++){
+                            $scope.recentDealList[i].p = scientificToNumber($scope.recentDealList[i].p);
+                        }
                     }
                 })
             }
@@ -470,15 +460,21 @@
                     responseType :'arraybuffer',
                 }).then(function (res) {
                     var result = toGbk(res.data);
-                    var orders = JSON.parse(result);
-                    for(var i =0; i<orders.length; i++){
-                        orders[i]['lp'] = scientificToNumber(orders[i]['lp']);
-                        if(orders[i]['os'] == 1 || orders[i]['os'] == 3){
-                            $scope.entrustList.push(orders[i]);
-                        }else {
-                            $scope.entrustListLog.push(orders[i]);
+                    if(result.indexOf("正确")==-1){
+                        var orders = JSON.parse(result);
+                        if( ! (orders instanceof Array)){
+                            orders = new Array(orders);
+                        }
+                        for(var i =0; i<orders.length; i++){
+                            orders[i]['lp'] = scientificToNumber(orders[i]['lp']);
+                            if(orders[i]['os'] == 1 || orders[i]['os'] == 3){
+                                $scope.entrustList.push(orders[i]);
+                            }else {
+                                $scope.entrustListLog.push(orders[i]);
+                            }
                         }
                     }
+
                 })
             }
         }
@@ -559,6 +555,7 @@
                         var sp = ticker.pcp ? ticker.pcp : 1;
                         ticker.up = (ticker.lsp - sp)/sp *100 ;
                         ticker.key = ticker.iid.replace('_','/');
+                        ticker.lsp = scientificToNumber(ticker.lsp);
                         current = i == 0? ticker: current;
                         var group = ticker.iid.split('_')[1];
                         if (coinGroup[group] === undefined) {
@@ -578,10 +575,34 @@
                 })
         }
 
+        // msgtype=ReqQryInstrument&iid=ltc_btc&UserID=00001&TimeStamp=2112345678000
+
+        $scope.allDetail ={};
+        function loadDetails(){
+            var time =  (new Date()).valueOf();
+            var val = "msgtype=ReqQryInstrument&UserID=123"+"&TimeStamp="+time;
+            var hash = CryptoJS.HmacSHA256(val, "123");
+            var sign = hash.toString();
+            $http({
+                method:"POST",
+                // url:"http://47.97.219.235:8814"+"/api/v1",
+                url:"/api/v1",
+                data:val+"&Sign="+sign,
+                responseType :'arraybuffer',
+                header:{}
+            }).then(function(res){
+                var result = JSON.parse(toGbk(res.data));
+                for (var i =0; i<result.length;i++){
+                    $scope.allDetail[result[i]['iid']] = result[i];
+                }
+            })
+        }
+
+
         $scope.changeGroup = function(group) {
             $scope.selectedGroup = group
             $scope.tickers = $scope.coinGroup[group]
-        }
+        };
 
 
         $scope.refreshTicker = function(ticker, flag){
@@ -610,7 +631,10 @@
                 return
             }
             location.hash = 'symbol=' + ticker.iid;
-            $scope.selectedPair = ticker
+            $scope.selectedPair = ticker;
+            $scope.selectedPair.lsp = scientificToNumber($scope.selectedPair.lsp);
+            $scope.selectedPair.hp = scientificToNumber($scope.selectedPair.hp);
+            $scope.selectedPair.lp = scientificToNumber($scope.selectedPair.lp);
             $scope.buyOrder = {price: '', amount: '', total: ''}
             $scope.sellOrder = {price: '', amount: '', total: ''}
             marketRefresh();
@@ -631,6 +655,10 @@
                 return
             }
             var order = $scope[type + 'Order'];
+            console.log(order);
+            console.log($scope.allDetail[$scope.selectedPair['iid']]);
+
+            var sel = $scope.allDetail[$scope.selectedPair['iid']];
             var time =  (new Date()).valueOf();
             var order_type = 0;
             if(type == "sell"){
@@ -638,11 +666,65 @@
             }
             var opt = 2;
             var val = "msgtype=ReqOrderInsert&iid="+rootKey+"&isid="+$scope.selectedPair.iid+"&olid=1&opt=";
+            var price = order.price;
+            var amount = order.amount;
+            var total = order.total;
+            // m%n==0 能否整除
+            var la = $.cookie("lang");
+
+            if((price / sel.pt).toString().indexOf(".") >0){
+                if(la == 'cn'){
+                    error_win("价格必须为"+sel.pt+"的整数倍");
+                }else {
+                    error_win("The price must be multiples of "+sel.pt);
+                }
+
+                return;
+            }
+            if((amount / sel.vt).toString().indexOf(".") >0){
+
+                if(la == 'cn'){
+                    error_win("数量必须为"+sel.vt+"的整数倍");
+                }else {
+                    error_win("The number must be multiples of "+sel.vt);
+                }
+                return;
+            }
+            if(total < sel.sp){
+
+                if(la == 'cn'){
+                    error_win("总额最小为"+sel.sp);
+                }else {
+                    error_win("The lowest total amount is "+sel.sp);
+                }
+                return;
+            }
+
             if($scope.tradeType == 'market'){
                 opt =3;
                 val = val + opt+"&d="+order_type+ "&vto="+order.amount+"&UserID="+rootKey+"&TimeStamp="+time;
+                //市价
+                if(amount > sel.mlov || amount < sel.mnlov){
+
+                    if(la == 'cn'){
+                        error_win("数量必须在"+sel.mnlov+"~"+sel.mlov);
+                    }else {
+                        error_win("The number must be in "+sel.mnlov+"~"+sel.mlov);
+                    }
+                    return;
+                }
             }else {
+                //限价
                 val = val + opt+"&d="+order_type+ "&lp="+order.price+ "&vto="+order.amount+"&UserID="+rootKey+"&TimeStamp="+time;
+                if(amount > sel.mmov || amount < sel.mnmov){
+
+                    if(la == 'cn'){
+                        error_win("数量必须在"+sel.mnmov+"~"+sel.mmov);
+                    }else {
+                        error_win("The number must be in "+sel.mnlov+"~"+sel.mlov);
+                    }
+                    return;
+                }
             }
             var hash = CryptoJS.HmacSHA256(val, rootPass);
             var sign = hash.toString();
@@ -653,6 +735,11 @@
                 responseType :'arraybuffer'
             }).then(function (res) {
                 var result = JSON.parse(toGbk(res.data));
+                if(!isEmpty(result['em'])){
+                    console.log($scope.selectedPair);
+                    error_win(result['em']);
+                    return;
+                }
                 console.log(result);
                 if(order_type == 0){
                     $scope.buyOrder = {price: '', amount: '', total: ''}
@@ -764,6 +851,7 @@
                     var sp = ticker.pcp ? ticker.pcp : 1;
                     ticker.up = (ticker.lsp  - sp)/sp *100 ;
                     ticker.key = ticker.iid.replace('_','/');
+                    ticker.lsp = scientificToNumber(ticker.lsp);
                     var group = ticker.iid.split('_')[1];
                     if (coinGroup[group] === undefined) {
                         coinGroup[group] = []
@@ -792,6 +880,9 @@
                 var sp = ticker.pcp ? ticker.pcp : 1;
                 ticker.up = (ticker.lsp  - sp)/sp *100 ;
                 ticker.key = ticker.iid.replace('_','/');
+                ticker.lsp = scientificToNumber(ticker.lsp);
+                ticker.hp = scientificToNumber(ticker.hp);
+                ticker.lp = scientificToNumber(ticker.lp);
                 $scope.selectedPair = ticker;
             })
         }
