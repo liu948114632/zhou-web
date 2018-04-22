@@ -447,7 +447,9 @@
                     responseType :'arraybuffer',
                 }).then(function (res) {
                     var result = JSON.parse(toGbk(res.data));
-                    $scope.recentDealList = result;
+                    if(!result['em'] && result['em']!="正确"){
+                        $scope.recentDealList = result;
+                    }
                 })
             }
         }
@@ -722,6 +724,10 @@
             $scope.buyOrder.price = buy[0]
             // $scope.sellOrder.amount = (buy[1] * 1).toFixed(8)
             // $scope.setTotalOrAmount('sellOrder')
+        }
+        $scope.setPrice = function(row) {
+            $scope.sellOrder.price = row['p'];
+            $scope.buyOrder.price = row['p']
         }
         $scope.search = function(res){
             if(isEmpty($scope.keyword)){
