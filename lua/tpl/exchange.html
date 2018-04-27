@@ -626,7 +626,7 @@
                                 <td class="f-left" ng-bind="row.it | date: 'yyyy-MM-dd HH:mm:ss'"></td>
                                 <td class="f-left"><span ng-class="row.d == 0? 'green': 'magenta'" ng-bind="row.d == 0 ? lang.buy : lang.sell"></span></td>
                                 <td class="f-left" ng-cloak="">\{{row.opt == 2? lang.xianjia : lang.shijia}}</td>
-                                <td class="f-left" ng-bind="row.lp  | fixed: 8 " ng-show="row.lp"></td>
+                                <td class="f-left" ng-bind="row.lp" ng-show="row.lp"></td>
                                 <td class="f-left"  ng-show="!row.lp">-</td>
                                 <td class="f-left" ng-bind="row.vto | fixed: 4"></td>
                                 <td class="f-left" ng-bind="(row.lp * row.vto) | fixed: 4" ng-show="row.lp"></td>
