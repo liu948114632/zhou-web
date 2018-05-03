@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html  class="ng-scope" ng-app="app" ng-controller="Ctrl">
+<html ng-app="app" class="ng-scope" ng-controller="Ctrl">
 <head>
     {(tpl/common/include.html)}
     <title>{{param[lang..'_title']}}</title>
@@ -53,6 +53,7 @@
         }
 
         .verifyLayout .main .alert {
+            height: 270px;
             width: 100%;
             text-align: left;
             box-sizing: border-box;
@@ -96,89 +97,41 @@
             color: #333;
         }
     </style>
-    <style>
-        .layui-layer-msg {
-            width: auto !important;
-        }
-
-        .importantInfo {
-            margin-top: 24px;
-            text-align: center;
-            width: 100%;
-            position: relative;
-            padding-top: 22px;
-            margin-bottom:25px;
-
-        }
-
-        .importantInfo p {
-            font-size: 12px;
-            color: #333;
-            line-height: 100%;
-            margin-left: -4px;
-            white-space: nowrap;
-            position: absolute;
-            top: 0;
-            left: 50%;
-            -webkit-transform: translateX(-50%);
-            -ms-transform: translateX(-50%);
-            -moz-transform: translateX(-50%);
-            -o-transform: translateX(-50%);
-            transform: translateX(-50%);
-        }
-
-        .importantInfo p .iconfont {
-            font-size: 16px;
-            color: #ff0000;
-            vertical-align: text-top;
-        }
-
-        /* .verifyLayout .main {
-             height: 370px;
-         }*/
-    </style>
-
-<body style="">
+</head>
+<body style="" ng-controller="forgetController">
 <!-- 主体内容 -->
-<div class="verifyLayout ng-scope" ng-controller="loginCtrl">
+<div class="verifyLayout ng-scope" >
     <div class="main">
-        <style>
-            .btn.btn-grey {
-                line-height: 44px;
-                background: #f3f3f3;
-                color: #666;
-                font-size: 14px;
-            }
-        </style>
-        <div  class="ng-scope">
-
+        <div class="ng-scope">
             <div class="f-prz formWrapLR">
-                <form class="loginReg-form ng-valid ng-dirty" id="login-form">
-                    <h3 class="LRtitle"><span class="ng-binding" ng-bind="lang.login "></span></h3>
-                    <div class="importantInfo">
-                        <p class="ng-binding"><i class="iconfont" style="color:#3bc451; line-height:20px;">&#xe6e8;</i>
-                            <span ng-bind="lang.con"></span>
-                            <strong ng-cloak="">\{{host}}</strong></p>
-                    </div>
+                <form class="loginReg-form ng-pristine ng-valid" id="forgotPwd-form" novalidate="novalidate">
+                    <h3 class="LRtitle"><span class="ng-binding" ng-bind="lang.find_pwd" ></span></h3>
+                    <p class="Validform_checktip f-nomargin"></p>
+
                     <div class="filed">
                         <i class="iconfont">&#xe60b;</i>
-                        <input type="text" name="email" placeholder="\{{lang.emailVerify}}" ng-model="name" id="name"
-                               class="ipt fillemail ng-valid ng-valid-email ng-dirty" datatype="e" errormsg=""
-                               nullmsg="该字段不能为空">
+                        <input type="text"  placeholder="\{{lang.emailVerify}}"
+                               class="ipt name fillemail ng-pristine ng-valid ng-valid-email" ng-model="name" id="name">
+                    </div>
+                    <div class="filed">
+                        <i class="iconfont" style="font-size:16px;">&#xe6e8;</i>
+                        <input style="width:214px;" type="text" id="code" ng-model="code" placeholder="\{{lang.emailCode}}"
+                               class="ipt pwd ng-pristine ng-valid"  >
+                        <span class="code_btn" ng-click="sendCode" data-cate="find" >\{{tip}}</span>
                     </div>
                     <div class="filed">
                         <i class="iconfont">&#xe623;</i>
-                        <input type="password" placeholder="\{{lang.password}}" ng-model="password" id="pwd"
-                               class="ipt pwd ng-pristine ng-valid" datatype="*" >
+                        <input ng-model="pass" type="password" placeholder="\{{lang.newPwd}}"
+                               class="ipt fillemail ng-pristine ng-valid ng-valid-email" id="pwd"
+                        >
                     </div>
-                    <div class="filed">
-                        <input type="submit" value="\{{lang.login}}" ng-click="login()"  class="confirm btn btn-orange btn-block ">
+                    <div class="filed f-right">
+                        <input type="submit" id="forgotPwd-btn" value="\{{lang.confirm}}" class="confirm btn btn-orange btn-block" >
                     </div>
-
                     <div class="filde">
                         <p class="login-tip f-cb">
-                            <a href="/user/forget" class="yellow f-fl ng-binding" style="float: left" ng-bind="lang.forget"></a>
-                            <a href="/" class="yellow f-fl ng-binding" style="float: right" ng-bind="lang.backhome "></a>
+                            <a href="/user/login" class="yellow f-fl ng-binding" style="float: left" ng-bind="lang.gologin"></a>
+                            <a href="/" class="yellow f-fl ng-binding" style="float: right"  ng-bind="lang.backhome "></a>
                         </p>
                     </div>
                 </form>
@@ -190,7 +143,6 @@
     </div>
 </div>
 {(tpl/common/script.html)}
-<script src="{+resources+}/dist/js/login.js?v={{version}}"></script>
-<script src="{+resources+}/dist/js/pako.js?v={{version}}"></script>
+<script src="{+resources+}/dist/js/forget.js?v={{version}}"></script>
 </body>
 </html>

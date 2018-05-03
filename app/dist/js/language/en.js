@@ -15,13 +15,13 @@ var lang = {
         aboutus:"About Us",
         contactus:"Contact Us",
         team:"Our Team",
-        intro:"TaoBiex international station (www.taobiex.com) is one of the global digital asset trading platforms, which mainly provides global users with global block link assets, digital assets and Token transaction services, and is operated by TaoBi Technology Company Limited. TaoBiex's core team is from citic securities, clsa, Morgan Stanley, amex, tencent, huawei, SUNGARD and other world-renowned companies.",
+        intro:"NasBiq international station (www.nasbiq.com) is one of the global digital asset trading platforms, which mainly provides global users with global block link assets, digital assets and Token transaction services, and is operated by NasBiq Technology Company Limited. NasBiq's core team is from citic securities, clsa, Morgan Stanley, amex, tencent, huawei, SUNGARD and other world-renowned companies.",
         missiontip:"Our Vision",
         mission:"We believe in the core idea of block chain and digital currency. Distributed ledger and intelligent contract technology will build the trust foundation of human beings and eliminate trade barriers." +
         "                    Future can become a reliable application of commercial civilization cornerstone, we hope that with our professional technology for the chain block, digital currency, TOKEN owners to build a safe, trust and high liquidity of trading platform," +
         "                    To bring you a digital asset exploration, discovery of the value platform.",
         technicalttip:"Our Technology",
-        technicalt:"TaoBiEx adopts the advanced technologies such as distributed server cluster, distributed storage, high-speed memory trading engine with multiple machines, cold wallet, and hot wallet, which is offline." +
+        technicalt:"NasBiq adopts the advanced technologies such as distributed server cluster, distributed storage, high-speed memory trading engine with multiple machines, cold wallet, and hot wallet, which is offline." +
         "                    PC terminals and other terminals provide safe, stable and reliable digital asset trading services for our customers. We will provide users with 2C and 2B to create suitable trading products.",
         Assetstip:"关于数字资产",
         Assets:"",
@@ -52,8 +52,8 @@ var lang = {
         t6:"TAOBIEX",
     },
     banner2:{
-        t1:'(BEX)  Invite register Incentive',
-        t2:'1,000,000BEX GIVE AWAY',
+        t1:'(NBQ)  Invite register Incentive',
+        t2:'1,000,000NBQ GIVE AWAY',
         t3:'Register Award',
         t4:'Promotion Award',
         t5:'Activity Time：2018/4/10 - 2018/4/30',
@@ -236,7 +236,7 @@ var lang = {
         apply:"Coin Apply",
         us:"About",
         coin:"Coin Data",
-        copyRight:"© TAOBIEX Trade Platform CopyRight 2018"
+        copyRight:"© NASBIQ Trade Platform CopyRight 2018"
     },
     news:{
         announce: "Announce",
