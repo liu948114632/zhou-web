@@ -22,7 +22,7 @@ app.controller('indexController', ['$scope', '$http', '$interval',  function ($s
             }
             for(var i =0;i<result.length;i++){
                 var group = result[i].iid.split('_')[1];
-                var sp = result[i].pcp ? result[i].pcp : 1;
+                var sp = result[i].pcp ? result[i].pcp : result[i].op;
                 result[i].up = (result[i].lsp  - sp)/sp *100 ;
                 result[i].key = result[i].iid.replace('_','/');
                 result[i].lp = scientificToNumber(result[i].lp);

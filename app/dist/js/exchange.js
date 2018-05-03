@@ -552,7 +552,7 @@
 
                     for (var i = 0; i < tickers.length; i++) {
                         var ticker = tickers[i];
-                        var sp = ticker.pcp ? ticker.pcp : 1;
+                        var sp = ticker.pcp ? ticker.pcp : ticker.op;
                         ticker.up = (ticker.lsp - sp)/sp *100 ;
                         ticker.key = ticker.iid.replace('_','/');
                         ticker.lsp = scientificToNumber(ticker.lsp);
@@ -848,7 +848,7 @@
                 var coinGroup = {};
                 for (var i = 0; i < tickers.length; i++) {
                     var ticker = tickers[i];
-                    var sp = ticker.pcp ? ticker.pcp : 1;
+                    var sp = ticker.pcp ? ticker.pcp : ticker.op;
                     ticker.up = (ticker.lsp  - sp)/sp *100 ;
                     ticker.key = ticker.iid.replace('_','/');
                     ticker.lsp = scientificToNumber(ticker.lsp);
@@ -877,7 +877,7 @@
             }).then(function(res){
 
                 var ticker  = JSON.parse(toGbk(res.data));
-                var sp = ticker.pcp ? ticker.pcp : 1;
+                var sp = ticker.pcp ? ticker.pcp : ticker.op;
                 ticker.up = (ticker.lsp  - sp)/sp *100 ;
                 ticker.key = ticker.iid.replace('_','/');
                 ticker.lsp = scientificToNumber(ticker.lsp);
