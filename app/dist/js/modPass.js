@@ -47,7 +47,8 @@ app.controller('modController', ['$scope', '$http', '$interval', function ($scop
             error_win(lang.noempty);
             return;
         }
-        var val = "msgtype=ReqUserPasswordUpdate&uid="+rootKey+"&op="+$scope.code+"&np="+$scope.pass;
+        var time =  (new Date()).valueOf();
+        var val = "msgtype=ReqUserPasswordUpdate&uid="+rootKey+"&op="+$scope.code+"&np="+$scope.pass+"&UserID="+rootKey+"&TimeStamp="+time;
         var hash = CryptoJS.HmacSHA256(val, $scope.code);
         var sign = hash.toString();
         $http({

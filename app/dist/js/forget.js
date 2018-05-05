@@ -51,7 +51,8 @@ app.controller('forgetController', ['$scope', '$http', '$interval', function ($s
             return;
         }
 
-        var val = "msgtype=ReqUserPasswordUpdate&uid="+$scope.name+"&op="+$scope.code+"&np="+$scope.pass;
+        var time =  (new Date()).valueOf();
+        var val = "msgtype=ReqUserPasswordUpdate&uid="+$scope.name+"&op="+$scope.code+"&np="+$scope.pass+"&UserID="+$scope.name+"&TimeStamp="+time;
         var hash = CryptoJS.HmacSHA256(val, $scope.code);
         var sign = hash.toString();
         $http({
@@ -63,7 +64,11 @@ app.controller('forgetController', ['$scope', '$http', '$interval', function ($s
             var result = JSON.parse(toGbk(res.data));
             console.log(result);
             if(result.em == "正确"){
-                success_win(lang.operationSuccess);
+                sessionStorage.setItem("uid",$scope.name);
+                sessionStorage.setItem("key",$scope.pass);
+                success_win(lang.operationSuccess,function () {
+                    location.href = "/";
+                });
             }else {
                 error_win(result.em);
             }

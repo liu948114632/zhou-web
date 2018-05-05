@@ -117,7 +117,7 @@
                         <i class="iconfont" style="font-size:16px;">&#xe6e8;</i>
                         <input style="width:214px;" type="text" id="code" ng-model="code" placeholder="\{{lang.emailCode}}"
                                class="ipt pwd ng-pristine ng-valid"  >
-                        <span class="code_btn" ng-click="sendCode" data-cate="find" >\{{tip}}</span>
+                        <span class="code_btn" ng-click="sendCode()" data-cate="find" >\{{tip}}</span>
                     </div>
                     <div class="filed">
                         <i class="iconfont">&#xe623;</i>
@@ -126,7 +126,7 @@
                         >
                     </div>
                     <div class="filed f-right">
-                        <input type="submit" id="forgotPwd-btn" value="\{{lang.confirm}}" class="confirm btn btn-orange btn-block" >
+                        <input type="submit" id="forgotPwd-btn" ng-click = "mod()" value="\{{lang.confirm}}" class="confirm btn btn-orange btn-block" >
                     </div>
                     <div class="filde">
                         <p class="login-tip f-cb">

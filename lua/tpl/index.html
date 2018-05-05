@@ -657,7 +657,12 @@
             </main>
             <div style="width: 100%;height: 500px;">
                 <div class="down">
-                    <h2>多平台终端接入</h2>
+                    <h2>{% if lang=='cn' then %}
+                        多平台终端接入
+                        {% else %}
+                        Multi-Platform Accessible
+                        {% end %}
+                    </h2>
                     <div class="item">
                         <div class="next">
                             <img  src="/dist/images/index/an.png">

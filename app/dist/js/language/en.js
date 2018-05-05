@@ -15,7 +15,7 @@ var lang = {
         aboutus:"About Us",
         contactus:"Contact Us",
         team:"Our Team",
-        intro:"NasBiq international station (www.nasbiq.com) is one of the global digital asset trading platforms, which mainly provides global users with global block link assets, digital assets and Token transaction services, and is operated by NasBiq Technology Company Limited. NasBiq's core team is from citic securities, clsa, Morgan Stanley, amex, tencent, huawei, SUNGARD and other world-renowned companies.",
+        intro:"Nasbiq international station is one of the global digital asset trading platform, mainly to provide global block chain assets worldwide, trading service of digital assets, token assets, by Nasbiq Technology management, Nasbiq core team has a bit of, CLSA, Goldman, MorganStanley, CITIC, Huawei, Tencent, Microsoft related well-known enterprise experience, And nasbiq has the top advisory team of both domestic and foreign traditional financial exchanges and well-known Internet companies.",
         missiontip:"Our Vision",
         mission:"We believe in the core idea of block chain and digital currency. Distributed ledger and intelligent contract technology will build the trust foundation of human beings and eliminate trade barriers." +
         "                    Future can become a reliable application of commercial civilization cornerstone, we hope that with our professional technology for the chain block, digital currency, TOKEN owners to build a safe, trust and high liquidity of trading platform," +
