@@ -2,7 +2,7 @@
 
 
     <a href="/" class="logo" style="padding: 0 0 0">
-        <img style="height: 46px" src="/dist/images/58.png">
+        <img style="height: 46px" src="/dist/images/58.png"><div style="color: white;float: right;padding-top: 18px">test</div>
     </a>
     <!--<div class="logo" style="padding: 0 0 0;font-size: 30px;color: rgb(245,186,46);margin-top: 16px">-->
         <!--TaoBiEx-->
@@ -69,19 +69,25 @@
                 <!--<li><a href="/finance/payout" class="ng-binding" ng-bind="lang.withdraw" target="_self"></a></li>-->
             <!--</ul>-->
         </li>
-        <li  class="ng-scope  {{aboutus}}" >
-            <a href="/aboutus/about"  class="ng-binding"  target="_self" ng-bind="lang.about.aboutus"></a>
-        </li>
+        <!--<li  class="ng-scope  {{aboutus}}" >-->
+            <!--<a href="/aboutus/about"  class="ng-binding"  target="_self" ng-bind="lang.about.aboutus"></a>-->
+        <!--</li>-->
         <li  class="ng-scope "  id="alogin" style="display: none">
             <a href="/user/login" target="_self" class="ng-binding" ng-bind="lang.login"></a>&nbsp;&nbsp;
         </li>
         <li  class="ng-scope"  id ="aregister" style="display: none">
             <a href="/user/register" target="_self" class="ng-binding" ng-bind="lang.register"></a>&nbsp;&nbsp;
         </li>
+        <li  class="ng-scope {{mod}}"  id = "mod" style="display: none">
+            <a class="link ng-binding exit"  href="/account/password" ng-cloak="">
+                \{{lang.updatepass}}
+            </a>
+        </li>
         <li  class="ng-scope"  id = "aid" style="display: none">
             <a class="link ng-binding exit"  href="javascript:;" id ="a_name">
             </a>
         </li>
+
         <li  class="ng-scope"  id="aexit" style="display: none">
             <a class="link ng-binding exit"  href="javascript:;" ng-bind="lang.header.Log_out"></a>
         </li>

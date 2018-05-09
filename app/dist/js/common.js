@@ -230,6 +230,7 @@ var _handler = {
         }else {
             $("#aexit").show();
             $("#aid").show();
+            $("#mod").show();
             $("#a_name").text(key);
         }
     }

@@ -1,5 +1,7 @@
 var app = angular.module('app', ['i18n']);
-app.controller('forgetController', ['$scope', '$http', '$interval', function ($scope, $http,$interval) {
+app.controller('modController', ['$scope', '$http', '$interval', function ($scope, $http,$interval) {
+    var rootKey = sessionStorage.getItem("uid");
+    var rootPass = sessionStorage.getItem("key");
     $scope.tip = lang.send;
     var send = lang.send;
     $scope.name = "";
@@ -7,17 +9,12 @@ app.controller('forgetController', ['$scope', '$http', '$interval', function ($s
         if(send != $scope.tip){
             return;
         }
-        var m = "";
-        if(isMobile($scope.name)){
+        var m = "em";
+        if(isMobile(rootKey)){
             m = "m";
-        }else if(isEmail($scope.name)){
-            m = "em"
-        }else {
-            error_win(lang.emailFormatError);
-            return
         }
-        var val = "msgtype=ReqSmsCodeGenerate&"+m+"="+$scope.name+"&sct=2";
-        var hash = CryptoJS.HmacSHA256(val, "123123");
+        var val = "msgtype=ReqSmsCodeGenerate&"+m+"="+rootKey+"&sct=2";
+        var hash = CryptoJS.HmacSHA256(val, rootPass);
         var sign = hash.toString();
         $http({
             method:"POST",
@@ -46,13 +43,12 @@ app.controller('forgetController', ['$scope', '$http', '$interval', function ($s
     // msgtype=ReqUserPasswordUpdate&uid=15135130608&op=3688515672&np=123456&Sign=b2a44aedd4831bf4137a2f18552d8b62a45539f612283ac8a8649d5b20a783ae
     // msgtype=ReqUserPasswordUpdate&uid=00001&op=123456&np=222222&Sign=abce123435231543fdgfdgergerwgrtey34534tregfdbfdbfdvsdgvasdgv4567
     $scope.mod = function () {
-        if(isEmpty($scope.code) || isEmpty($scope.pass) || isEmpty($scope.name)){
+        if(isEmpty($scope.code) || isEmpty($scope.pass)){
             error_win(lang.noempty);
             return;
         }
-
         var time =  (new Date()).valueOf();
-        var val = "msgtype=ReqUserPasswordUpdate&uid="+$scope.name+"&op="+$scope.code+"&np="+$scope.pass+"&UserID="+$scope.name+"&TimeStamp="+time;
+        var val = "msgtype=ReqUserPasswordUpdate&uid="+rootKey+"&op="+$scope.code+"&np="+$scope.pass+"&UserID="+rootKey+"&TimeStamp="+time;
         var hash = CryptoJS.HmacSHA256(val, $scope.code);
         var sign = hash.toString();
         $http({
@@ -64,11 +60,7 @@ app.controller('forgetController', ['$scope', '$http', '$interval', function ($s
             var result = JSON.parse(toGbk(res.data));
             console.log(result);
             if(result.em == "正确"){
-                sessionStorage.setItem("uid",$scope.name);
-                sessionStorage.setItem("key",$scope.pass);
-                success_win(lang.operationSuccess,function () {
-                    location.href = "/";
-                });
+                success_win(lang.operationSuccess);
             }else {
                 error_win(result.em);
             }

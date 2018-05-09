@@ -15,15 +15,13 @@ var lang = {
         aboutus:"关于我们",
         contactus:"联系我们",
         team:"团队介绍",
-        intro:"TaoBiex国际站（www.taobiex.com）是全球数字资产交易平台之一，主要面向全球用户\n" +
-        "                    提供全球区块链接资产、数字资产、Token的交易服务，由TaoBi Technology Company Limited经营。\n" +
-        "                    TaoBiex的核心团队来自中信证券、里昂证券、摩根士丹利、运通银行、腾讯、华为、SUNGARD等世界知名企业。",
+        intro:"Nasbiq国际站是全球数字资产交易平台之一，主要面向全球用户提供全球区块链资产、数字资产、token资产的交易服务,由NASBIQ Technology经营，Nasbiq核心团队有着HKEX、CLSA、Goldman、MorganStanley、CITIC、Huawei、Tencent、Microsoft 相关知名企业从业经验，并且nasbiq拥有国内外传统金融交易所和知名互联网公司的顶级顾问团队",
         missiontip:"我们的愿景",
         mission:"我们信奉区块链、数字货币的核心思想，分布式账本和智能合约技术将构建人类的信任基础，消除交易壁垒，\n" +
         "                    未来能够成为人类商业文明的可靠的应用基石，我们希望用我们专业的技术为区块链、数字货币、TOKEN的拥有者构建一个安全、信任、高流动性的交易平台，\n" +
         "                    为大家带来一个数字资产探索、发现的价值平台",
         technicalttip:"我们的技术",
-        technicalt:"TaoBiEx采用分布式服务器集群、分布式存储、多机互备的高速内存交易引擎、冷钱包、私钥离线化的热钱包等先进的技术，以Web端、手机端、\n" +
+        technicalt:"Nasbiq采用分布式服务器集群、分布式存储、多机互备的高速内存交易引擎、冷钱包、私钥离线化的热钱包等先进的技术，以Web端、手机端、\n" +
         "                    PC端等多终端为我们的客户提供安全、稳定、可信的数字资产交易服务。我们会提供针对2C和2B的用户打造适合的交易产品",
         Assetstip:"关于数字资产",
         Assets:"",
@@ -54,8 +52,8 @@ var lang = {
         t6:"TAOBIEX",
     },
     banner2:{
-        t1:'(tbc)  上线注册邀请奖励活动',
-        t2:'100万tbc大派送',
+        t1:'(nbq)  上线注册邀请奖励活动',
+        t2:'100万nbq大派送',
         t3:'注册送币',
         t4:'推广送币',
         t5:'活动时间：2018年4月10日 - 2018年4月30日',
@@ -238,7 +236,7 @@ var lang = {
         apply:"上币申请及说明",
         us:"关于我们",
         coin:"币种介绍",
-        copyRight:"© TAOBIEX 交易所 2018版权所有"
+        copyRight:"© NASBIQ 交易平台 2018版权所有"
     },
     news:{
         announce: "官方公告",

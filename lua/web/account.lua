@@ -36,7 +36,7 @@ function _M.phone()
 end
 
 function _M.password()
-    template.render("tpl/account/password.html", {account = 'active'})
+    template.render("tpl/user/password.html", {mod = 'active'})
 end
 
 function _M.safe()
