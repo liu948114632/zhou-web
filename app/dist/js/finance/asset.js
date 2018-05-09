@@ -50,7 +50,11 @@ app.controller('assetController',function ($scope,$http) {
                     $scope.allItems.push({'cid':$scope.allCoins[j]})
                 }
             }else {
-                $scope.allItems = result;
+                if(result instanceof Array){
+                    $scope.allItems = result;
+                }else {
+                    $scope.allItems.push(result);
+                }
                 var coins = [];
                 for (var i = 0; i<result.length;i++){
                     coins.push(result[i].cid.toUpperCase());
@@ -63,6 +67,7 @@ app.controller('assetController',function ($scope,$http) {
                 }
             }
             // $scope.allItems = $scope.items;
+            console.log($scope.allItems)
         })
     }
     $scope.func = function(res){
