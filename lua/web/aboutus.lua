@@ -19,4 +19,8 @@ function _M.team()
     template.render("tpl/aboutus/team.html", {aboutus = 'active', team = 'active'})
 end
 
+function _M.help()
+    template.render("tpl/aboutus/help.html", {help = 'active'})
+end
+
 return _M
