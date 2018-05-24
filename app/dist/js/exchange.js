@@ -470,6 +470,9 @@
                             if(orders[i]['os'] == 1 || orders[i]['os'] == 3){
                                 $scope.entrustList.push(orders[i]);
                             }else {
+                                if(orders[i]['os'] == 0){
+                                    orders[i]['vt'] = orders[i]['vto'];
+                                }
                                 $scope.entrustListLog.push(orders[i]);
                             }
                         }

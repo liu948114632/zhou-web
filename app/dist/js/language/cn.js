@@ -1,4 +1,5 @@
 var lang = {
+    dealamount:"成交数量",
     foo:{
        a1:"关于我们",
        a2:"团队介绍",

@@ -1,4 +1,5 @@
 var lang = {
+    dealamount:"Deal Amount",
     foo:{
         a1:"About us",
         a2:"Teams",

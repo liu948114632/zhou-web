@@ -562,18 +562,20 @@
                 <div class="item-con">
                     <table class="table table-striped">
                         <colgroup style="width: 15%"></colgroup>
+                        <colgroup style="width: 10%"></colgroup>
+                        <colgroup style="width: 10%"></colgroup>
                         <colgroup style="width: 15%"></colgroup>
                         <colgroup style="width: 15%"></colgroup>
                         <colgroup style="width: 15%"></colgroup>
                         <colgroup style="width: 15%"></colgroup>
-                        <colgroup style="width: 15%"></colgroup>
-                        <colgroup style="width: 15%"></colgroup>
+                        <colgroup style="width: 7%"></colgroup>
                         <thead>
                             <tr>
                                 <th class="f-left ng-binding" ng-bind="lang.entrustTime"></th>
                                 <th class="f-left ng-binding" ng-bind="lang.dealType"></th>
                                 <th class="f-left ng-binding" ng-bind="lang.entrustPrice"></th>
                                 <th class="f-left ng-binding" ng-bind="lang.entrustAmount"></th>
+                                <th class="f-left ng-binding" ng-bind="lang.dealamount"></th>
                                 <th class="f-left ng-binding" ng-bind="lang.entrustTotal"></th>
                                 <th class="f-left ng-binding" ng-bind="lang.status"></th>
                                 <th class="f-right ng-binding" ng-bind="lang.oper"></th>
@@ -585,6 +587,7 @@
                                 <td class="f-left"><span ng-class="row.d== 0? 'green': 'magenta'" ng-bind="row.d == 0 ? lang.buy : lang.sell"></span></td>
                                 <td class="f-left" ng-bind="row.lp "></td>
                                 <td class="f-left" ng-bind="row.vto | fixed: 4"></td>
+                                <td class="f-left" ng-bind="row.vt||0 | fixed: 4"></td>
                                 <td class="f-left" ng-bind="(row.lp * row.vto) | fixed: 4"></td>
                                 <td class="f-left" ng-bind="row.os | formatEntrustStatus"></td>
                                 <td class="f-right"><input type="button" value="\{{lang.cancel}}" ng-click="cancelOrder(row)"  class="btn"></td>
@@ -603,12 +606,13 @@
             <div class="userRecords-main">
                 <div class="item-con">
                     <table class="table table-striped">
-                        <colgroup style="width: 18%"></colgroup>
-                        <colgroup style="width: 13%"></colgroup>
-                        <colgroup style="width: 13%"></colgroup>
-                        <colgroup style="width: 16%"></colgroup>
-                        <colgroup style="width: 16%"></colgroup>
-                        <colgroup style="width: 17%"></colgroup>
+                        <colgroup style="width: 15%"></colgroup>
+                        <colgroup style="width: 10%"></colgroup>
+                        <colgroup style="width: 10%"></colgroup>
+                        <colgroup style="width: 15%"></colgroup>
+                        <colgroup style="width: 15%"></colgroup>
+                        <colgroup style="width: 15%"></colgroup>
+                        <colgroup style="width: 15%"></colgroup>
                         <colgroup style="width: 7%"></colgroup>
                         <thead>
                             <tr>
@@ -617,6 +621,7 @@
                                 <th class="f-left ng-binding" ng-bind="lang.sup.type"></th>
                                 <th class="f-left ng-binding" ng-bind="lang.entrustPrice"></th>
                                 <th class="f-left ng-binding" ng-bind="lang.entrustAmount"></th>
+                                <th class="f-left ng-binding" ng-bind="lang.dealamount"></th>
                                 <th class="f-left ng-binding" ng-bind="lang.entrustTotal"></th>
                                 <th class="f-right ng-binding" ng-bind="lang.status"></th>
                             </tr>
@@ -629,6 +634,7 @@
                                 <td class="f-left" ng-bind="row.lp" ng-show="row.lp"></td>
                                 <td class="f-left"  ng-show="!row.lp">-</td>
                                 <td class="f-left" ng-bind="row.vto | fixed: 4"></td>
+                                <td class="f-left" ng-bind="row.vt||0 | fixed: 4"></td>
                                 <td class="f-left" ng-bind="(row.lp * row.vto) | fixed: 4" ng-show="row.lp"></td>
                                 <td class="f-left"  ng-show="!row.lp">-</td>
                                 <td class="f-right" ng-bind="row.os | formatEntrustStatus"></td>
