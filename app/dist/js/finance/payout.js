@@ -115,10 +115,12 @@ app.controller('payoutController', ['$scope', '$http', '$location', '$interval',
            responseType :'arraybuffer',
        }).then(function (res) {
            var result = JSON.parse(toGbk(res.data));
-           if(!isEmpty(result.osid)){
+           if(!isEmpty(result.tsid)){
                success_win(lang.operationSuccess,function () {
-                   location.reload();
+                   getLogs();
                })
+           }else{
+               error_win(result.em);
            }
        })
    };
